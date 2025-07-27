@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "CompTask1a", "CompTask1a.pyproj", "{AD10D8AA-242D-4EAA-96DC-3AA3D71E53AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solutions", "Solutions", "{DA779BDC-FB46-489A-A8D9-694825CC13F2}"
+	ProjectSection(SolutionItems) = preProject
+		CompTask1b.py = CompTask1b.py
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD10D8AA-242D-4EAA-96DC-3AA3D71E53AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD10D8AA-242D-4EAA-96DC-3AA3D71E53AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AD10D8AA-242D-4EAA-96DC-3AA3D71E53AC} = {DA779BDC-FB46-489A-A8D9-694825CC13F2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {141311CB-AD5B-4B9D-A971-734B33E06053}
+	EndGlobalSection
+EndGlobal

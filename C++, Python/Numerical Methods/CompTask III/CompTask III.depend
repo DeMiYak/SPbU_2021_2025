@@ -1,0 +1,67 @@
+# depslib dependency file v1.0
+1681377811 source:c:\codeblocks\files\comptask iii\main.cpp
+	"Task3.1.h"
+	"Task3.2.h"
+
+1681326702 source:c:\codeblocks\files\comptask iii\task3.1.cpp
+	"Task3.1.h"
+
+1681490386 source:c:\codeblocks\files\comptask iii\task3.2.cpp
+	"Task3.2.h"
+
+1681326665 c:\codeblocks\files\comptask iii\task3.1.h
+	<locale.h>
+	<iostream>
+	<math.h>
+	<iomanip>
+
+1681394593 c:\codeblocks\files\comptask iii\task3.2.h
+	<locale.h>
+	<iostream>
+	<math.h>
+	<iomanip>
+
+1682790868 source:c:\myfiles\codeblocks\files\comptask iii\main.cpp
+	"Task3.1.h"
+	"Task3.2.h"
+
+1682790170 c:\myfiles\codeblocks\files\comptask iii\task3.1.h
+	<locale.h>
+	<iostream>
+	<math.h>
+	<iomanip>
+
+1681394593 c:\myfiles\codeblocks\files\comptask iii\task3.2.h
+	<locale.h>
+	<iostream>
+	<math.h>
+	<iomanip>
+
+1682789593 source:c:\myfiles\codeblocks\files\comptask iii\task3.2.cpp
+	"Task3.2.h"
+
+1682803268 source:c:\myfiles\codeblocks\files\comptask iii\task3.1.cpp
+	"Task3.1.h"
+
+1682790868 source:c:\myfiles\codeblocks\files\numerical methods\comptask iii\main.cpp
+	"Task3.1.h"
+	"Task3.2.h"
+
+1682790170 c:\myfiles\codeblocks\files\numerical methods\comptask iii\task3.1.h
+	<locale.h>
+	<iostream>
+	<math.h>
+	<iomanip>
+
+1681394593 c:\myfiles\codeblocks\files\numerical methods\comptask iii\task3.2.h
+	<locale.h>
+	<iostream>
+	<math.h>
+	<iomanip>
+
+1682803268 source:c:\myfiles\codeblocks\files\numerical methods\comptask iii\task3.1.cpp
+	"Task3.1.h"
+
+1682789593 source:c:\myfiles\codeblocks\files\numerical methods\comptask iii\task3.2.cpp
+	"Task3.2.h"
+

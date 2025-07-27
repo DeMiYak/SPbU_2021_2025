@@ -1,0 +1,152 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFCView.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|solutionrelative:SDI_MFCView.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFC.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|solutionrelative:SDI_MFC.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFCDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|solutionrelative:SDI_MFCDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\pch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|solutionrelative:pch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\MainFrm.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|solutionrelative:MainFrm.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\CFormatDlg.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|solutionrelative:CFormatDlg.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\CFormatDlg.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|solutionrelative:CFormatDlg.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDIMFC.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       % V!9$  \u0022     ",
+      "RelativeMoniker": "D:0:0:{D8DB3A07-7601-4BAD-8B23-AF3B816AAAA2}|SDI_MFC.vcxproj|solutionrelative:SDIMFC.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       % V!9$  \u0022     "
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SDI_MFCDoc.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFCDoc.cpp",
+              "RelativeDocumentMoniker": "SDI_MFCDoc.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFCDoc.cpp",
+              "RelativeToolTip": "SDI_MFCDoc.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-20T17:42:30.234Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "pch.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\pch.cpp",
+              "RelativeDocumentMoniker": "pch.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\pch.cpp",
+              "RelativeToolTip": "pch.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-20T17:42:28.962Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MainFrm.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\MainFrm.cpp",
+              "RelativeDocumentMoniker": "MainFrm.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\MainFrm.cpp",
+              "RelativeToolTip": "MainFrm.cpp",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-20T17:38:16.481Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SDI_MFC.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFC.cpp",
+              "RelativeDocumentMoniker": "SDI_MFC.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFC.cpp",
+              "RelativeToolTip": "SDI_MFC.cpp",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-20T17:38:13.85Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SDI_MFCView.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFCView.h",
+              "RelativeDocumentMoniker": "SDI_MFCView.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFCView.h",
+              "RelativeToolTip": "SDI_MFCView.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-11T19:24:55.398Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CFormatDlg.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\CFormatDlg.cpp",
+              "RelativeDocumentMoniker": "CFormatDlg.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\CFormatDlg.cpp",
+              "RelativeToolTip": "CFormatDlg.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAIMAAAADAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-07T16:56:51.617Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CFormatDlg.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\CFormatDlg.h",
+              "RelativeDocumentMoniker": "CFormatDlg.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\CFormatDlg.h",
+              "RelativeToolTip": "CFormatDlg.h",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAjwBwAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-07T16:56:29.702Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SDIMFC.rc - IDD_DIALOG_FORMAT - Dialog",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDIMFC.rc",
+              "RelativeDocumentMoniker": "SDIMFC.rc",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDIMFC.rc - IDD_DIALOG_FORMAT - Dialog",
+              "RelativeToolTip": "SDIMFC.rc - IDD_DIALOG_FORMAT - Dialog",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-04-07T16:56:08.807Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

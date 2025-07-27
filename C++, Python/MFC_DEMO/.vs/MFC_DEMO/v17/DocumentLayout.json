@@ -1,0 +1,1015 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\SampleModelling.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\SampleModelling.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\BernHypGeomSampleGenerator.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\BernHypGeomSampleGenerator.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\InvFunHypGeomSampleGenerator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\InvFunHypGeomSampleGenerator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\SampleModelling.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:SampleModelling.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\BernHypGeomSampleGenerator.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:BernHypGeomSampleGenerator.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\ClassDemo.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\ClassDemo.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Chi2Histogram.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\Chi2Histogram.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Chi2Histogram.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\Chi2Histogram.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Distribution.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\Distribution.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Distribution.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\Distribution.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\InvFunHypGeomSampleGenerator.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\InvFunHypGeomSampleGenerator.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Method.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\Method.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\PROBDIST.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\PROBDIST.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\SampleModelling.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\SampleModelling.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\PROBDIST.CPP||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\PROBDIST.CPP||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Method.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\Method.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\BernHypGeomSampleGenerator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C688856B-D941-454A-B3A8-26B58F29CA2E}|ClassDemo\\ClassDemo.vcxproj|solutionrelative:ClassDemo\\BernHypGeomSampleGenerator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\framework.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:framework.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\pch.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:pch.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\CritVolDlg.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:CritVolDlg.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ChildFrm.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:ChildFrm.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMO.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFC_DEMO.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMODoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFC_DEMODoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMOView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFC_DEMOView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MainFrm.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MainFrm.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       % X!9$  \u0022     ",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       % X!9$  \u0022     "
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\CritVolDlg.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:CritVolDlg.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       % Y!9$  \u0022     ",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       % Y!9$  \u0022     "
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PLevelDlg.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:PLevelDlg.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PLevelDlg.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:PLevelDlg.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\random||{3B902123-F8A7-4915-9F01-361F908088D0}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMODoc.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFC_DEMODoc.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMOView.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFC_DEMOView.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Model.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:Model.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MainFrm.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MainFrm.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Model.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:Model.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\pch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:pch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ChildFrm.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:ChildFrm.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       % V!9$  \u0022     ",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       % V!9$  \u0022     "
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFCView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       $ \u00A0 )$  \u0022     ",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       $ \u00A0 )$  \u0022     "
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       $ \u00A2 )$  \u0022     ",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       $ \u00A2 )$  \u0022     "
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       ) \u00A0 )$  \u0022     ",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       ) \u00A0 )$  \u0022     "
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       $ \u00E8 )$  \u0022     ",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       $ \u00E8 )$  \u0022     "
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_SDI_YMD\\resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       $ \u0097 )$  \u0022     ",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       $ \u0097 )$  \u0022     "
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       $ \u011F\u011F\u003C   i d r \u007F h e l p \u007F m e n u   )$  \u0022     ",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:MFCDEMO.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       $ \u011F\u011F\u003C   i d r \u007F h e l p \u007F m e n u   )$  \u0022     "
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\CFormatDlg.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\DistrModelling\\PROBDIST.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\DistrModelling\\Distribution.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\cstring||{3B902123-F8A7-4915-9F01-361F908088D0}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\atlmfc\\include\\afx.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\USERS\\\u041F\u041E\u041B\u042C\u0417\u041E\u0412\u0410\u0422\u0415\u041B\u042C\\SOURCE\\REPOS\\MFC_DEMO\\CLASSDEMO\\PCH.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:CLASSDEMO\\PCH.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Distribution.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:Distribution.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PROBDIST.CPP||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:PROBDIST.CPP||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Method.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:Method.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PROBDIST.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:PROBDIST.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Chi2Histogram.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:Chi2Histogram.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Chi2Histogram.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:Chi2Histogram.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Distribution.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:Distribution.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\BernHypGeomSampleGenerator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:BernHypGeomSampleGenerator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\InvFunHypGeomSampleGenerator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:InvFunHypGeomSampleGenerator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\InvFunHypGeomSampleGenerator.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{822FF3E8-D643-474C-ABD4-6E7E5B942459}|MFC_DEMO.vcxproj|solutionrelative:InvFunHypGeomSampleGenerator.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SampleModelling.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\SampleModelling.h",
+              "RelativeDocumentMoniker": "ClassDemo\\SampleModelling.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\SampleModelling.h",
+              "RelativeToolTip": "ClassDemo\\SampleModelling.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T13:33:17.982Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ClassDemo.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\ClassDemo.cpp",
+              "RelativeDocumentMoniker": "ClassDemo\\ClassDemo.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\ClassDemo.cpp",
+              "RelativeToolTip": "ClassDemo\\ClassDemo.cpp",
+              "ViewState": "AQIAAO0BAAAAAAAAAAAlwFADAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-06T09:00:56.802Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Chi2Histogram.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Chi2Histogram.cpp",
+              "RelativeDocumentMoniker": "ClassDemo\\Chi2Histogram.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Chi2Histogram.cpp",
+              "RelativeToolTip": "ClassDemo\\Chi2Histogram.cpp",
+              "ViewState": "AQIAALwAAAAAAAAAAAAmwMAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-06T13:29:42.095Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Distribution.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Distribution.cpp",
+              "RelativeDocumentMoniker": "ClassDemo\\Distribution.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Distribution.cpp",
+              "RelativeToolTip": "ClassDemo\\Distribution.cpp",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAlwAoAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-06T13:29:43.42Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BernHypGeomSampleGenerator.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\BernHypGeomSampleGenerator.h",
+              "RelativeDocumentMoniker": "BernHypGeomSampleGenerator.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\BernHypGeomSampleGenerator.h",
+              "RelativeToolTip": "BernHypGeomSampleGenerator.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAA9AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-05-29T09:30:51.732Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SampleModelling.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\SampleModelling.h",
+              "RelativeDocumentMoniker": "SampleModelling.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\SampleModelling.h",
+              "RelativeToolTip": "SampleModelling.h",
+              "ViewState": "AQIAAFcAAAAAAAAAAAAAAAsAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-11T17:28:08.121Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "InvFunHypGeomSampleGenerator.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\InvFunHypGeomSampleGenerator.cpp",
+              "RelativeDocumentMoniker": "ClassDemo\\InvFunHypGeomSampleGenerator.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\InvFunHypGeomSampleGenerator.cpp",
+              "RelativeToolTip": "ClassDemo\\InvFunHypGeomSampleGenerator.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-06T13:30:22.426Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BernHypGeomSampleGenerator.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\BernHypGeomSampleGenerator.h",
+              "RelativeDocumentMoniker": "ClassDemo\\BernHypGeomSampleGenerator.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\BernHypGeomSampleGenerator.h",
+              "RelativeToolTip": "ClassDemo\\BernHypGeomSampleGenerator.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T13:33:28.708Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "PROBDIST.H",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\PROBDIST.H",
+              "RelativeDocumentMoniker": "ClassDemo\\PROBDIST.H",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\PROBDIST.H",
+              "RelativeToolTip": "ClassDemo\\PROBDIST.H",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T13:33:22.833Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Distribution.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Distribution.h",
+              "RelativeDocumentMoniker": "ClassDemo\\Distribution.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Distribution.h",
+              "RelativeToolTip": "ClassDemo\\Distribution.h",
+              "ViewState": "AQIAAIkAAAAAAAAAAAAQwIUAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T13:33:25.661Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Chi2Histogram.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Chi2Histogram.h",
+              "RelativeDocumentMoniker": "ClassDemo\\Chi2Histogram.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Chi2Histogram.h",
+              "RelativeToolTip": "ClassDemo\\Chi2Histogram.h",
+              "ViewState": "AQIAABAAAAAAAAAAAAAlwBcAAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T13:33:26.501Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Method.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Method.h",
+              "RelativeDocumentMoniker": "ClassDemo\\Method.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Method.h",
+              "RelativeToolTip": "ClassDemo\\Method.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T13:33:23.652Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "InvFunHypGeomSampleGenerator.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\InvFunHypGeomSampleGenerator.h",
+              "RelativeDocumentMoniker": "ClassDemo\\InvFunHypGeomSampleGenerator.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\InvFunHypGeomSampleGenerator.h",
+              "RelativeToolTip": "ClassDemo\\InvFunHypGeomSampleGenerator.h",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAAsAAAAwAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T13:33:24.907Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "SampleModelling.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\SampleModelling.cpp",
+              "RelativeDocumentMoniker": "ClassDemo\\SampleModelling.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\SampleModelling.cpp",
+              "RelativeToolTip": "ClassDemo\\SampleModelling.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-06T13:30:31.343Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "PROBDIST.CPP",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\PROBDIST.CPP",
+              "RelativeDocumentMoniker": "ClassDemo\\PROBDIST.CPP",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\PROBDIST.CPP",
+              "RelativeToolTip": "ClassDemo\\PROBDIST.CPP",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-06T13:30:05.685Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Method.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Method.cpp",
+              "RelativeDocumentMoniker": "ClassDemo\\Method.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\Method.cpp",
+              "RelativeToolTip": "ClassDemo\\Method.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-06T13:30:02.889Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "BernHypGeomSampleGenerator.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\BernHypGeomSampleGenerator.cpp",
+              "RelativeDocumentMoniker": "ClassDemo\\BernHypGeomSampleGenerator.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\BernHypGeomSampleGenerator.cpp",
+              "RelativeToolTip": "ClassDemo\\BernHypGeomSampleGenerator.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-06T13:30:15.616Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "pch.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\pch.h",
+              "RelativeDocumentMoniker": "ClassDemo\\pch.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ClassDemo\\pch.h",
+              "RelativeToolTip": "ClassDemo\\pch.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T13:32:09.713Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "framework.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\framework.h",
+              "RelativeDocumentMoniker": "framework.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\framework.h",
+              "RelativeToolTip": "framework.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T13:32:22.46Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "CritVolDlg.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\CritVolDlg.h",
+              "RelativeDocumentMoniker": "CritVolDlg.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\CritVolDlg.h",
+              "RelativeToolTip": "CritVolDlg.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-05-26T14:32:50.032Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "pch.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\pch.h",
+              "RelativeDocumentMoniker": "pch.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\pch.h",
+              "RelativeToolTip": "pch.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-11T17:36:26.002Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "MFC_DEMO.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMO.cpp",
+              "RelativeDocumentMoniker": "MFC_DEMO.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMO.cpp",
+              "RelativeToolTip": "MFC_DEMO.cpp",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAAJEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-30T13:03:37.325Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ChildFrm.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ChildFrm.h",
+              "RelativeDocumentMoniker": "ChildFrm.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ChildFrm.h",
+              "RelativeToolTip": "ChildFrm.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-12T22:44:43.711Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "MFC_DEMODoc.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMODoc.cpp",
+              "RelativeDocumentMoniker": "MFC_DEMODoc.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMODoc.cpp",
+              "RelativeToolTip": "MFC_DEMODoc.cpp",
+              "ViewState": "AQIAAEEBAAAAAAAAAAAmwEkBAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-11T17:58:47.866Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "MFC_DEMOView.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMOView.cpp",
+              "RelativeDocumentMoniker": "MFC_DEMOView.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMOView.cpp",
+              "RelativeToolTip": "MFC_DEMOView.cpp",
+              "ViewState": "AQIAAIwAAAAAAAAAAAAAwJUAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-12T18:35:31.72Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "MainFrm.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MainFrm.h",
+              "RelativeDocumentMoniker": "MainFrm.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MainFrm.h",
+              "RelativeToolTip": "MainFrm.h",
+              "ViewState": "AQIAABgAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T12:39:04.595Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "Distribution.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Distribution.cpp",
+              "RelativeDocumentMoniker": "Distribution.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Distribution.cpp",
+              "RelativeToolTip": "Distribution.cpp",
+              "ViewState": "AQIAAC0AAAAAAAAAAAAAAC4AAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-02T10:43:21.719Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "PROBDIST.CPP",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PROBDIST.CPP",
+              "RelativeDocumentMoniker": "PROBDIST.CPP",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PROBDIST.CPP",
+              "RelativeToolTip": "PROBDIST.CPP",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-02T10:43:24.829Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "Method.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Method.h",
+              "RelativeDocumentMoniker": "Method.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Method.h",
+              "RelativeToolTip": "Method.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-02T14:10:29.579Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "PROBDIST.H",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PROBDIST.H",
+              "RelativeDocumentMoniker": "PROBDIST.H",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PROBDIST.H",
+              "RelativeToolTip": "PROBDIST.H",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-05-23T09:38:32.63Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "Chi2Histogram.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Chi2Histogram.cpp",
+              "RelativeDocumentMoniker": "Chi2Histogram.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Chi2Histogram.cpp",
+              "RelativeToolTip": "Chi2Histogram.cpp",
+              "ViewState": "AQIAAJcAAAAAAAAAAAAlwKMAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-29T09:37:09.377Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "Chi2Histogram.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Chi2Histogram.h",
+              "RelativeDocumentMoniker": "Chi2Histogram.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Chi2Histogram.h",
+              "RelativeToolTip": "Chi2Histogram.h",
+              "ViewState": "AQIAABAAAAAAAAAAAAAlwBkAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-05-29T09:33:24.031Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "Distribution.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Distribution.h",
+              "RelativeDocumentMoniker": "Distribution.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Distribution.h",
+              "RelativeToolTip": "Distribution.h",
+              "ViewState": "AQIAADMAAAAAAAAAAAAAwDwAAAA2AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-11T17:23:11.222Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "BernHypGeomSampleGenerator.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\BernHypGeomSampleGenerator.cpp",
+              "RelativeDocumentMoniker": "BernHypGeomSampleGenerator.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\BernHypGeomSampleGenerator.cpp",
+              "RelativeToolTip": "BernHypGeomSampleGenerator.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-02T10:43:18.822Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "InvFunHypGeomSampleGenerator.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\InvFunHypGeomSampleGenerator.cpp",
+              "RelativeDocumentMoniker": "InvFunHypGeomSampleGenerator.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\InvFunHypGeomSampleGenerator.cpp",
+              "RelativeToolTip": "InvFunHypGeomSampleGenerator.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-02T10:43:22.483Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "MFCDEMO.rc - ID_PLEVEL - Dialog",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc",
+              "RelativeDocumentMoniker": "MFCDEMO.rc",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc - ID_PLEVEL - Dialog",
+              "RelativeToolTip": "MFCDEMO.rc - ID_PLEVEL - Dialog",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-06-02T19:25:58.848Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "CritVolDlg.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\CritVolDlg.cpp",
+              "RelativeDocumentMoniker": "CritVolDlg.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\CritVolDlg.cpp",
+              "RelativeToolTip": "CritVolDlg.cpp",
+              "ViewState": "AQIAACkAAAAAAAAAAAAlwHkAAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-26T14:33:12.694Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "PLevelDlg.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PLevelDlg.cpp",
+              "RelativeDocumentMoniker": "PLevelDlg.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PLevelDlg.cpp",
+              "RelativeToolTip": "PLevelDlg.cpp",
+              "ViewState": "AQIAAF8AAAAAAAAAAAAAAGoAAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-30T12:45:26.228Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "MFCDEMO.rc - ID_CRITVOL - Dialog",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc",
+              "RelativeDocumentMoniker": "MFCDEMO.rc",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc - ID_CRITVOL - Dialog",
+              "RelativeToolTip": "MFCDEMO.rc - ID_CRITVOL - Dialog",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-05-26T14:33:10.004Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "InvFunHypGeomSampleGenerator.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\InvFunHypGeomSampleGenerator.h",
+              "RelativeDocumentMoniker": "InvFunHypGeomSampleGenerator.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\InvFunHypGeomSampleGenerator.h",
+              "RelativeToolTip": "InvFunHypGeomSampleGenerator.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAA/AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-05-29T09:23:34.314Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "PLevelDlg.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PLevelDlg.h",
+              "RelativeDocumentMoniker": "PLevelDlg.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\PLevelDlg.h",
+              "RelativeToolTip": "PLevelDlg.h",
+              "ViewState": "AQIAADMAAAAAAAAAAAAlwEAAAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-05-25T14:51:39.406Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "random",
+              "DocumentMoniker": "C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\random",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\random",
+              "ToolTip": "C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\random",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\random",
+              "ViewState": "AQIAAJoEAAAAAAAAAAAUwKkEAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-04-11T17:32:52.372Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "MFC_DEMOView.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMOView.h",
+              "RelativeDocumentMoniker": "MFC_DEMOView.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMOView.h",
+              "RelativeToolTip": "MFC_DEMOView.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-11T15:23:55.502Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "Model.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Model.h",
+              "RelativeDocumentMoniker": "Model.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Model.h",
+              "RelativeToolTip": "Model.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-11T16:11:18.466Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "MFC_DEMODoc.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMODoc.h",
+              "RelativeDocumentMoniker": "MFC_DEMODoc.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFC_DEMODoc.h",
+              "RelativeToolTip": "MFC_DEMODoc.h",
+              "ViewState": "AQIAAFoAAAAAAAAAAAAAAGQAAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-11T16:16:46.428Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "cstring",
+              "DocumentMoniker": "C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\cstring",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\cstring",
+              "ToolTip": "C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\cstring",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\cstring",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-06-02T12:46:54.241Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "afx.h",
+              "DocumentMoniker": "C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\atlmfc\\include\\afx.h",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\atlmfc\\include\\afx.h",
+              "ToolTip": "C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\atlmfc\\include\\afx.h",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\atlmfc\\include\\afx.h",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAAwBcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-02T10:42:27.368Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "MainFrm.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MainFrm.cpp",
+              "RelativeDocumentMoniker": "MainFrm.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MainFrm.cpp",
+              "RelativeToolTip": "MainFrm.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-20T14:54:38.585Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "pch.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\pch.cpp",
+              "RelativeDocumentMoniker": "pch.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\pch.cpp",
+              "RelativeToolTip": "pch.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-30T13:02:40.002Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "Model.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Model.cpp",
+              "RelativeDocumentMoniker": "Model.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\Model.cpp",
+              "RelativeToolTip": "Model.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACcAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-29T13:00:59.089Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "ChildFrm.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ChildFrm.cpp",
+              "RelativeDocumentMoniker": "ChildFrm.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\ChildFrm.cpp",
+              "RelativeToolTip": "ChildFrm.cpp",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAAAAsAAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-20T14:54:39.547Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "MFCDEMO.rc - ID_MODEL - Dialog",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc",
+              "RelativeDocumentMoniker": "MFCDEMO.rc",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc - ID_MODEL - Dialog",
+              "RelativeToolTip": "MFCDEMO.rc - ID_MODEL - Dialog",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-05-25T14:58:32.239Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "SDI_MFCView.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFCView.cpp",
+              "RelativeDocumentMoniker": "..\\SDI_MFC\\SDI_MFCView.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\SDI_MFCView.cpp",
+              "RelativeToolTip": "..\\SDI_MFC\\SDI_MFCView.cpp",
+              "ViewState": "AQIAALoAAAAAAAAAAAAkwMMAAAA0AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-11T19:33:28.992Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "MFCDEMO.rc - IDR_MAINFRAME [English (United States)] - Menu",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc",
+              "RelativeDocumentMoniker": "MFCDEMO.rc",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc - IDR_MAINFRAME [English (United States)] - Menu",
+              "RelativeToolTip": "MFCDEMO.rc - IDR_MAINFRAME [English (United States)] - Menu",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-04-11T16:23:06.883Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "MFCDEMO.rc - IDR_MFCDEMOTYPE [English (United States)] - Menu",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc",
+              "RelativeDocumentMoniker": "MFCDEMO.rc",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc - IDR_MFCDEMOTYPE [English (United States)] - Menu",
+              "RelativeToolTip": "MFCDEMO.rc - IDR_MFCDEMOTYPE [English (United States)] - Menu",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-04-20T16:38:14.82Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "MFCDEMO.rc - IDR_MAINFRAME [English (United States)] - Accelerator",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc",
+              "RelativeDocumentMoniker": "MFCDEMO.rc",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc - IDR_MAINFRAME [English (United States)] - Accelerator",
+              "RelativeToolTip": "MFCDEMO.rc - IDR_MAINFRAME [English (United States)] - Accelerator",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-05-25T16:01:14.231Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "MFCDEMO.rc - IDR_THEME_MENU [English (United States)] - Menu",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc",
+              "RelativeDocumentMoniker": "MFCDEMO.rc",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc - IDR_THEME_MENU [English (United States)] - Menu",
+              "RelativeToolTip": "MFCDEMO.rc - IDR_THEME_MENU [English (United States)] - Menu",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-04-20T16:42:56.027Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "resource.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_SDI_YMD\\resource.h",
+              "RelativeDocumentMoniker": "..\\MFC_SDI_YMD\\resource.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_SDI_YMD\\resource.h",
+              "RelativeToolTip": "..\\MFC_SDI_YMD\\resource.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-22T15:40:15.345Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "MFCDEMO.rc - IDR_POPUP_EDIT [English (United States)] - Menu",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc",
+              "RelativeDocumentMoniker": "MFCDEMO.rc",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc - IDR_POPUP_EDIT [English (United States)] - Menu",
+              "RelativeToolTip": "MFCDEMO.rc - IDR_POPUP_EDIT [English (United States)] - Menu",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-04-20T16:42:55.126Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "MFCDEMO.rc - \u0022IDR_HELP_MENU\u0022 [English (United States)] - Menu",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc",
+              "RelativeDocumentMoniker": "MFCDEMO.rc",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\MFC_DEMO\\MFCDEMO.rc - \u0022IDR_HELP_MENU\u0022 [English (United States)] - Menu",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-04-20T16:38:14.123Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "CFormatDlg.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\CFormatDlg.h",
+              "RelativeDocumentMoniker": "..\\SDI_MFC\\CFormatDlg.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\SDI_MFC\\CFormatDlg.h",
+              "RelativeToolTip": "..\\SDI_MFC\\CFormatDlg.h",
+              "ViewState": "AQIAABMAAAAAAAAAAABBwBwAAAAUAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-11T19:17:52.994Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "PROBDIST.H",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\DistrModelling\\PROBDIST.H",
+              "RelativeDocumentMoniker": "..\\DistrModelling\\PROBDIST.H",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\DistrModelling\\PROBDIST.H",
+              "RelativeToolTip": "..\\DistrModelling\\PROBDIST.H",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-11T17:25:35.982Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "Distribution.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\DistrModelling\\Distribution.h",
+              "RelativeDocumentMoniker": "..\\DistrModelling\\Distribution.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\DistrModelling\\Distribution.h",
+              "RelativeToolTip": "..\\DistrModelling\\Distribution.h",
+              "ViewState": "AQIAAGEAAAAAAAAAAABBwFsAAAAbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-11T16:17:13.822Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

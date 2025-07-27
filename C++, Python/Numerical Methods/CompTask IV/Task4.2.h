@@ -1,0 +1,6 @@
+#ifndef TASK4_2_H_INCLUDED
+#define TASK4_2_H_INCLUDED
+
+
+
+#endif // TASK4_2_H_INCLUDED

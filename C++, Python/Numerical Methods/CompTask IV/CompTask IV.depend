@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1683211135 source:c:\myfiles\codeblocks\files\numerical methods\comptask iv\task4.1.cpp
+	"Task4.1.h"
+
+1683211022 c:\myfiles\codeblocks\files\numerical methods\comptask iv\task4.1.h
+	"RPN.h"
+
+1683211028 source:c:\myfiles\codeblocks\files\numerical methods\comptask iv\task4.2.cpp
+	"Task4.2.h"
+
+1683051047 c:\myfiles\codeblocks\files\numerical methods\comptask iv\task4.2.h
+
+1683211037 source:c:\myfiles\codeblocks\files\numerical methods\comptask iv\task4.3.cpp
+	"Task4.3.h"
+
+1683051063 c:\myfiles\codeblocks\files\numerical methods\comptask iv\task4.3.h
+
+1683232992 source:c:\myfiles\codeblocks\files\numerical methods\comptask iv\main.cpp
+	<iostream>
+	"Task4.2.h"
+	"Task4.3.h"
+	"RPN.h"
+	"Integrator.h"
+
+1683234664 source:c:\myfiles\codeblocks\files\numerical methods\comptask iv\rpn.cpp
+	"RPN.h"
+
+1683233704 c:\myfiles\codeblocks\files\numerical methods\comptask iv\rpn.h
+	<vector>
+	<string>
+	<cmath>
+	<cstdlib>
+	<stack>
+	<iostream>
+	<iomanip>
+
+1683229313 c:\myfiles\codeblocks\files\numerical methods\comptask iv\integrator.h
+	"RPN.h"
+

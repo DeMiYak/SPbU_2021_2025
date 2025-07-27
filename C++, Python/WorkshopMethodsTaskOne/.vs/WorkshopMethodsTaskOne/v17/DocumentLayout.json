@@ -1,0 +1,469 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\AlternateDirectionMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:AlternateDirectionMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\AlternateDirectionMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:AlternateDirectionMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\Nelder-Mead_Method_Project\\BaseArea.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\WorkshopMethodsTaskOne.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:WorkshopMethodsTaskOne.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:ChebyschevMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:ChebyschevMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Printer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:Printer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Printer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:Printer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Norm.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:Norm.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Norm.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:Norm.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Resolver.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:Resolver.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Resolver.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:Resolver.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\BaseMethodGenerator.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:BaseMethodGenerator.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OverRelaxationMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:OverRelaxationMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SimpleIterationMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:SimpleIterationMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SimpleIterationMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:SimpleIterationMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OptimalParameterMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:OptimalParameterMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\TriangleMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:TriangleMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\TriangleMethod.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:TriangleMethod.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OverRelaxationMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:OverRelaxationMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SeidelMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:SeidelMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SeidelMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:SeidelMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OptimalParameterMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:OptimalParameterMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevTriangleMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:ChebyschevTriangleMethod.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevTriangleMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:ChebyschevTriangleMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\TriangleMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3A2F92-0A54-4A9A-AD94-2FE0F00BF539}|WorkshopMethodsTaskOne.vcxproj|solutionrelative:TriangleMethod.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\crt\\src\\vcruntime\\new_scalar.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\math.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BaseArea.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\Nelder-Mead_Method_Project\\BaseArea.h",
+              "RelativeDocumentMoniker": "..\\Nelder-Mead_Method_Project\\BaseArea.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\Nelder-Mead_Method_Project\\BaseArea.h",
+              "RelativeToolTip": "..\\Nelder-Mead_Method_Project\\BaseArea.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-24T16:51:29.778Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Printer.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Printer.h",
+              "RelativeDocumentMoniker": "Printer.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Printer.h",
+              "RelativeToolTip": "Printer.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-04T14:18:13.532Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Resolver.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Resolver.h",
+              "RelativeDocumentMoniker": "Resolver.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Resolver.h",
+              "RelativeToolTip": "Resolver.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-03T14:38:33.014Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Printer.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Printer.cpp",
+              "RelativeDocumentMoniker": "Printer.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Printer.cpp",
+              "RelativeToolTip": "Printer.cpp",
+              "ViewState": "AQIAABYAAAAAAAAAAIAwwBoAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-04T14:18:18.836Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AlternateDirectionMethod.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\AlternateDirectionMethod.cpp",
+              "RelativeDocumentMoniker": "AlternateDirectionMethod.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\AlternateDirectionMethod.cpp",
+              "RelativeToolTip": "AlternateDirectionMethod.cpp",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAAAEMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-12T14:20:40.396Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "BaseMethodGenerator.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\BaseMethodGenerator.h",
+              "RelativeDocumentMoniker": "BaseMethodGenerator.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\BaseMethodGenerator.h",
+              "RelativeToolTip": "BaseMethodGenerator.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-03T16:33:10.344Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ChebyschevMethod.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevMethod.h",
+              "RelativeDocumentMoniker": "ChebyschevMethod.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevMethod.h",
+              "RelativeToolTip": "ChebyschevMethod.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-03T16:37:15.497Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ChebyschevMethod.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevMethod.cpp",
+              "RelativeDocumentMoniker": "ChebyschevMethod.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevMethod.cpp",
+              "RelativeToolTip": "ChebyschevMethod.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-05T14:46:46.719Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AlternateDirectionMethod.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\AlternateDirectionMethod.h",
+              "RelativeDocumentMoniker": "AlternateDirectionMethod.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\AlternateDirectionMethod.h",
+              "RelativeToolTip": "AlternateDirectionMethod.h",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAABUAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-12T14:20:26.733Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Norm.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Norm.cpp",
+              "RelativeDocumentMoniker": "Norm.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Norm.cpp",
+              "RelativeToolTip": "Norm.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-06T14:08:59.136Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "WorkshopMethodsTaskOne.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\WorkshopMethodsTaskOne.cpp",
+              "RelativeDocumentMoniker": "WorkshopMethodsTaskOne.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\WorkshopMethodsTaskOne.cpp",
+              "RelativeToolTip": "WorkshopMethodsTaskOne.cpp",
+              "ViewState": "AQIAACcAAAAAAAAAAIAwwI0AAAAzAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-03T13:22:01.181Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Norm.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Norm.h",
+              "RelativeDocumentMoniker": "Norm.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Norm.h",
+              "RelativeToolTip": "Norm.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-06T14:08:53.593Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Resolver.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Resolver.cpp",
+              "RelativeDocumentMoniker": "Resolver.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\Resolver.cpp",
+              "RelativeToolTip": "Resolver.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-03T14:38:23.593Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "OverRelaxationMethod.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OverRelaxationMethod.cpp",
+              "RelativeDocumentMoniker": "OverRelaxationMethod.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OverRelaxationMethod.cpp",
+              "RelativeToolTip": "OverRelaxationMethod.cpp",
+              "ViewState": "AQIAABkAAAAAAAAAAAAMwBoAAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-05T13:55:03.552Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "SimpleIterationMethod.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SimpleIterationMethod.cpp",
+              "RelativeDocumentMoniker": "SimpleIterationMethod.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SimpleIterationMethod.cpp",
+              "RelativeToolTip": "SimpleIterationMethod.cpp",
+              "ViewState": "AQIAADwAAAAAAAAAAAAawEMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-04T14:22:21.737Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "SimpleIterationMethod.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SimpleIterationMethod.h",
+              "RelativeDocumentMoniker": "SimpleIterationMethod.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SimpleIterationMethod.h",
+              "RelativeToolTip": "SimpleIterationMethod.h",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAABQAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-03T16:33:35.64Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "OptimalParameterMethod.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OptimalParameterMethod.cpp",
+              "RelativeDocumentMoniker": "OptimalParameterMethod.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OptimalParameterMethod.cpp",
+              "RelativeToolTip": "OptimalParameterMethod.cpp",
+              "ViewState": "AQIAABIAAAAAAAAAAAAAAAUAAAAjAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-04T16:03:13.45Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "SeidelMethod.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SeidelMethod.h",
+              "RelativeDocumentMoniker": "SeidelMethod.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SeidelMethod.h",
+              "RelativeToolTip": "SeidelMethod.h",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABMAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-03T16:34:18.518Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "SeidelMethod.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SeidelMethod.cpp",
+              "RelativeDocumentMoniker": "SeidelMethod.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\SeidelMethod.cpp",
+              "RelativeToolTip": "SeidelMethod.cpp",
+              "ViewState": "AQIAABAAAAAAAAAAAAAMwBQAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-04T19:47:33.429Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "TriangleMethod.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\TriangleMethod.cpp",
+              "RelativeDocumentMoniker": "TriangleMethod.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\TriangleMethod.cpp",
+              "RelativeToolTip": "TriangleMethod.cpp",
+              "ViewState": "AQIAABsAAAAAAAAAAAAAAEwAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-05T15:28:52.383Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "TriangleMethod.png",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\TriangleMethod.png",
+              "RelativeDocumentMoniker": "TriangleMethod.png",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\TriangleMethod.png",
+              "RelativeToolTip": "TriangleMethod.png",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2024-09-06T09:13:49.822Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "OverRelaxationMethod.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OverRelaxationMethod.h",
+              "RelativeDocumentMoniker": "OverRelaxationMethod.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OverRelaxationMethod.h",
+              "RelativeToolTip": "OverRelaxationMethod.h",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAABYAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-03T16:36:07.644Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "OptimalParameterMethod.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OptimalParameterMethod.h",
+              "RelativeDocumentMoniker": "OptimalParameterMethod.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\OptimalParameterMethod.h",
+              "RelativeToolTip": "OptimalParameterMethod.h",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAABwAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-03T16:34:08.094Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "ChebyschevTriangleMethod.cpp",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevTriangleMethod.cpp",
+              "RelativeDocumentMoniker": "ChebyschevTriangleMethod.cpp",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevTriangleMethod.cpp",
+              "RelativeToolTip": "ChebyschevTriangleMethod.cpp",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAA0AAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-06T10:52:27.456Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "ChebyschevTriangleMethod.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevTriangleMethod.h",
+              "RelativeDocumentMoniker": "ChebyschevTriangleMethod.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\ChebyschevTriangleMethod.h",
+              "RelativeToolTip": "ChebyschevTriangleMethod.h",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAABAAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-03T16:41:06.767Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "TriangleMethod.h",
+              "DocumentMoniker": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\TriangleMethod.h",
+              "RelativeDocumentMoniker": "TriangleMethod.h",
+              "ToolTip": "C:\\Users\\\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\\source\\repos\\WorkshopMethodsTaskOne\\TriangleMethod.h",
+              "RelativeToolTip": "TriangleMethod.h",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAwAAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-03T16:40:56.699Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "new_scalar.cpp",
+              "DocumentMoniker": "C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\crt\\src\\vcruntime\\new_scalar.cpp",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\crt\\src\\vcruntime\\new_scalar.cpp",
+              "ToolTip": "C:\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\crt\\src\\vcruntime\\new_scalar.cpp",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Visual Studio 2023\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\crt\\src\\vcruntime\\new_scalar.cpp",
+              "ViewState": "AQIAABgAAAAAAAAAAAAWwCMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-08T10:54:23.294Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "math.h",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\math.h",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\math.h",
+              "ToolTip": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\math.h",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\math.h",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAAoAAAAWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-04T16:19:01.737Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
