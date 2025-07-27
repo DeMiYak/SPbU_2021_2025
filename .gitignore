@@ -6,6 +6,9 @@
 *.lo
 *.la
 *.dll
+*.ipch
+*.db
+*.pdb
 
 # Executables
 *.exe
