@@ -1,0 +1,69 @@
+---
+title: "GTWorldMap"
+author: "Yakovlev D.M."
+date: "2024-01-20"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("tidyverse")
+library("htmltools")
+GTO <- read.csv("globalterrorism.csv")
+GTO <- GTO|>
+  mutate(year = as.integer(str_sub(eventid, start=1, end=4)),
+         month = as.integer(str_sub(eventid, start=5, end=6)),
+         day = as.integer(str_sub(eventid, start=7,end=8)),
+         .after=eventid)|>
+  mutate(date=as.Date(with(GTO, paste(year, month, day, sep="-")), "%Y-%m-%d"),
+         .after=day)|>
+  mutate(idate=as.Date(with(GTO, paste(iyear, imonth, iday, sep="-")), "%Y-%m-%d"),
+         .after=iday)|>
+  select(!c(year, month, day, date))
+```
+```{r}
+library("leaflet")
+library("shiny")
+```
+
+
+```{r}
+ filteredData <- GTO|>
+      mutate(nperps=ifelse(is.na(nperps)|nperps<0, 0, nperps))|>
+  select(nperps)
+```
+
+```{r}
+ui <- fluidPage(
+  fluidRow(
+    column(width = 10, leafletOutput("map")),
+    column(width = 2, sliderInput("yearSlider", "Year", min = min(GTO$iyear), max = max(GTO$iyear), value = min(GTO$iyear), step = 1))
+  )
+)
+
+server <- function(input, output) {
+  output$map <- renderLeaflet({
+    leaflet() |>
+      addTiles() |>
+      setView(lng = 0, lat = 0, zoom = 10)
+  })
+  
+  observeEvent(input$yearSlider, {
+    year <- input$yearSlider
+    filteredData <- GTO[GTO$iyear == year, ]|>
+      mutate(nperps=ifelse(is.na(nperps)|nperps<0, 0, nperps),
+             rk = ifelse(nperps>12, 12, nperps+2))
+    
+    leafletProxy("map") |>
+      clearMarkers() |>
+      addCircleMarkers(data = filteredData, lng = ~longitude, lat = ~latitude, popup = ~paste("Date: ", idate, "<br>Summary: ", summary, "<br>Specificity: ", specificity, "<br>Target1: ", target1, "<br>Target2: ", target2, "<br>Target3: ", target3, "<br>Group1: ", gname, "<br>Group2: ", gname2, "<br>Group3: ", gname3, "<br>nperps: ", nperps), radius = ~rk)
+  })
+}
+
+shinyApp(ui, server)
+```
+<br><br><br><br><br><br><br><br><br><br><br>

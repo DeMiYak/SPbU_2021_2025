@@ -1,0 +1,480 @@
+---
+title: "MLAlg"
+author: "Yakovlev D.M."
+date: "2024-11-03"
+output: html_document
+---
+
+```{r pressure, echo=FALSE, fig.cap="A caption", out.width = '100%'}
+knitr::include_graphics("C:\\MyFiles\\RSpace\\ContemporaryMethods\\pictures\\mlr3_ecosystem.svg")
+```
+
+### Список используемых библиотек:
+
+```{r}
+library("mlr3")
+task = tsk("penguins")
+split = partition(task)
+learner = lrn("classif.rpart")
+
+learner$train(task, row_ids = split$train)
+learner$model
+```
+```{r}
+prediction = learner$predict(task, row_ids = split$test)
+prediction
+```
+```{r}
+prediction$score(msr("classif.acc"))
+```
+
+```{r}
+mlr_tasks
+```
+
+```{r}
+tsk_spam = tsk("spam")
+tsk_spam
+tsk()
+```
+Как построить свой task. Использование класса TaskRegr.
+
+На основе датасета из Kaggle (Spaceship Titanic):
+train.csv - Personal records for about two-thirds (~8700) of the passengers, to be used as training data.
+
+PassengerId - A unique Id for each passenger. Each Id takes the form gggg_pp where gggg indicates a group the passenger is travelling with and pp is their number within the group. People in a group are often family members, but not always.
+
+HomePlanet - The planet the passenger departed from, typically their planet of permanent residence.
+
+CryoSleep - Indicates whether the passenger elected to be put into suspended animation for the duration of the voyage. Passengers in cryosleep are confined to their cabins.
+
+Cabin - The cabin number where the passenger is staying. Takes the form deck/num/side, where side can be either P for Port or S for Starboard.
+
+Destination - The planet the passenger will be debarking to.
+
+Age - The age of the passenger.
+
+VIP - Whether the passenger has paid for special VIP service during the voyage.
+
+RoomService, FoodCourt, ShoppingMall, Spa, VRDeck - Amount the passenger has billed at each of the 
+Spaceship Titanic's many luxury amenities.
+
+Name - The first and last names of the passenger.
+
+Transported - Whether the passenger was transported to another dimension. This is the target, the column you are trying to predict.
+
+### 0. Подготовительный этап, EDA.
+
+Рассмотрим нашу задачу: необходимо смоделировать Transported в зависимости от каждого признака (кроме, разве что, PassengerId и Name). Для этого, при необходимости, конвертируем типы в нужные нам типы.
+```{r}
+library(tidyverse)
+dt<-read.csv("spaceship-titanic\\train.csv")
+summary(dt)
+```
+
+```{r}
+dt_modified<-dt
+dt_modified$CryoSleep<-as.integer(as.logical(dt_modified$CryoSleep))
+dt_modified$Transported<-as.integer(as.logical(dt_modified$Transported))
+dt_modified$VIP<-as.integer(as.logical(dt_modified$VIP))
+for(i in 1:length(dt_modified)){
+  if(is.character(dt_modified[,i])){
+    dt_modified[,i]<-match(dt_modified[,i], levels(factor(dt_modified[,i])))-1
+  }
+}
+dt_modified<-dt_modified[-c(1,(length(dt_modified)-1))]
+str(dt_modified)
+```
+
+```{r}
+str(dt_modified)
+str(dt)
+```
+
+```{r}
+# Тип данных target - double, integer
+tsk_SST<-as_task_regr(dt_modified, target = "Transported", id = "PassengerId")
+tsk_SST
+```
+
+```{r}
+summary(tsk_SST)
+```
+
+Если необходимо узнать target names или feature names, то:
+
+```{r}
+tsk_SST$feature_names
+tsk_SST$feature_types
+```
+
+### 1. Training. 
+Тренируем learner на task. Используем $train(), чтобы внести модель (task).
+```{r}
+lrn_SST = lrn("regr.rpart")
+lrn_SST$train(tsk_SST)
+lrn_SST$model
+```
+
+partition() - для разделения данных на train set и test set. 
+
+```{r}
+split = partition(tsk_SST)
+head(split)
+```
+
+```{r}
+lrn_SST$train(tsk_SST, row_ids = split$train)
+lrn_SST$model
+```
+
+predict() - предсказание
+```{r}
+prediction = lrn_SST$predict(tsk_SST, row_ids = split$test)
+prediction
+tsk_SST$truth(split$test)
+```
+
+```{r}
+library(mlr3viz)
+autoplot(prediction)
+```
+
+Изменение способа предсказания
+```{r}
+lrn_SST$param_set
+```
+
+```{r}
+summary(tsk_SST$data())
+```
+
+
+Before we move on to learner evaluation, we will highlight an important class of learners. These are extremely simple or ‘weak’ learners known as baselines. Baselines are useful in model comparison (Chapter 3) and as fallback learners (Section 5.1.1, Section 10.2.2). For regression, we have implemented the baseline lrn("regr.featureless"), which always predicts new values to be the mean (or median, if the robust hyperparameter is set to TRUE) of the target in the training data:
+
+Perhaps the most important step of the applied machine learning workflow is evaluating model performance. Without this, we would have no way to know if our trained model makes very accurate predictions, is worse than randomly guessing, or somewhere in between. We will continue with our decision tree example to establish if the quality of our predictions is ‘good’, first we will rerun the above code so it is easier to follow along.
+
+```{r}
+lrn_rpart = lrn("regr.rpart")
+tsk_mtcars = tsk("mtcars")
+splits = partition(tsk_mtcars)
+lrn_rpart$train(tsk_mtcars, splits$train)
+prediction = lrn_rpart$predict(tsk_mtcars, splits$test)
+```
+
+```{r}
+measure = msr("regr.mae")
+measure
+m_time = msr("time_train")
+m_time
+```
+
+```{r}
+prediction$score(measure)
+measures = msrs(c("time_train", "time_predict", "time_both"))
+prediction$score(measures, learner = lrn_SST)
+```
+
+```{r}
+msr_sf = msr("selected_features")
+msr_sf$param_set
+```
+
+```{r}
+msr_sf$param_set$values$normalize = TRUE
+prediction$score(msr_sf, task = tsk_SST, learner = lrn_SST)
+```
+
+```{r}
+library(mlr3)
+set.seed(349)
+# load and partition our task
+tsk_mtcars = tsk("mtcars")
+splits = partition(tsk_mtcars)
+# load featureless learner
+lrn_featureless = lrn("regr.featureless")
+# load decision tree and set hyperparameters
+lrn_rpart = lrn("regr.rpart", cp = 0.2, maxdepth = 5)
+# load MSE and MAE measures
+measures = msrs(c("regr.mse", "regr.mae"))
+# train learners
+lrn_featureless$train(tsk_mtcars, splits$train)
+lrn_rpart$train(tsk_mtcars, splits$train)
+# make and score predictions
+lrn_featureless$predict(tsk_mtcars, splits$test)$score(measures)
+```
+
+```{r}
+lrn_rpart$predict(tsk_mtcars, splits$test)$score(measures)
+```
+
+```{r}
+library(mlr3)
+set.seed(349)
+# load and partition our task
+tsk_penguins = tsk("penguins")
+splits = partition(tsk_penguins)
+# load featureless learner
+lrn_featureless = lrn("classif.featureless")
+# load decision tree and set hyperparameters
+lrn_rpart = lrn("classif.rpart", cp = 0.2, maxdepth = 5)
+# load accuracy measure
+measure = msr("classif.acc")
+# train learners
+lrn_featureless$train(tsk_penguins, splits$train)
+lrn_rpart$train(tsk_penguins, splits$train)
+# make and score predictions
+lrn_featureless$predict(tsk_penguins, splits$test)$score(measure)
+```
+
+```{r}
+lrn_rpart$predict(tsk_penguins, splits$test)$score(measure)
+```
+
+```{r}
+as.data.table(mlr_tasks)
+```
+
+```{r}
+library(ggplot2)
+autoplot(tsk("penguins"), type = "duo") +
+  theme(strip.text.y = element_text(angle = -45, size = 8))
+```
+
+```{r}
+lrn_rpart = lrn("classif.rpart", predict_type = "prob")
+lrn_rpart$train(tsk_penguins, splits$train)
+prediction = lrn_rpart$predict(tsk_penguins, splits$test)
+prediction
+```
+
+```{r}
+measures = msrs(c("classif.mbrier", "classif.logloss", "classif.acc"))
+prediction$score(measures)
+```
+
+```{r}
+prediction$confusion
+autoplot(prediction)
+```
+
+
+mlr3learners:
+
+Linear ("regr.lm") and logistic ("classif.log_reg") regression.
+Penalized generalized linear models, where the penalization is either exposed as a hyperparameter ("regr.glmnet"/"classif.glmnet") or where it is optimized automatically ("regr.cv_glmnet"/"classif.cv_glmnet").
+Weighted k-Nearest Neighbors ("regr.kknn"/"classif.kknn").
+Kriging / Gaussian process regression ("regr.km").
+Linear ("classif.lda") and quadratic ("classif.qda") discriminant analysis.
+Naïve Bayes classification ("classif.naive_bayes").
+Support-vector machines ("regr.svm"/"classif.svm").
+Gradient boosting ("regr.xgboost"/"classif.xgboost").
+Random forests for regression and classification ("regr.ranger"/"classif.ranger").
+
+```{r}
+learners_dt = as.data.table(mlr_learners)
+learners_dt
+```
+
+```{r}
+library(mlbench)
+data("PimaIndiansDiabetes2", package="mlbench")
+PimaIndiansDiabetes2
+tsk_classif = as_task_classif(PimaIndiansDiabetes2, target="diabetes", positive = "pos")
+tsk_classif$positive
+```
+
+```{r}
+lrn_classif = lrn("classif.rpart")
+splits = partition(tsk_classif, ratio=0.8)
+lrn_classif$train(tsk_classif, row_ids = splits$train)
+```
+
+```{r}
+prediction = lrn_classif$predict(tsk_classif, row_ids = splits$test)
+```
+
+```{r}
+as.data.table(msr())
+measure = msr("classif.ce")
+prediction$score(measure)
+```
+
+```{r}
+measures = msrs(c("classif.tpr", "classif.tnr", "classif.fpr", "classif.fnr"))
+prediction$score(measures)
+truth = prediction$truth
+response = prediction$response
+tp = length(truth[truth==response] & truth[truth=="pos"])
+tp
+tn = length(truth[truth==response] & truth[truth=="neg"])
+tn
+fp = length(truth[truth!=response] & response[response == "pos"])
+fp
+fn = length(truth[truth!=response] & response[response == "neg"])
+fn
+tp
+tn
+fp
+fn
+p = tp + fn
+n = tn + fp
+tpr = tp/p
+fnr = fn/p
+tnr = tn/n
+fpr = fp/n
+tpr
+fnr
+tnr
+fpr
+```
+
+```{r}
+lrn_classif = lrn("classif.rpart", predict_type = "prob")
+lrn_classif$train(tsk_classif, row_ids = splits$train)
+prediction = lrn_classif$predict(tsk_classif, row_ids = splits$test)
+prediction$prob
+prediction$score(measures)
+```
+
+```{r}
+prediction$set_threshold(0.1)
+prediction$score(measures)
+```
+
+В partition() автоматически выполняется перестановка данных для улучшения train()
+
+```{r}
+# three-fold CV
+cv3 = rsmp("cv", folds = 3)
+# Subsampling with 3 repeats and 9/10 ratio
+ss390 = rsmp("subsampling", repeats = 3, ratio = 0.9)
+# 2-repeats 5-fold CV
+rcv25 = rsmp("repeated_cv", repeats = 2, folds = 5)
+```
+
+```{r}
+as.data.table(lrn())
+```
+
+```{r}
+tasks = tsks(c("german_credit", "sonar"))
+learners = lrns(c("classif.rpart", "classif.ranger",
+  "classif.featureless"), predict_type = "prob")
+rsmp_cv5 = rsmp("cv", folds = 5)
+
+design = benchmark_grid(tasks, learners, rsmp_cv5)
+head(design)
+```
+
+```{r}
+bmr = benchmark(design)
+bmr
+```
+
+```{r}
+bmr$score()[, .(iteration, task_id, learner_id, classif.ce)]
+```
+
+```{r}
+bmr$aggregate()[, .(task_id, learner_id, classif.ce)]
+```
+
+```{r}
+autoplot(bmr, measure = msr("classif.acc"))
+```
+
+```{r}
+tsk_german = tsk("german_credit")
+lrn_ranger = lrn("classif.ranger", predict_type = "prob")
+splits = partition(tsk_german, ratio = 0.8)
+
+lrn_ranger$train(tsk_german, splits$train)
+prediction = lrn_ranger$predict(tsk_german, splits$test)
+prediction$score(msr("classif.acc"))
+```
+
+```{r}
+library(precrec)
+autoplot(prediction, type="roc")
+```
+
+```{r}
+prediction$score(msr("classif.auc"))
+```
+
+```{r}
+autoplot(prediction, type = "prc")
+```
+
+```{r}
+autoplot(prediction, type = "threshold", measure = msr("classif.fpr"))
+autoplot(prediction, type = "threshold", measure = msr("classif.acc"))
+```
+
+```{r}
+rr = resample(
+  task = tsk("german_credit"),
+  learner = lrn("classif.ranger", predict_type = "prob"),
+  resampling = rsmp("cv", folds = 5)
+)
+autoplot(rr, type = "roc")
+autoplot(rr, type = "prc")
+```
+
+```{r}
+library(patchwork)
+
+design = benchmark_grid(
+  tasks = tsk("german_credit"),
+  learners = lrns(c("classif.rpart", "classif.ranger"),
+    predict_type = "prob"),
+  resamplings = rsmp("cv", folds = 5)
+)
+bmr = benchmark(design)
+autoplot(bmr, type = "roc") + autoplot(bmr, type = "prc") +
+  plot_layout(guides = "collect")
+```
+
+Exercises:
+
+1.
+```{r}
+rr = resample(
+  task = tsk("mtcars"),
+  learner = lrn("regr.rpart"),
+  resampling = rsmp("repeated_cv", repeats=5, folds=3)
+)
+```
+
+```{r}
+rr$score(msr("regr.mse"))
+autoplot(rr)
+rr$aggregate(msr("regr.mse"))
+autoplot(rr)
+as.data.table(msrs())
+```
+
+```{r}
+as.data.table(lrn("classif.svm")$param_set)[,
+  .(id, class, lower, upper, nlevels)]
+```
+
+```{r}
+library(mlr3tuning)
+learner = lrn("classif.svm",
+  type  = "C-classification",
+  kernel = "radial",
+  cost  = to_tune(1e-1, 1e5),
+  gamma = to_tune(1e-1, 1)
+)
+learner
+```
+
+```{r}
+learner$train(tsk("mtcars"))
+```
+
+```{r}
+as.data.table(trm())
+```

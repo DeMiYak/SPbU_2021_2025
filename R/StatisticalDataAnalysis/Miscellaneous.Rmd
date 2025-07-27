@@ -1,0 +1,192 @@
+---
+title: "Miscellaneous"
+author: "Yakovlev D.M."
+date: "2024-09-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+list.files(path="my101descr")
+```
+
+```{r}
+library("readxl")
+```
+
+## 2. Считывание и просмотр
+
+```{r}
+library("tidyverse")
+panel.hist <- function(x, ...)
+{
+    usr <- par("usr")
+    par(usr = c(usr[1:2], 0, 1.5) )
+    h <- hist(x, plot = FALSE)
+    breaks <- h$breaks; nB <- length(breaks)
+    y <- h$counts; y <- y/max(y)
+    rect(breaks[-nB], 0, breaks[-1], y, col = "cyan", ...)
+}
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
+{
+    par(usr = c(0, 1, 0, 1))
+    r <- abs(cor(x, y))
+    txt <- format(c(r, 0.123456789), digits = digits)[1]
+    txt <- paste0(prefix, txt)
+    if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+    text(0.5, 0.5, txt, cex = cex.cor * r)
+}
+```
+
+```{r}
+df<-read_excel("my101descr/MY101.xls")
+head(df)
+```
+# Создание справочника имён
+
+```{r}
+name_ref <- read_excel("my101descr/iqrate_description.xlsx", col_names = FALSE)
+
+name_ref <- str_split_fixed(name_ref$...2, " ", 2)|>
+  as.data.frame()|>setNames(c("id", "names"))|>rmarkdown::paged_table()
+name_ref$id[140:nrow(name_ref)]<-c(140:nrow(name_ref))
+name_ref$names[c(139,140,142)] <- c("Возраст", "STAT_1", "STAT_2")
+name_ref
+```
+
+```{r}
+colnames(df) <- name_ref$id
+df
+name_ref
+```
+Теперь перейдём к интересному: описательной статистике и рассмотрению различных признаков
+(качественные, количественные и порядковые)
+
+```{r}
+df|>select(c(21, 22))|>pairs(diag.panel=panel.hist)
+```
+
+```{r}
+df_names <- df|>setNames(name_ref$names)
+df_names$Пол[df_names$Пол==1] <- "Муж"
+df_names$Пол[df_names$Пол==2] <- "Жен"
+df_names$Пол[is.na(df_names$Пол)] <- "Неизв"
+df_names
+```
+
+```{r}
+df_names|>select(c(21,112, 141))|>pairs(diag.panel=panel.hist, pch=20)
+name_ref
+```
+
+```{r}
+df_names|>select(c(138))|>group_by(Пол)|>summarize(ПолЧисло=n(), ПолПроцент = n()/nrow(df_names))
+```
+
+1 - Мужчины, 2 - Женщины
+
+```{r}
+df_names|>select(c(139))|>group_by(Возраст)|>summarize(ВозЧисло=n())|>ggplot(aes(x = Возраст, y = ВозЧисло)) + theme_bw()+
+geom_point() + geom_line()
+```
+
+```{r}
+hist(df_names$IQ)
+hist(df_names$Возраст)
+```
+### Оценки людей с возрастом до 15-ти лет
+
+```{r}
+df_names|>subset(!(is.na(Возраст)|Возраст=="")&Возраст<16)
+```
+
+#  №1 Влияние IQ на оценку фильмов. 
+Допустим, что чем выше IQ, тем меньше средняя оценка для фильмов
+```{r}
+df_IQ <- df_names|>select(IQ)|>group_by(IQ)|>summarize(IQ_num = n(), IQ_prob = n()/nrow(df_names))
+df_IQ
+```
+Получается, что людей, которые имеют IQ в таблице, около 28%.
+
+```{r}
+df_names|>group_by(Возраст, Пол, IQ)|>summarize(Число = n(), Процент = n()/nrow(df_names))|>
+  arrange(desc(Процент))
+df_names
+```
+
+# Здесь средняя оценка по фильмам вместе с IQ
+
+```{r}
+df_IQ_Film <- df_names|>filter(!is.na(IQ))
+df_IQ_Film|>mutate(mean_movie_score=rowMeans(df_IQ_Film[,1:101], na.rm=TRUE))|>
+  select(IQ, mean_movie_score)|>pairs(main="IQ/Средняя оценка фильма", pch=20, diag.panel = panel.hist)
+```
+
+Здесь закончим (позже напишу, что тут да как. Во вторник)
+
+# Порядковые признаки
+Что относится к порядковым признакам? Результаты тестов (там используется сравнение),
+оценки
+# Качественные признаки
+Пол, бок, глаза, руки.
+# Количественные признаки
+IQ - во сколько раз больше IQ (мультипликативный), возраст - на сколько лет старше 
+
+```{r}
+name_ref
+pairs(df_names[,104:107], diag.panel = panel.hist)
+pairs(df_names[,183:186], diag.panel=panel.hist)
+summary(df_names[,183:186])
+pairs(df_names[,c(1,3)], diag.panel=panel.hist)
+summary(df_names[,c(1,3)])
+pairs(df_names[,145:147], diag.panel=panel.hist)
+summary(df_names[,145:147])
+summary(df_names[,153:160])
+```
+
+```{r}
+name_ref
+```
+# №2(или 3). Самый просматриваемый фильм.
+По вхождениям посмотрим самый просматриваемый (по числу оценок) фильм
+
+```{r}
+df_film<-df_names[,1:101]|>lapply(function(x) length(x[!is.na(x)]))
+data.frame(Num=unlist(df_film))|>arrange(desc(Num))
+```
+Можно ещё посчитать длину названных тайтлов
+```{r}
+names_length<-name_ref|>mutate(title.length = sapply(names, function(x) nchar(x)), 
+         title.word.length = sapply(names, function(x) length(strsplit(x, " ")[[1]])))
+names_length<-names_length[1:101,]
+```
+
+```{r}
+names_length|>group_by(title.length)|>summarize(title.num = n(), title.prob = n()/nrow(names_length))|>arrange(desc(title.num))
+```
+
+```{r}
+names_length|>group_by(title.word.length)|>summarize(title.num=n(), title.prob=n()/nrow(names_length))|>arrange(desc(title.num))
+```
+
+# №5 Уровень дохода и образование в зависимости от того, на каком боку спишь и какой из глаз шире открыт
+
+Из-за того, что рассматриваются качественные/порядковые признаки, лучше изображать подсчёты с помощью таблиц. (Тут ещё нужно стандартизировать из-за неоднородности)
+```{r}
+name_ref
+#141, 143
+#201, 202
+df_level<-df_names|>select(Обpазование, "Уpовень доходов", "Бок, на котором предпочитают спать", "Глаз, который обычно шире открыт")
+
+df_level_aux<-df_level|>group_by(Обpазование, `Бок, на котором предпочитают спать`)|>summarize(Число=n(), Процент=n()/nrow(df_level))|>arrange(desc(Число))
+df_level_aux|>filter(`Бок, на котором предпочитают спать`==1)
+df_level_aux|>filter(`Бок, на котором предпочитают спать`==2)
+df_level_aux|>filter(`Бок, на котором предпочитают спать`==3)
+df_level_aux|>filter(is.na(`Бок, на котором предпочитают спать`))
+df_level_aux|>filter(!is.na(Обpазование), !is.na(`Бок, на котором предпочитают спать`))|>
+  select(c(1,2))|>
+  cor()
+```

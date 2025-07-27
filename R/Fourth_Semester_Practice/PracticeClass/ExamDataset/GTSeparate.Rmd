@@ -1,0 +1,1087 @@
+---
+title: "GTSeparate"
+author: "Yakovlev D.M."
+date: "2024-01-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Исследование датасета про глобальный терроризм
+
+```{r}
+library(tidyverse)
+GT <- read.csv("globalterrorism.csv")
+```
+
+###Для начала взглянем на исходный датасет и разберём каждую колонку
+
+```{r}
+rmarkdown::paged_table(GT)
+```
+Имеется Codebook по датасету, в котором изложена методология, описание критериев и переменных.
+
+Изложим вкратце каждую из колонок и посмотрим на их содержание.
+
+```{r}
+GT <- GT|>
+  mutate(year = as.integer(str_sub(eventid, start=1, end=4)),
+         month = as.integer(str_sub(eventid, start=5, end=6)),
+         day = as.integer(str_sub(eventid, start=7,end=8)),
+         .after=eventid)
+```
+
+```{r}
+GT <- GT|>
+  mutate(date=as.Date(with(GT, paste(year, month, day, sep="-")), "%Y-%m-%d"),
+         .after=day)|>
+  mutate(idate=as.Date(with(GT, paste(iyear, imonth, iday, sep="-")), "%Y-%m-%d"),
+         .after=iday)
+```
+
+```{r}
+GTO <- GT|>
+  select(!c(year, month, day, date))
+```
+
+eventid - состоит из 12 цифр. Первые 8 — год (4 цифры), месяц (2 цифры)и день (2 цифры); последние 4 — порядковый номер для даты. При этом существуют несоответствия между датами и eventid и есть нулевой месяц и нулевой день (?) В целях экономии сил и времени будет пользоваться исходными данными.
+
+iyear - год события
+```{r}
+GTO|>group_by(iyear)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+imonth - месяц события
+```{r}
+GTO|>group_by(imonth)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+iday - день события
+```{r}
+GTO|>group_by(iday)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+approxdate - приблизительная дата события. Используется тогда, когда iday или imonth = 0.
+```{r}
+GTO|>group_by(approxdate)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+extended - 1, если событие длилось больше 24 часов и 0 иначе.
+```{r}
+GTO|>group_by(extended)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+resolution - дата разрешения события, если длится больше 24 часов (extended = 1).
+```{r}
+GTO|>group_by(resolution)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+country(_txt) - код страны и её название
+```{r}
+GTO|>group_by(country_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+region(_txt) - код региона и его название 
+```{r}
+GTO|>group_by(region_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+provstate - название провинции
+```{r}
+GTO|>group_by(provstate)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+city - название города
+```{r}
+GTO|>group_by(city)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+latitude - широта (в градусах)
+longitude - долгота (в градусах)
+```{r}
+GTO|>group_by(longitude, latitude)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+specificity - определяет точность latitude и longitude. Принимает значения от 1 до 5. Чем точнее, тем меньше значение. 
+```{r}
+GTO|>group_by(specificity)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+vicinity - 
+1 - событие произошло в окрестности города, иначе 0.
+```{r}
+GTO|>group_by(vicinity)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+location - детали о локации
+```{r}
+GTO|>group_by(location)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+summary - "Когда, где, кто, что, как, зачем и почему"
+```{r}
+GTO|>group_by(summary)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+В данном датасете присутствует строгое разделение на теракты и нетеракты. Для этого используются 3 критерии включения. Почти всегда, когда выполняются 3 критерия, событие = теракт. Тем не менее в Codebook'е сказано, что эти критерии "позволяют пользователям отфильтровать те события по критериям, которые, по их мнению, не определяют теракт", то есть, критерии условны.
+
+Критерии включения события как теракта:
+crit1 - политические, экономические, религиозные и социальные цели
+crit2 - намерение запугать, принудить большие группы людей или распространять информацию массам.
+crit3 - деятельность вне Международных Гуманитарных прав
+
+1 - событие удовлетворяет критерию, 0 - иначе.
+
+```{r}
+GTO|>group_by(crit1)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(crit2)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(crit3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(crit1, crit2, crit3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+doubtterr - сомнение о "терактности" события. 1 - сомнения есть, 0 - сомнений нет.
+
+```{r}
+GTO|>group_by(doubtterr)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+alternative(_txt) - (если doubtterr = 1) альтернатива теракту (другой тип преступления).
+
+```{r}
+GTO|>group_by(alternative_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+multiple - часть серии событий. 1 - да, 0 - нет.
+```{r}
+GTO|>group_by(multiple)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+success - успех события. Определение успеха зависит от типа атаки. Например, для Bombing/Explosion успех - взрыв бомбы в здании, даже если целью преступной организации был снос здании/убийство граждан.
+1 - успех, 0 - неуспех.
+```{r}
+GTO|>group_by(success)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+suicide - самоубийственная атака? 1 - да, 0 - нет.
+```{r}
+GTO|>group_by(suicide)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+attacktype1, attacktype1_txt, attacktype2, attacktype2_txt, attacktype3, attacktype3_txt - тип атаки
+```{r}
+GTO|>group_by(attacktype1_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(attacktype2_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(attacktype3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(attacktype1_txt, attacktype2_txt, attacktype3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+targtype1, targtype1_txt, targtype2, targtype2_txt, targtype3 ,targtype_txt - тип цели
+```{r}
+GTO|>group_by(targtype1_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(targtype2_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(targtype3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(targtype1_txt, targtype2_txt, targtype3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+targsubtype1, targsubtype1_txt, targsubtype2, targsubtype2_txt, targsubtype3, targsubtype3_txt - подтип цели
+```{r}
+GTO|>group_by(targsubtype1_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(targsubtype2_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(targsubtype3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(targsubtype1_txt, targsubtype2_txt, targsubtype3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+corp1, corp2, corp3 - наименование организации
+```{r}
+GTO|>group_by(corp1)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(corp2)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(corp3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(corp1, corp2, corp3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+target1, target2, target3 - наименование цели
+```{r}
+GTO|>group_by(target1)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(target2)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(target3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(target1, target2, target3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+natlty1, natlty1_txt, natlty2, natlty2_txt, natlty3, natlty3_txt - национальность цели (страна, откуда родом) 
+```{r}
+GTO|>group_by(natlty1_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(natlty2_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(natlty3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(natlty1_txt, natlty2_txt, natlty3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+gname, gname2, gname3, gsubname, gsubname2, gsubname3 - имена преступных группировок и их уточнения
+```{r}
+GTO|>group_by(gname)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(gname2)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(gname3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(gname, gname2, gname3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(gsubname)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(gsubname2)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(gsubname3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(gsubname, gsubname2, gsubname3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(gname, gsubname, gname2, gsubname2, gname3, gsubname3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+motive - мотив атаки
+```{r}
+GTO|>group_by(motive)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+guncertain1, 2, 3 - подозрение на преступную организацию. 1 - подозрения имеются, иначе 0.
+```{r}
+GTO|>group_by(guncertain1)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(guncertain2)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(guncertain3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(guncertain1, guncertain2, guncertain3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+individual - атака совершалась индивидом(-ами), не причастными к организациям? 1 - да, 0 - нет 
+```{r}
+GTO|>group_by(individual)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+nperps - число нарушителей
+```{r}
+GTO|>group_by(nperps)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+nperpcap - число пойманных нарушителей 
+```{r}
+GTO|>group_by(nperpcap)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+claimed, claim2, 3 - заявление об ответственности групп/организаций
+```{r}
+GTO|>group_by(claimed)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(claim2)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(claim3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(claimed, claim2, claim3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+claimmode1, 2, 3 (_txt) - форма заявления об ответственности (звонки, письма, E-mail и т.д.)
+```{r}
+GTO|>group_by(claimmode_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(claimmode2_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(claimmode3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(claimmode_txt, claimmode2_txt, claimmode3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+compclaim - оспаривание ответственности между несколькими группами.
+1 - да, 0 - нет, -9 - неизвестно, [NULL] - неприменимо (никто не заявлял, нарушитель неизвествен и т.д.).
+```{r}
+GTO|>group_by(compclaim)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+weaptype1, 2, 3, 4 (_txt) - тип оружия
+```{r}
+GTO|>group_by(weaptype1_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(weaptype2_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(weaptype3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(weaptype4_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(weaptype1_txt, weaptype2_txt, weaptype3_txt, weaptype4_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+weapsubtype1, 2, 3, 4 (_txt) - подтип оружия
+```{r}
+GTO|>group_by(weapsubtype1_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(weapsubtype2_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(weapsubtype3_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(weapsubtype4_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(weapsubtype1_txt, weapsubtype2_txt, weapsubtype3_txt, weapsubtype4_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+weapdetail - детали об оружии
+```{r}
+GTO|>group_by(weapdetail)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+nkill(-, us, ter) - число убитых (всего, американцев, террористов).
+```{r}
+GTO|>group_by(nkill)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(nkillus)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(nkillter)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+nwound(-, us, te) - число раненых (всего, американцев, террористов)
+```{r}
+GTO|>group_by(nwound)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(nwoundus)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(nwoundte)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+property - урон имуществу. 1 - да, 0 - нет, -9 - неизвестно
+```{r}
+GTO|>group_by(property)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+propextent(_txt) - (если property = 1) размер урона (в $)
+```{r}
+GTO|>group_by(propextent_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+propvalue - урон (в $)
+```{r}
+GTO|>group_by(propvalue)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+propcomment - комментарий об уроне
+```{r}
+GTO|>group_by(propcomment)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+ishostkid - есть заложники/похищенные? 1 - да, 0 - нет, -9 - неизвестно
+```{r}
+GTO|>group_by(ishostkid)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+nhostkid(us) - число заложников/похищенных 
+```{r}
+GTO|>group_by(nhostkid)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(nhostkidus)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+nhours, ndays - длительность содержания заложников/похищенных в часах и днях
+```{r}
+GTO|>group_by(nhours)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(ndays)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+divert - где содержали заложников/угнанную технику (blank, если в той же стране)
+```{r}
+GTO|>group_by(divert)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+kidhijcountry - в какой стране разрешился конфликт с заложниками/украденной техникой
+```{r}
+GTO|>group_by(kidhijcountry)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+ransom - был выкуп? 1 - да, 0 - нет, -9 - неизвестно, [NULL] - неприменимо.
+```{r}
+GTO|>group_by(ransom)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+ransomamt(us) - размер выкупа
+```{r}
+GTO|>group_by(ransomamt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(ransomamtus)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+ransompaid(us) - сколько выплатили
+```{r}
+GTO|>group_by(ransompaid)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(ransompaidus)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+ransomnote - детали выкупа
+```{r}
+GTO|>group_by(ransomnote)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+hostkidoutcome(_txt) - исход для заложников
+```{r}
+GTO|>group_by(hostkidoutcome_txt)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+nreleased - число спасённых заложников
+```{r}
+GTO|>group_by(nreleased)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+addnotes - заметки об атаке
+```{r}
+GTO|>group_by(addnotes)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+scite1, 2, 3 - источники цитирования для датасета
+```{r}
+GTO|>group_by(scite1)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(scite2)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(scite3)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+dbsource - откуда были взяты данные (источник)
+```{r}
+GTO|>group_by(dbsource)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+INT_LOG - сравнивает национальности группы нарушителей и место атаки. 1 - различаются, 0 - совпадают, -9 - неизвестно.
+```{r}
+GTO|>group_by(INT_LOG)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+INT_IDEO - сравнивает национальности группы нарушителей и национальность жертв/целей. 1 - различаются, 0 - совпадают, -9 - неизвестно.
+```{r}
+GTO|>group_by(INT_IDEO)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+INT_MISC - сравнивает место атаки и национальность жертв/целей. 1 - различаются, 0 - совпадают, -9 - неизвестно.
+```{r}
+GTO|>group_by(INT_MISC)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+INT_ANY - INT_LOG или INT_IDEO или INT_MISC.
+```{r}
+GTO|>group_by(INT_ANY)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```
+
+related - если атака - часть скоординированного, многоступенчатого события.
+```{r}
+GTO|>group_by(related)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  mutate(rank = min_rank(-num)*1)|>
+  arrange(desc(num))|>
+  rmarkdown::paged_table()
+```

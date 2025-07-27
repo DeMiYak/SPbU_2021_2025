@@ -1,0 +1,165 @@
+% Задача: сделать слайды по курсовой
+% Время: 7-10 минут
+% Работу прислать Никите Константиновичу как минимум за 3 дня до презентации
+% В слайдах: постановка задачи, достижения на сегодняшний день, дальнейшие шаги.
+% Оглавление, введение, список литературы 
+% На 30.11: Яковлев, Чебакова
+% На 07.12: Гогидзе, Симоненко, Поликанин
+% На 14.12: Нет пары
+% На 21.12: Плоткин, Назиров, Погребников
+%\documentclass[ucs, notheorems, handout]{beamer}
+\documentclass[pdf, notheorems, hyperref={bookmarks=false}, handout]{beamer}
+%\usetheme[numbers,totalnumbers,compress, nologo]{Statmod}
+\usepackage[russian]{babel} %+
+\usepackage[utf8x]{inputenc} %+
+\usepackage[T2A]{fontenc}
+\usepackage{tikz}
+\usepackage{ragged2e}
+\usepackage[listings,theorems]{tcolorbox}
+\mode<handout> {
+	\usepackage{pgfpages}
+	\setbeameroption{show notes}
+	\pgfpagesuselayout{2 on 1}[a4paper, border shrink=5mm]
+	\setbeamercolor{note page}{bg=white}
+	\setbeamercolor{note title}{bg=gray!10}
+	\setbeamercolor{note date}{fg=gray!10}
+}
+
+\usepackage{epsfig}
+\usepackage{enumitem}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[update,prepend]{epstopdf}
+
+\graphicspath{{./}{images/}}
+
+\newtheorem{mlemma}{Лемма}
+\newtheorem{mtheorem}{Теорема}
+\newtheorem{mdefinition}{Определение}
+\newtheorem{mpreposition}{Предложение}
+\newtheorem{mcorollary}{Cледствие}
+\newtheorem{mnote}{Замечание}
+
+\newcommand\norm[1]{\left\|#1\right\|}
+\newcommand{\BProof}{ {\bf{Доказательство.}}  \ }
+\newcommand{\EProof}{\rule{2mm}{2mm}}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\real}{Re}
+\DeclareMathOperator{\imag}{Im}
+\DeclareMathOperator{\R}{\mathbb{R}}
+
+
+\newcommand\ds{\displaystyle}
+
+\usepackage{beamerthemesplit}
+\usefonttheme[onlymath]{serif}
+\setbeamercolor{green}{bg=green!65!black,fg=white}
+\setbeamercolor{red}{bg=red!65!black,fg=white}
+\setbeamertemplate{theorems}[numbered]
+\setbeamertemplate{navigation symbols}{}
+
+\expandafter\def\expandafter\insertshorttitle\expandafter{%
+	\insertshorttitle\hfill%
+	\insertframenumber\,/\,\inserttotalframenumber}
+
+\title[Вычислительный практикум.]
+{Доклад по научно-исследовательской работе по теме:\\ ``Задачи анализа временных рядов, теория метода «Анализ сингулярного спектра» SSA''.}
+
+\author[Яковлев Д.М.]{Яковлев Денис Михайлович\\Звонарёв Никита Константинович\\
+}
+
+\institute{
+	Кафедра статистического моделирования
+	\\ Математико-механический факультет
+	\\ Санкт-Петербургский государственный университет
+}
+
+\date{
+	2023
+}
+
+
+
+\begin{document}
+	
+	\frame{\titlepage}
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	
+	
+	
+	\begin{frame}\frametitle{Введение}
+	%	Представить общую задачу и рассматриваемые в дальнейшем задачи
+	% SSA и другие основывающиеся на подпространствах методы сигнальной обработки косвенно опираются на предположение о близости между возмущённым и невозмущённым сигнальными подпространствами, полученными из сингулярного разложения. Под сигналами, в нашем случае, можно подразумевать временной ряд, передающий значения с некоторым интервалом. 
+	{\bf Определение. }Сигнал $F_N=(f_0, f_1, \dots, f_{N-1}), N\in\mathbb{N}$ --- вещественнозначный или комплекснозначный временной ряд длины $N$. \\
+	Пусть сигнал $F_N$ линейно преобразуется в ``сигнальную матрицу''  $\textbf{H}$, или $F_N\mapsto\textbf{H}$, где $\textbf{H}$ размера $L\times K$, где $L$ --- длина вектора вложения, $K$ --- их число. Тогда матрица $\textbf{H}$ имеет вид:
+	\begin{equation*}
+	\begin{pmatrix}
+		f_0&f_1&f_2&\dots&f_{K-1}\\
+		f_1&f_2&f_3&\dots&f_K\\
+		f_2&f_3&f_4&\dots&f_{K+1}\\
+		\vdots&\vdots&\vdots&\ddots&\vdots\\
+		f_{L-1}&f_L&f_{L+1}&\dots&f_{N-1}
+	\end{pmatrix}
+	\end{equation*}
+	\end{frame}
+	\begin{frame}\frametitle{Постановка задачи}
+		{\bf Определение. }Сигнальное подпространство $F_N$ --- пространство $\mathbb{U}$, образованное столбцами матрицы $\textbf{H}$ из преобразования $F_N \mapsto \textbf{H}$.\pause\\
+		Рассмотрим возмущённый временной ряд $F_N(\delta) = F_N+\delta E_N$, где $E_N = (e_0,\dots,e_{N-1})$ --- шумовой ряд, $\delta$ --- формальный параметр возмущения.\pause\\
+		Тогда $F_N(\delta)=F_N+\delta E_N \mapsto \textbf{H}(\delta) = \textbf{H} + \delta\textbf{E}$, где $\textbf{H}(\delta)$ --- возмущённая матрица\\
+	\end{frame}
+	\begin{frame}\frametitle{Постановка задачи}		
+	{\bf Определение.} $\textbf{A}=\textbf{H}\textbf{H}^T$ --- самосопряжённая неотрицательно определённая матрица оператора $\textbf{A}:\R^L\rightarrow\R^L$.\pause\\
+	{\bf Определение. }$\textbf{A}(\delta)=\textbf{H}(\delta)\textbf{H}(\delta)^T = \textbf{A} + \delta\textbf{A}^{(1)}+\delta^2\textbf{A}^{(2)}= \textbf{A} + \textbf{B}(\delta)$, где $\textbf{A}^{(1)} = \textbf{H}\textbf{E}^T + \textbf{E}\textbf{H}^T, \textbf{A}^{(2)}=\textbf{E}\textbf{E}^T, \textbf{B}(\delta)=\delta\textbf{A}^{(1)}+\delta^2\textbf{A}^{(2)}$. $\textbf{A}(\delta)$ --- возмущённая матрица, соответствующая оператору $\textbf{A}(\delta):\R^L\rightarrow\R^L$.\pause\\
+	Пусть $\Sigma$ --- множество собственных чисел $\textbf{A}$.\\
+	{\bf Определение. }$\mu_{min} = \min\{\mu\in\Sigma\,|\,\mu > 0\}$ --- наименьшее ненулевое собственное число $\textbf{A}$. 
+	\end{frame}
+	\begin{frame}\frametitle{Постановка задачи}
+		{\bf Определение.} $\mathbb{U}_0$ --- собственное подпространство, соответствующее нулевому собственному числу матрицы $\textbf{A}$, $\textbf{P}_0$ --- ортогональный проектор на $\mathbb{U}_0$.\pause\\
+		{\bf Определение.} $\textbf{I}$ --- тождественный оператор $\R^L\rightarrow\R^L$, $\textbf{P}_0^\bot = \textbf{I} - \textbf{P}_0$ --- ортогональный проектор на $\mathbb{U}_0^\bot$.\pause\\
+		{\bf Определение. }$\textbf{S}_0$ --- псевдообратная матрица к матрице $\textbf{H}\textbf{H}^T$. Положим $\textbf{S}_0^{(0)}=-\textbf{P}_0$ и $\textbf{S}_0^{(k)}=\textbf{S}_0^k,\,k\geqslant 1$.\pause\vspace{\baselineskip}\\
+		{\bf Цель:} сравнить возмущённый проектор $\textbf{P}_0^\bot(\delta)$ с невозмущённым проектором $\textbf{P}_0^\bot$.
+	\end{frame}
+	\begin{frame}\frametitle{Проделанные шаги}
+		{\bf Теорема 2.1.\cite{nekrutkin2010perturbation} }\emph{Пусть} $\delta_0>0$ \emph{и} 
+		\begin{equation}\label{eq:2.1}
+			\norm{\textbf{B}(\delta)}<\mu_{min}/2
+		\end{equation}
+		\emph{для всех }$\delta\in(-\delta_0,\delta_0)$. \emph{Тогда для возмущённого проектора} $\textbf{P}_0^\bot(\delta)$ \emph{верно представление}:
+		\begin{equation}\label{eq:2.2}
+			\textbf{P}_0^\bot(\delta)=\textbf{P}_0^\bot + \sum_{p=1}^\infty\textbf{W}_p(\delta),
+		\end{equation}
+		\begin{equation*}
+			\textbf{W}_p(\delta) = (-1)^p\sum\limits_{l_1+\dots+l_{p+1}=p,\,l_j\geqslant0}\textbf{W}_p(l_1,\dots,l_{p+1}),
+		\end{equation*}
+		\begin{equation*}
+			\textbf{W}_p(l_1,\dots,l_{p+1}) = \textbf{S}_0^{(l_1)}\textbf{B}(\delta)\textbf{S}_0^{(l_2)}\dots\textbf{S}_0^{(l_p)}\textbf{B}(\delta)\textbf{S}_0^{(l_{p+1})}.
+		\end{equation*}
+	\end{frame}
+	\begin{frame}\frametitle{Проделанные шаги}
+		Теорема 2.1 позволяет записать разложение в ряд для возмущённого оператора $\textbf{P}_0^\bot$.
+	\end{frame}
+	\begin{frame}\frametitle{Проделанные шаги}
+		В ходе проделанной работы удалось оценить выражение
+		\begin{align}
+			\forall n\in\mathbb{N}:\,\norm{\textbf{P}_0^\bot(\delta) - \textbf{P}_0^\bot - \sum^n_{p=1}\textbf{W}_p(\delta)} \leqslant\notag\\ C\left(\dfrac{4\norm{\textbf{B}(\delta)}}{\mu_{min}}\right)^{n+1}\dfrac{1}{1-4\norm{\textbf{B}(\delta)}/\mu_{min}},\label{eq:1}
+		\end{align}
+		где $C = e^{(1/6)}\sqrt{\pi}$.
+		%Проделанную работу показать и разделить на несколько частей
+	\end{frame}
+	\begin{frame}\frametitle{Дальнейшие действия}
+		\begin{itemize}
+			\item Другие способы оценки  $\norm{\textbf{P}_0^\bot(\delta) - \textbf{P}_0^\bot}$ сверху и их сравнение,
+			\item Дальнейшее исследование этапов SSA.
+		\end{itemize}
+	\end{frame}
+	
+	\bibliographystyle{ugost2008}
+	\bibliography{Slides}
+	
+\end{document}
+

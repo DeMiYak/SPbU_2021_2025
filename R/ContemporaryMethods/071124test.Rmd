@@ -1,0 +1,372 @@
+---
+title: "071124test"
+author: "Yakovlev D.M."
+date: "2024-11-07"
+output: html_document
+---
+
+### 5-1. BusinessWeek
+
+a. Показать распределение выборки средних еженедельных расходов
+```{r}
+m<-115.50
+sigma<-35
+n<-40
+```
+По ЦПТ: sqrt(n)*(x_mean-m)->N(0, sigma^2).
+При большом объёме выборки можем положить нормальное распределение x_mean (асимптотически, n>=30).
+
+б. Вероятность того, что ср.зн.выборки (x_mean) будет в пределах 10 долларов от среднего значения популяции
+
+```{r}
+lower_bound<-pnorm(105.50, mean = m, sd=sigma)
+higher_bound<-pnorm(125.50, mean = m, sd=sigma)
+
+# Вероятность оказаться в пределах 10 долларов
+prob<-higher_bound-lower_bound
+prob
+```
+
+в. Пусть x_mean = 100. Вероятность нахождения образца в среднем <=100 долларов
+```{r}
+prob_lower<-pnorm(100, mean = m, sd=sigma)
+prob_lower
+```
+
+Относится к группе выпускников с необычно низкими расходами? Почему или почему нет?
+Учитывая, что стандартное отклонение = 35, а средние расходы = 115.50 долларов/месяц, то |115.50 - 100| = 15.50 < 35 в пределах нормы, поэтому не считаем эту группу группой с необычно низкими расходами.
+
+### 5-2. После вычета грантов.
+
+```{r}
+m<-27175
+sigma<-7400
+n<-60
+```
+a. Значение стандартной ошибки среднего.
+```{r}
+# Стандартная ошибка среднего - корень дисперсии от выборочного среднего = стандартное отклонение/объём выборки
+se<-sigma/sqrt(n)
+se
+```
+b. Вероятность того, что среднее значение выборки >27175
+```{r}
+# По ЦПТ, пользуясь t-тестом, так как выборка n>=30, распределение средних близко к нормальному. Так как оно симметрично, то
+pnorm(27175, m, sigma, lower.tail=FALSE)
+```
+
+c. Вероятность того, что ср.зн. выборки в пределах 1000 от среднего значения популяции
+
+```{r}
+n<-60
+se<-sigma/sqrt(n)
+e<-1000
+z<-e/se
+# Вероятность попасть внутрь доверительного интервала
+prob<-1-2*pnorm(z, lower.tail=FALSE)
+prob
+```
+d. Вероятность в части (c), если бы размер выборки был увеличен до 100 человек? 
+```{r}
+n<-100
+se<-sigma/sqrt(n)
+e<-1000
+z<-e/se
+# Вероятность попасть внутрь доверительного интервала
+prob<-1-2*pnorm(z, lower.tail=FALSE)
+prob
+```
+
+### 5-3. The Cincinnati Enquirer, 26 января 2006 г.
+
+```{r}
+p<-0.28
+sigma<-sqrt(p*(1-p))
+n<-240
+```
+
+a. Выборочное распределение доли компаний, принадлежащих женщинам.
+
+По ЦПТ, выборочное распределение доли p_mean можно считать нормальным (n>=30).
+
+b. Вероятность того, что выборочная доля в пределах +-0.04 от доли в популяции?
+```{r}
+n<-240
+e<-0.04
+se<-sigma/sqrt(n)
+z<-e/se
+# Вероятность попасть внутрь доверительного интервала
+prob<-1-2*pnorm(z,lower.tail=FALSE)
+prob
+```
+c. Вер-ть того, что в.д. в пределах +-0.02 от доли в популяции?
+```{r}
+n<-240
+e<-0.02
+se<-sigma/sqrt(n)
+z<-e/se
+# Вероятность попасть внутрь доверительного интервала
+prob<-1-2*pnorm(z,lower.tail=FALSE)
+prob
+```
+
+### 5-4. Лори Джеффри.
+```{r}
+p<-0.25
+se<-0.0625
+```
+
+a. Какой размер выборки?
+```{r}
+sigma<-p*(1-p)
+n<-(sigma/se)^2
+n
+```
+b. p_mean - выборочная доля заключённых сделок. Покажите выборочное распределение p_mean
+
+По ЦПТ:
+sqrt(n)*(p_mean - p)->N(0, sigma)
+То есть, p_mean->N(p, SE=sigma/sqrt(n)).
+
+c. Используя выборочное распределение, рассчитать вер-ть того, что Лори заключит сделки на 30% или более в течение одного месяца
+```{r}
+prob<-pnorm(0.30, p, se, lower.tail=FALSE)
+prob
+```
+
+### 5-5. Doerman Distributors, Inc.
+
+```{r}
+p<-0.30
+sigma<-sqrt(p*(1-p))
+sigma
+n<-100
+se<-sigma/sqrt(n)
+se
+```
+a. Распределение выборочной доли
+
+По ЦПТ:
+sqrt(n)*(p_mean - p)->N(0, sigma^2)
+Тогда p_mean~N(p, SE^2=(sigma/sqrt(n))^2)
+
+b. Вероятность быть между 0.20 и 0.40
+```{r}
+prob<-1-pnorm(0.40,p,se,lower.tail=FALSE)-pnorm(0.20,p,se)
+prob
+```
+c. Вероятность быть между 0.25 и 0.35
+```{r}
+prob<-1-pnorm(0.35,p,se,lower.tail=FALSE)-pnorm(0.25,p,se)
+prob
+```
+
+### 5-6. CNBC, 23 февраля 2006 г. Автомобильное страхование.
+
+```{r}
+m<-939
+sigma<-245
+```
+a.
+Вероятность того, что случайная выборка имеет выб.ср. в пределах 25 долларов от ср.зн в ген.совокуп. для следующих размеров выборки: 30, 50, 100, 400
+```{r}
+n<-c(30,50,100,400)
+se<-sigma/sqrt(n)
+se
+e<-25
+z<-e/se
+prob<-1-2*pnorm(z, lower.tail = FALSE)
+prob
+```
+b. Преимущество использования выборки большого размера.
+
+Чем больше объём выборки, тем меньше стандартная ошибка -> больше вероятность оказаться внутри пределов.
+
+### 5-7. Опрос USA Today/CNN/Gallup.
+
+Из 369 родителей 200 считают, что проводят слишком мало времени со своими детьми из-за работы.
+```{r}
+n<-369
+nt<-200
+p_mean<-nt/n
+sigma<-sqrt(p_mean*(1-p_mean))
+sigma
+```
+
+a. Точечная оценка доли населения "мало времени на детей"
+```{r}
+p_mean
+```
+b. Точность интервальной оценки при уровне доверия 95%
+```{r}
+gamma<-0.95
+z<-qnorm((1-gamma)/2, lower.tail = FALSE)
+se<-sigma/sqrt(n)
+e<-z*se
+e
+prop.test(nt, n)
+```
+Точность доверия e ~ 0.05083548
+c. 95% дов.интервал для оценки доли населения "слишком мало времени на детей"
+```{r}
+bounds<-c(p_mean-e, p_mean+e)
+bounds
+```
+
+
+### 5-8. Онлайн-опрос ShareBuilder
+```{r}
+p<-0.60
+e<-100
+sigma<-1100
+```
+
+a. 90%-дов.инт.
+```{r}
+gamma<-0.90
+z<-qnorm((1-gamma)/2, lower.tail = FALSE)
+n<-(z*sigma/e)^2
+n
+```
+b. 95%-дов.инт.
+```{r}
+gamma<-0.95
+z<-qnorm((1-gamma)/2, lower.tail = FALSE)
+n<-(z*sigma/e)^2
+n
+```
+c. 99%-дов.инт.
+```{r}
+gamma<-0.99
+z<-qnorm((1-gamma)/2, lower.tail = FALSE)
+n<-(z*sigma/e)^2
+n
+```
+d. Размер выборки при увеличения уровня доверия. Рекомендация 99%-дов.инт.
+Увеличение уровня доверия (gamma) при фиксации погрешности выборки (e = const) увеличивает размер выборки по формуле n = (z*sigma/e)^2, где z - критическое значение.
+
+Не рекомендуем использовать 99% интервал доверия из-за быстрорастущего объёма выборки.
+
+### 5-9. 2018 General Social Survey. Life after Death.
+
+```{r}
+female<-1178
+femaleb<-1017
+femalenb<-female-femaleb
+male<-945
+maleb<-703
+malenb<-male-maleb
+aone<-c(femaleb, maleb)
+atwo<-c(female, male)
+```
+
+Construct 95% confint for the pop prop of females and males and for the difference between them
+
+population proportions
+```{r}
+n<-female+male
+b<-femaleb+maleb
+p_mean<-b/n
+sigma<-sqrt(p_mean*(1-p_mean))
+gamma<-0.95
+```
+
+95% confidence interval for the difference between them
+```{r}
+prop_betw<-prop.test(aone, atwo)
+prop_betw$conf.int
+```
+95% confidence interval for the population proportions
+```{r}
+prop_pop<-prop.test(b, n)
+prop_pop$conf.int
+```
+
+### 5-10. 2018 GSS, Daily TV watching time
+
+```{r}
+obs<-c(0,0,1,1,1,2,2,3,3,4)
+n<-length(obs)
+```
+
+a. Construct and interpret a 95% confint for the population mean
+```{r}
+gamma<-0.95
+obs_mean<-mean(obs)
+obs_mean
+sigma<-sd(obs)
+sigma
+se<-sigma/sqrt(n)
+se
+
+res<-t.test(obs, conf.level = gamma)
+res
+```
+b. 4 -> 24. What would the 95% confint be? Potential effects of outliers.
+```{r}
+obs<-c(0,0,1,1,1,2,2,3,3,24)
+n<-length(obs)
+```
+
+```{r}
+res<-t.test(obs)
+res
+```
+
+From what can be gathered, the appearance of even one observation can drastically change the values for the confidence interval. Thus, outliers also affect confidence intervals for means. 
+
+### 5-11. Distribution of annual income in Chicago (.dat file included)
+```{r}
+n<-30
+chicago<-read.csv("chicago.dat")
+chicago$household..income<-trimws(chicago$household..income)
+chicago
+
+parsed_data <- strsplit(chicago$household..income, "\\s+")
+
+numeric_column <- sapply(parsed_data, "[", 2)
+
+numeric_column <- as.numeric(numeric_column)
+
+chicago$household..income<-numeric_column
+chicago
+```
+
+a. Based on a descriptive graphic, describe the shape of the sample data distribution. Find and interpret point estimates of the population mean and standard deviation.
+```{r}
+hist(chicago$household..income)
+```
+It resembles the log-normal distribution.
+```{r}
+library(ggplot2)
+log_house_income<-log(chicago$household..income)
+ggplot(mapping=aes(sample=log_house_income))+stat_qq()+stat_qq_line()
+shapiro.test(log_house_income)
+```
+The estimates of the population mean and standard deviation are.
+```{r}
+hh_mean<-mean(chicago$household..income)
+hh_sd<-sd(chicago$household..income)
+hh_mean
+hh_sd
+```
+The estimates above are population mean and standard deviation respectively. Population mean estimation is to show the average annual income for heads of households living in public housing in Chicago. Standard deviation is to demonstrate what difference in annual incomes amidst heads of households in Chicago are within standard and may or may not be reckoned as outliers.
+
+b. Construct and interpret a 95% confint for mu (general mean), using formula (???), software (graphics???)
+
+Formula:
+```{r}
+gamma<-0.95
+z<-qnorm((1-gamma)/2, lower.tail=FALSE)
+hh_se<-hh_sd/sqrt(n)
+hh_se
+hh_e<-z*hh_se
+hh_e
+bounds<-c(hh_mean-hh_e, hh_mean+hh_e)
+bounds
+```
+Software:
+```{r}
+res<-t.test(chicago$household..income, conf.level = gamma)
+res$conf.int
+```

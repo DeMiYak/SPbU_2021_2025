@@ -1,0 +1,114 @@
+% \command[optional]{arguments}
+% \usepackage[opts]{arguments}
+
+% \begin{environment}
+% ...
+% \end{environment}
+
+% Font size: *pt, *cm , *%, *in, *em, *ex ...
+% Paper size: a4paper, letterpaper
+% Paper orientation: portrait, landscape
+% Columns: onecolumn, twocolumn
+
+% ~ - unbreakable space; \, - small space; \_ - regular space
+% "-" - hyphen; "--" - en-dash; "---" - em-dash; "--*" - direct speech; "<<", ">>".
+% \\[...]
+
+% itemize, enumerate, description
+
+% Hierarchy - \part, \chapter -> \section -> \subsection -> \subsubsection -> \paragraph -> \subparagraph
+
+% Suppressing intended behaviour with * (i.e. turning off the numeration): \section*{}
+
+% Special Symbols: # $ % ? & _ { } ~ ^ 
+
+
+% \setcounter{name}{#} allows for the enforced change of the number of the counter
+
+% \stepcounter{name} increases the counter number by 1 
+
+% \addtocounter{name}{value} increases the counter number by value
+
+% \newtheorem{envname}{caption} creating a sample for theorems
+
+% \newtheorem{envname}[numbered like]{caption}
+
+% \ref{label} after \label{name} allows for the reference of a label
+
+% \eqref, \pageref{label}
+
+% \label{sec:intro}, \label{eqn:main}, \label{tbl:results}, \label{img:example}. 
+
+% \begin{tabular} \end{tabular}: \cline{i-j} draws hline between i-j columns.
+% \multicolumn{cols}{pos}{text} can stretch the cell onto the several columns.
+% p{size} fixates the width of columns, @{command} executes command between the columns
+% thickness of lines can be rearranged by \arrayrulewidth{width}
+% \rotatebox{degree}, \multirow{cols}{pos}{text}
+
+% library{booktabs, supertabular, longtable}
+
+% \cite[add.text]{keylist}
+
+% \usepackage[options]{natbib} for citing style purposes
+
+
+% @type{key,
+%  field1 = {},
+%  field2 = {},
+%  field3 = {}
+% } Example of bibliographic text
+
+
+% @Book{key}
+% Required : author, title, publisher, year, numpages
+% Optional : edition, series, volume, number, language
+
+
+% @Article{key}
+% Required : author, title, journal, year, pages
+% Optional : volume, number, language, note
+	
+	
+% types of notes: inbook, inproceedings, techreport, thesis, misc
+
+% JabRef program
+
+\documentclass[13pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[left=1cm]{geometry}
+\usepackage{indentfirst}
+
+\title{text}
+\author{names}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	\vspace*{5cm}
+	\textsc{Hello, world! Привет, мир!}
+	$4 = x^2$
+	\newline
+	$\hat{b}, \bar{b}, \widehat{b}, \widetilde{b}, \tilde{b}, \dot{b}$
+	\label{Jack}
+	\begin{tabular}{r|l}
+		\hline
+		\begin{tabular}{|c|c|}
+			\hline 1 & 2 \\
+			\hline 3 & 4 \\
+			\hline
+		\end{tabular}
+		&
+		\begin{tabular}{|c|c|}
+			\hline 1 & 2 \\
+			\hline 3 & 4 \\
+			\hline
+		\end{tabular}
+		\\
+		\hline
+	\end{tabular}
+
+	
+\end{document}
+

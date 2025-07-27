@@ -1,0 +1,20 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+2*(1-pchisq(6.3, 6))
+```
+```{r}
+p <- 1/1.7
+1-sum(p*(1-p)^(0:2))
+q <- c(60,20,10,10)
+w <- c(p*(1-p)^(0:2)*100,(1-sum(p*(1-p)^(0:2)))*100)
+xi <- sum((q - w)^2/w)
+xi
+```
+
+```{r}
+1-pchisq(xi,2)
+```

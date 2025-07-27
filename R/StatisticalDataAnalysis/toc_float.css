@@ -1,0 +1,27 @@
+/* Style for the TOC container */
+.main-container .toc { /* Note: added .main-container here */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin: 0;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* Style for the main content below the TOC */
+.main-container {  /* Note: added main container here */
+  padding-top: 50px;
+}
+
+/* Optional: Style to make the links more visible */
+.toc ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.toc li {
+    margin-bottom: 5px;
+}

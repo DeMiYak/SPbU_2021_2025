@@ -1,0 +1,98 @@
+---
+title: "Task8(Minutes)"
+author: "Yakovlev D.M."
+date: "2023-11-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("tidyverse")
+library("ggplot2")
+dataset <- read.csv("Anime.csv")
+
+parse_time <- function(expression) {
+  # Check if the expression is "Unknown"
+  if (expression == "Unknown") {
+    return(NA)
+  }
+  
+  # Extract hours, minutes, and seconds using regular expressions
+  hours <- as.numeric(sub(".*?(\\d+) hr.*", "\\1", expression, ignore.case = TRUE))
+  minutes <- as.numeric(sub(".*?(\\d+) min.*", "\\1", expression, ignore.case = TRUE))
+  seconds <- as.numeric(sub(".*?(\\d+) sec.*", "\\1", expression, ignore.case = TRUE))
+  
+  # Assign default values when hours, minutes and seconds cannot be found
+  if (is.na(hours)) {
+    hours <- 0
+  }
+  if(is.na(minutes)){
+    minutes <- 0
+  }
+  if (is.na(seconds)) {
+    seconds <- 0
+  }
+  # Calculate the total time in seconds
+  total_seconds <- hours * 3600 + minutes * 60 + seconds
+  
+  return(total_seconds)
+}
+```
+
+Added dataset where Time.total is contained minute-wise, not second-wise
+```{r}
+dataMinutes <- dataset |>
+  mutate(Episodes = as.integer(Episodes), 
+          Duration = sapply(Duration, parse_time),
+         Time.total = round(Episodes*Duration/60),
+         Watchmen.total = Watching + On.Hold + Completed + Dropped,
+         Dropped.percent = round(Dropped/(Watching + On.Hold + Completed + Dropped)*100),
+         .after = Dropped) |>
+  select(Name, Type, Episodes, Duration, Watchmen.total, 
+         Dropped, Dropped.percent, Time.total) 
+```
+
+```{r}
+ggplot(filter(dataMinutes, Type == "Movie", 
+!is.na(Time.total), !is.na(Dropped.percent),
+              Time.total < 180)) + 
+  aes(x = Time.total, y = Dropped.percent) + geom_point()
+```
+
+```{r}
+ggplot(filter(dataMinutes, Type == "TV", 
+!is.na(Time.total), !is.na(Dropped.percent),
+Time.total < 5000)) + 
+  aes(x = Time.total, y = Dropped.percent) + geom_point()
+```
+
+```{r}
+ggplot(filter(dataMinutes, Type == "OVA", 
+!is.na(Time.total), !is.na(Dropped.percent),
+              Time.total < 500)) + 
+  aes(x = Time.total, y = Dropped.percent) + geom_point()
+```
+
+```{r}
+ggplot(filter(dataMinutes, Type == "ONA", 
+!is.na(Time.total), !is.na(Dropped.percent),
+              Time.total < 600)) + 
+  aes(x = Time.total, y = Dropped.percent) + geom_point()
+```
+
+```{r}
+ggplot(filter(dataMinutes, Type == "Music", 
+!is.na(Time.total), !is.na(Dropped.percent),
+              Time.total < 50)) + 
+  aes(x = Time.total, y = Dropped.percent) + geom_point()
+```
+
+```{r}
+ggplot(filter(dataMinutes, Type == "Special", 
+!is.na(Time.total), !is.na(Dropped.percent),
+              Time.total < 200)) + 
+  aes(x = Time.total, y = Dropped.percent) + geom_point()
+```

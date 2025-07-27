@@ -1,0 +1,51 @@
+---
+title: "Calc"
+author: "Yakovlev D.M."
+date: "2024-12-22"
+output: html_document
+---
+
+```{r}
+fail_A<-0.084
+fail_B<-0.0088
+succ_A<-1-fail_A
+succ_B<-1-fail_B
+```
+
+```{r}
+vals<-c(0, 7, 12, 19)
+probs<-c(succ_A*succ_B, fail_A*succ_B, succ_A*fail_B, fail_A*fail_B)
+cumsum(probs)
+```
+
+```{r}
+mean<-sum(vals*probs)
+var<-sum(vals^2*probs)-mean^2
+mean
+var
+sqrt(var)
+```
+
+```{r}
+set.seed(19937)
+n<-20
+res<-sample(vals, n, replace=TRUE, prob=probs)
+res
+row<-table(res)
+row/sum(row)
+```
+
+```{r}
+mean(res)
+sd(res)^2*20/19
+sd(res)
+```
+```{r}
+sum((row - n*probs)^2/(n*probs))
+```
+
+```{r}
+alpha<-0.05
+df<-3
+qchisq(alpha, df, lower.tail = FALSE)
+```

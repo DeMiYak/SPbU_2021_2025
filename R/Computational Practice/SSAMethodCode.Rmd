@@ -1,0 +1,574 @@
+---
+title: "SSAMethodCode"
+author: "Yakovlev D.M."
+date: "2023-06-07"
+output: pdf_document
+babel-lang: russian
+lang: russian
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+Список рукописных функций
+
+```{r setupFunctions, echo=TRUE}
+# Строит траекторную матрицу из временного ряда с длиной окна L
+BuildTrajectoryMatrix<-function(timeSeries, L){
+
+  timeSeries <- as.vector(timeSeries)
+
+  # Длина окна не должна превосходить длину временного ряда
+  if(length(timeSeries) <= L) stop("L parameter (window length) must be less than timeSeries length")
+
+
+  K <- length(timeSeries) - L + 1
+
+  # Инициализация траекторной матрицы
+  matrixResult <- matrix(0, ncol = K, nrow = L)
+
+  for (i in 1:K) {
+    matrixResult[,i]<-timeSeries[i:(i+L-1)]
+  }
+
+  return(matrixResult)
+}
+
+# Функция диагонального усреднения
+DiagonalAveraging <- function(x){
+  x <- as.matrix(x)
+
+  # Если длина окна больше числа окон - транспонируем матрицу
+  if(dim(x)[1] > dim(x)[2]) x <- tr(x)
+
+  L <- dim(x)[1] # Длина окна
+  K <- dim(x)[2] # Число окон
+  N <- L + K - 1 # Длина ряда
+
+  print(paste("L = ", L, "K = ", K, "N = ", N))
+
+
+  timeSeriesResult <- c()
+
+  # Восстановление компоненты ряда (по формуле с тремя случаями)
+
+  # Случай один
+  for(i in 1:L){
+    temporaryValue <- 0
+
+    for(j in 1:i){
+      temporaryValue = temporaryValue + x[j, i - j + 1]
+    }
+
+    timeSeriesResult[i] <- temporaryValue/i
+  }
+
+  # Случай два
+  for(i in (L+1):K){
+    temporaryValue <- 0
+
+    for(j in 1:L){
+      temporaryValue = temporaryValue + x[j, i - j + 1]
+    }
+
+    timeSeriesResult[i] <- temporaryValue/L
+  }
+
+  # Случай три
+  for(i in (K+1):N){
+    temporaryValue <- 0
+
+    for(j in (i - K + 1):L){
+      temporaryValue = temporaryValue + x[j, i - j + 1]
+    }
+
+    timeSeriesResult[i] <- temporaryValue/(N-i+1)
+  }
+
+  return(timeSeriesResult)
+}
+
+# Функция, возвращающая конечный ранг ряда в случае его существования
+TimeSeriesFiniteRank <- function(timeSeries){
+  
+  N <- length(timeSeries)     # Длина ряда
+  
+  rnkCurr <- 0                # Ранг
+  rnkList <- c()
+  
+  upperBound <- (N + N%%2)/2  # Верхняя граница проверки (до половины длины ряда)
+  
+  for(L in 2:upperBound){
+    rnkStep <- qr(BuildTrajectoryMatrix(timeSeries, L))$rank 
+    
+    rnkList = c(rnkList, rnkStep)
+    
+    if(rnkStep >= rnkCurr) rnkCurr <- rnkStep
+    else {
+      print("Found a bad rank sequence: ")
+      return(0)
+    }
+  }
+  
+  print(rnkList)
+  
+  return(rnkCurr)
+}
+
+
+# Создание экспоненциально-модулированного гармонического ряда
+CreateExponentialTimeSeries <- function(A, alpha, freq, angle, N){
+  timeSeries <- c()
+  
+  # Проверка на плохие случаи (частота, угол, длина ряда вне диапазона)
+  if(N <= 0) stop("Error: N <= 0")
+  if( freq > (1/2) || freq < 0) stop("Error: frequency is out of bounds")
+  if(angle >= 2*pi || angle < 0) stop("Error: angle is out of bounds")
+  
+  # Построение временного ряда
+  for(n in 0:(N-1)){
+    timeSeries <- c(timeSeries, A*exp(alpha*n)*cos(2*pi*freq*n + angle))
+  }
+  
+  return(timeSeries)
+}
+
+
+# Создание полиномиального ряда
+CreatePolynomialTimeSeries <- function(coefficientVector, N){
+  timeSeries <- c()
+  
+  # Проверка на корректность ввода вектора коэффициентов полинома
+  if(typeof(coefficientVector) != "double" && typeof(coefficientVector) != "vector") stop("Error: wrong coefficient type")
+  
+  # Построение временного ряда
+  for(i in 0:(N-1)){
+    x <- 0
+    
+    for(j in 1:length(coefficientVector)){
+      x = x + coefficientVector[j]*i^(j-1)
+    }
+    
+    timeSeries <- c(timeSeries, x)
+  }
+  
+  return(timeSeries)
+}
+
+
+# Создание полиномиального ряда с отрицательными степенями
+CreateReversePolynomialTimeSeries <- function(coefficientVector, N){
+  timeSeries <- c()
+  
+  # Проверка на корректность ввода вектора коэффициентов полинома
+  if(typeof(coefficientVector) != "double" && typeof(coefficientVector) != "vector") stop("Error: wrong coefficient type")
+  
+  # Построение временного ряда
+  timeSeries <- c(timeSeries, coefficientVector[1])
+  
+  for(i in 1:(N-1)){
+    x <- 0
+    
+    for(j in 1:length(coefficientVector)){
+      x = x + coefficientVector[j]*i^(1-j)
+    }
+    
+    timeSeries <- c(timeSeries, x)
+  }
+  
+  return(timeSeries)
+}
+
+# Создание временного ряда от степенного ряда
+CreatePowerTimeSeries <- function(coefficientVector, x, x0, N, Reverse = FALSE){
+  timeSeries <- c()
+  
+  # Проверка на корректность ввода вектора коэффициентов полинома
+  if(typeof(coefficientVector) != "double" && typeof(coefficientVector) != "vector") stop("Error: wrong coefficient type")
+  
+  # Построение временного ряда
+  if(Reverse){
+    for(i in 0:(N-1)){
+      xResult <- coefficientVector[i]*(x-x0)^(-i)
+    
+      timeSeries <- c(timeSeries, xResult)  
+    }
+  }
+  else{
+    for(i in 0:(N-1)){
+      xResult <- coefficientVector[i]*(x - x0)^i
+      
+      timeSeries <- c(timeSeries, xResult)
+    }
+  }
+  return(timeSeries)
+}
+
+
+
+# Создание логарифмического ряда
+CreateLogarithmicTimeSeries <- function(A, logBase = exp(1), coefficientVector, N){
+  timeSeries <- c()
+  
+  
+  # Проверка на корректность ввода вектора коэффициентов полинома
+  if(typeof(coefficientVector) != "double" && typeof(coefficientVector) != "vector") stop("Error: wrong coefficient type")
+  
+  # Построение временного ряда
+  for(i in 0:(N-1)){
+    x <- 0
+    
+    for(j in 1:length(coefficientVector)){
+      x = x + coefficientVector[j]*i^(j-1)
+    }
+    
+    x = A*log(x, logBase)
+    
+    timeSeries <- c(timeSeries, x)
+  }
+  
+  return(timeSeries)
+}
+```
+Графические изображения исследуемых временных рядов
+
+```{r}
+library(Rssa)
+
+test<-ssa(timeSeries)
+
+MTS
+
+timeSeries
+
+set.seed(2023)
+```
+Задача 1.
+
+Наблюдение 1. Поскольку каждый вид временного ряда, рассматриваемый при построении другого ряда, имеет свой базис (пусть их ранги будут r1, r2, ..., rk; N - длина ряда), то их линейная комбинация будет
+
+Рядом конечного ранга R
+
+R = min{r1+r2+...+rk, N %/% 2 + N%%2}
+
+Пример 1. Сильная и слабая разделимости
+
+```{r}
+
+# Созданные ряды удовлетворяют условию слабой разделимости (см.
+# предложение 2.1., стр. 14), однако разделимость может быть как сильной,
+# так и слабой, в зависимости от параметра.
+
+# Рассмотрим периодический и константный ряды. Для них существуют
+# параметры функций и параметры метода L и K = N - L + 1, при которых они
+# разделимы.
+
+# Возьмём периодический ряд со значением элемента 
+# f_n = 2*cos(pi*n/2) 0 <= n <= 6 
+
+PeriodicTS <- CreateExponentialTimeSeries(2, 0, 1/4, 0, 7)
+
+# При SVD получим сингулярное число кратности два со значением 4.
+svd(BuildTrajectoryMatrix(PeriodicTS, 4))
+
+# Возьмём константный ряд со значением ряда f_n = 1, 0 \leq n \leq 6
+ConstTS <- rep(1, 7)
+
+# При SVD получим сингулярное число со значением 4.
+svd(BuildTrajectoryMatrix(ConstTS, 4)) 
+#Построив временный ряд из их суммы
+
+TSWOutNoise <- PeriodicTS + ConstTS 
+SSAWOutNoise <- ssa(TSWOutNoise) 
+# В ходе SVD получилось три сингулярных числа со значением 4, которые нельзя
+# однозначно разделить между собой
+
+m <- svd(BuildTrajectoryMatrix(TSWOutNoise, 4))
+TimeSeriesFiniteRank(TSWOutNoise)
+
+plot(SSAWOutNoise, idx=1:3)
+plot(SSAWOutNoise, type='vectors', idx=1:3)
+plot(SSAWOutNoise, type='vectors', vectors='factor', idx=1:3)
+plot(SSAWOutNoise, type='series', groups=1:3)
+plot(SSAWOutNoise, type='paired', idx=1:2)
+plot(wcor(SSAWOutNoise, groups=1:3), scales=list(c(1,2,3)))
+```
+Графически, в случае слабой разделимости, вместо константного ряда получается ряд, напоминающий периодический, из-за чего разделить и определить компоненты ряда становится невозможным.
+
+Если же, например, изменить коэффициент в периодическом ряде, то все компоненты можно легко разделить.
+
+```{r}
+PeriodicTS_New <- CreateExponentialTimeSeries(3, 0, 1/4, 0, 7)
+TSAWOutNoise_New <- PeriodicTS_New + ConstTS
+SSAWOutNoise_New <- ssa(TSAWOutNoise_New)
+
+plot(SSAWOutNoise_New)
+plot(SSAWOutNoise_New, type='vectors', idx=1:3)
+plot(SSAWOutNoise_New, type='vectors', vectors='factor', idx=1:3)
+plot(SSAWOutNoise_New, type='series', groups=1:3)
+
+plot(SSAWOutNoise_New, type='paired', idx=1:2)
+plot(wcor(SSAWOutNoise_New, groups=1:3), scales=list(c(1,2,3)))
+```
+При добавление белого шума значения сингулярных чисел не совпадают друг с другом. Можно заметить возможность выделения тренда (константного ряда), периодики (ряда с косинусом) и шума (с самым низким сингулярным числом)
+
+Однако, в случае
+
+```{r}
+samplenorm <- c(-0.2058265, -0.1471636, 0.6092870, 0.1220557, -0.2225760, -0.9239018, -0.3144127)
+```
+```{r}
+TSWNoise <- TSWOutNoise + samplenorm
+SSAWNoise <- ssa(TSWNoise) 
+TimeSeriesFiniteRank(TSWNoise)
+
+plot(SSAWNoise)
+plot(SSAWNoise, type='vectors', idx=1:4)
+plot(SSAWNoise, type='vectors', vectors='factor', idx=1:4)
+plot(SSAWNoise, type='series', groups=1:4)
+plot(wcor(SSAWNoise, groups=1:4), scales=list(c(1,2,3,4)))
+```
+
+Продемонстрируем, что с ростом N точность выделения компонент ряда возрастает.
+
+```{r}
+PeriodicTS_Special <- CreateExponentialTimeSeries(3,0,1/4,0,1000)
+ConstTS_Special <- rep(1, 1000)
+samplenorm1000 <- rnorm(1000)
+samplenorm1000[1:7] <- c(-0.2058265, -0.1471636, 0.6092870, 0.1220557, -0.2225760, -0.9239018, -0.3144127)
+```
+```{r}
+TSExample <- PeriodicTS_Special+ConstTS_Special+samplenorm1000
+# TimeSeriesFiniteRank(TSExample)
+s.TSExample <- ssa(TSExample[1:400])
+r.TSExample <- reconstruct(s.TSExample)
+plot(s.TSExample, type='vectors', idx=1:3)
+plot(s.TSExample, type='vectors', vectors='factor', idx=1:3)
+plot(s.TSExample, type='paired', idx=1:2, plot.contrib = FALSE)
+plot(s.TSExample, type='series', groups=1:3)
+plot(wcor(s.TSExample, groups=1:50), scales=list(at=seq(5, 50, 5)))
+plot(r.TSExample)
+```
+```{r}
+s.TSExample <- ssa(TSExample[1:200])
+r.TSExample <- reconstruct(s.TSExample)
+plot(s.TSExample, type='vectors', idx=1:3)
+plot(s.TSExample, type='vectors', vectors='factor', idx=1:3)
+plot(s.TSExample, type='paired', idx=1:2, plot.contrib = FALSE)
+plot(s.TSExample, type='series', groups=1:3)
+plot(wcor(s.TSExample, groups=1:50), scales=list(at=seq(5,50,5)))
+plot(r.TSExample)
+```
+```{r}
+s.TSExample <- ssa(TSExample[1:100])
+r.TSExample <- reconstruct(s.TSExample)
+plot(s.TSExample, type='vectors', idx=1:3)
+plot(s.TSExample, type='vectors', vectors='factor', idx=1:3)
+plot(s.TSExample, type='paired', idx=1:2, plot.contrib = FALSE)
+plot(s.TSExample, type='series', groups=1:3)
+plot(wcor(s.TSExample, groups=1:25), scales=list(at=seq(5,25,5)))
+plot(r.TSExample)
+```
+```{r}
+s.TSExample <- ssa(TSExample[1:50])
+r.TSExample <- reconstruct(s.TSExample)
+plot(s.TSExample, type='vectors', idx=1:3)
+plot(s.TSExample, type='vectors', vectors='factor', idx=1:3)
+plot(s.TSExample, type='paired', idx=1:2, plot.contrib = FALSE)
+plot(s.TSExample, type='series', groups=1:3)
+plot(wcor(s.TSExample, groups=1:25), scales=list(at=seq(5,25,5)))
+plot(r.TSExample)
+```
+```{r}
+s.TSExample <- ssa(TSExample[1:20])
+r.TSExample <- reconstruct(s.TSExample)
+plot(s.TSExample, type='vectors', idx=1:3)
+plot(s.TSExample, type='vectors', vectors='factor', idx=1:3)
+plot(s.TSExample, type='paired', idx=1:2, plot.contrib = FALSE)
+plot(s.TSExample, type='series', groups=1:3)
+plot(wcor(s.TSExample, groups=1:3))
+plot(r.TSExample)
+```
+```{r}
+s.TSExample <- ssa(TSExample[1:7])
+r.TSExample <- reconstruct(s.TSExample)
+plot(s.TSExample, type='vectors', idx=1:3)
+plot(s.TSExample, type='vectors', vectors='factor', idx=1:3)
+plot(s.TSExample, type='paired', idx=1:2, plot.contrib = FALSE)
+plot(s.TSExample, type='series', groups=1:3)
+plot(wcor(s.TSExample, groups=1:3))
+plot(r.TSExample)
+```
+Пример 2. Отсутствие разделимости
+
+В случае, когда не выполняется слабая разделимость, представление временной ряд в виде суммы нескольких компонент ряда является невозможным.
+
+Рассмотрим на простом примере:
+
+Пусть дано два константных ряда. Если мы предполагаем, что они, по крайней мере, слабо разделимы, то по предложению 2.1, скалярное произведение произвольных отрезков длины L и K двух рядов должно быть равно нулю, другими словами, биортогональный базис первого ряда должен быть ортогонален биортогональному базису второго ряда, поскольку все элементы ряда образованы некоторым биортогональным базисом сингулярного значения
+
+```{r}
+ConstTS_One <- rep(2, 10)
+
+ConstTS_Two <- rep(3, 10)
+
+# Взяв произвольную длину окна 1 < L < 10
+
+# L <- 6 K <- 10 - L + 1
+
+ConstTSValue <- c(ConstTS_One[2:(1+L)]%*%ConstTS_Two[4:(3+L)],
+ConstTS_One[1:K]%*%ConstTS_Two[5:(4+K)])
+
+#видим, что значения скалярное произведение любого отрезка ряда = 6L или
+#6K != 0. Следовательно, константные ряды не могут быть отделимы друг от
+#друга
+
+# Конец задачи 1.
+```
+
+Замечание: нужно доделать первую задачу через пакет Rssa.
+
+Задача 2.
+
+На этом шаге обрабатывается таблица значений средних температур по месяцам. Столбцы - месяцы, строки - года. Чтобы построить временной ряд из таблицы нужно брать числа слева-направо (то есть, от января до декабря) и сверху-вниз (от ранних дат до поздних)
+
+```{r}
+
+spData <- read.table("SPData.txt", skip=5, col.names=c("Индекс ВМО", "Год", "Январь",
+                                                       "Февраль", "Март", "Апрель",
+                                                       "Май", "Июнь", "Июль", "Август",
+                                                       "Сентябрь", "Октябрь", "Ноябрь",
+                                                       "Декабрь")) 
+
+
+spDataVector <- scan("SPData.txt", skip = 5)
+spDataVector <- spDataVector[!spDataVector %in% c(26063, 1805:2021)]
+mspSSA <- ssa(spDataVector, L = 1296)
+
+mspSSA
+```
+```{r}
+plot(mspSSA)
+summary(mspSSA)
+plot(mspSSA, type='vectors', idx=1:16)
+plot(mspSSA, type='vectors', vectors='factor', idx=1:16)
+plot(mspSSA, type='series', groups=1:16)
+```
+Поскольку длина окна близка к числу окон, то графики их собственных и факторных векторов совпадают. Первые две компоненты вносят наибольший вклад и, исходя из близости собственных чисел, являются колебаниями. Тоже самое можно сказать и про пары, идущие после 3-ей собственной тройки.
+
+```{r}
+plot(mspSSA, type="paired", idx=1:12, plot.contrib = FALSE)
+plot(wcor(mspSSA, groups=1:31), scales=list(at=seq(5,30,5)))
+```
+Анализируя пары собственных векторов, можно заметить что у первой пары явно выраженный период, равный 1/12. В то же время, период второй пары собственных векторов, 4-ой и 5-ой, равен 1/6. Таким образом, основное воздействие на температуру в Санкт-Петербурге оказывали сезонные изменения, происходившие ежемесячно. Так, можно предположить, что этими изменениями была переменчивая погода города.
+
+Если говорить про единственный тренд, являющийся 3-ей собственной тройкой, то можно интерпретировать его как сохраняющий уровень температуры фактор, например, воздействие солнца.
+
+Восстановление утраченных действий
+
+```{r}
+s.mspSSA <- ssa(spDataVector , L=1296, neig=300)
+g.mspSSA <- grouping.auto(s.mspSSA, base='series', freq.bins=c(0.1,0.2,0.3,0.4,+Inf))
+r.mspSSA <- reconstruct(s.mspSSA, groups=list(Trend = 3, Seasonality=c(1:2,4:5,30:31)))
+```
+```{r}
+plot(mspSSA, type='paired', idx=c(1,4,30), plot.contrib = FALSE)
+plot(reconstruct(s.mspSSA, groups=list(G12=1:2, G6=4:5, G4=30:31)), plot.method="xyplot", layout=c(2,2))
+plot(mspSSA, type='paired', vectors="factor", idx=c(1,4,30), plot.contrib = FALSE)
+
+plot(wcor(mspSSA,groups=1:31), scales=list(at=seq(5,30,5)))
+plot(wcor(mspSSA,groups=32:60), scales=list(at=seq(5,25,5)))
+plot(wcor(mspSSA, groups=1:60), scales=list(at=seq(5,60,5)))
+```
+```{r}
+timecut <- window(spDataVector, end=time(spDataVector)[169])
+```
+```{r}
+r.spTimecut <- reconstruct(s.mspSSA, groups=list(Trend=3, Seasonality=c(1:2,4:5,30:31)))
+r.spTimecut$Trend <- r.spTimecut$Trend[1:241]
+r.spTimecut$Seasonality <- r.spTimecut$Seasonality[1:241]
+
+r.spTimecutSeason <- reconstruct(s.mspSSA, groups=list(G12=1:2, G6=4:5, G4=30:31))
+r.spTimecutSeason$G12 <- r.spTimecutSeason$G12[1:241]
+r.spTimecutSeason$G6 <- r.spTimecutSeason$G6[1:241]
+r.spTimecutSeason$G4 <- r.spTimecutSeason$G4[1:241]
+```
+```{r}
+plot(r.spTimecut, add.residuals=TRUE, add.original=TRUE, plot.method='xyplot', superpose=TRUE, layout=c(2,2))
+
+plot(r.spTimecutSeason, add.residuals=FALSE, add.original=FALSE, plot.method='xyplot', superpose=TRUE, layout=c(2,2))
+```
+Замечания
+
+Денис, здравствуйте!
+
+Сделано хорошо, видно, что разобрались.
+
+Возникло несколько вопросов.
+
+Первое --- как каждый из графиков 1-3 показывает (подтверждает), что есть сильная разделимость? (у вас нет комментариев) +
+
+Примером отсутствия слабой разделимости может, вероятно, служить случай другой частоты, не 1/4? Две константы --- вырожденный пример.
+
+Про шум не поняла. Шум --- случайная составляющая, для него теоретически вы не можете получить результат, но можете продемонстрировать, что при увеличении N точность выделения компонент возрастает. +
+
+В реальном примере: такой график плохо выглядит?  https://ssa-with-r-book.github.io/01-chapter2-part1.html#produced-output
+
+Новые изменения
+
+```{r}
+library("Rssa")
+data("AustralianWine", package = "Rssa")
+wine <- window(AustralianWine, end = time(AustralianWine)[174])
+```
+```{r}
+s.fort <- ssa(fort, L = 84, kind = "1d-ssa")
+r.fort <- reconstruct(s.fort, 
+                      groups = list(Trend = 1,
+                                    Seasonality = 2:11))
+plot(r.fort, add.residuals = TRUE, add.original = TRUE,
+     plot.method = "xyplot",
+     superpose = TRUE, auto.key = list(columns = 2))
+```
+```{r}
+s.mspSSA <- ssa(spDataVector , L=1296, neig=300)
+r.mspSSA <- reconstruct(s.mspSSA, groups=list(Trend = 3, Seasonality=c(1:2,4:5,30:31)))
+par(mar=c(3,2,5,1), xpd=FALSE)
+
+plot(r.mspSSA, add.residuals=TRUE, add.original=FALSE, col=c('white', 'green', 'purple'), lty=c(0, 1, 1), xlim=c(0,250))
+
+legend('bottomright', legend=c('Seasonality', 'Residuals'), pch=rep(15,4), col=c('green','purple'), cex=0.7)
+```
+```{r}
+plot(r.mspSSA, add.residuals=TRUE, add.original=FALSE, col=c('white', 'green', 'purple'), lty=c(0, 0, 1))
+
+legend('bottomright', legend=c('Residuals'), pch=rep(15,4), col=c('purple'), cex=0.7)
+```
+```{r}
+plot(r.mspSSA, add.residuals=TRUE, add.original=FALSE, col=c('red', 'green', 'purple'), lty=c(0, 1, 1))
+
+legend('bottomright', legend=c('Seasonality', 'Residuals'), pch=rep(15,2), col=c('green','purple'), cex=0.7)
+```
+```{r}
+plot(r.mspSSA, add.residuals=FALSE, add.original=TRUE, col=c('black', 'red', 'purple'), lty=c(1, 1, 0))
+
+legend('bottomright', legend=c('Original', 'Trend'), pch=rep(15,3), col=c('black','red'), cex=0.7)
+```
+Новые замечания (2)
+
+Денис, здравствуйте!
+
+Уточню: 
+
+в вашем дополнении в 2.1.2 при чем тут \omega \neq 1/N?  (а почему там звездочки, а не просто номера формул --- там же, если добавить новые номера, старые автоматически меняются?) +
+
+я все же не поняла, а что вы понимаете под словом «шум», что значит, что пример с шумом, где он в описании? +
+
+реальный пример --- да, глобальное потепление видно. Случайная составляющая --- это все кроме тренда и сезонности. На графике, где рисуете сезонность, имеет смысл рисовать случайную составляющую, чтобы сопоставить ее масштаб и масштаб сезонности, а также проверить, что остаток (случайная составляющая) колеблется вокруг нуля. +
+
+НЭ
+
+Исправления:
+
+
+

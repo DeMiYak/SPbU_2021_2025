@@ -1,0 +1,3012 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Prac\_TaskCourse3},
+  pdfauthor={Yakovlev D.M.},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Prac\_TaskCourse3}
+\author{Yakovlev D.M.}
+\date{2024-06-06}
+
+\begin{document}
+\maketitle
+
+\subsection{R Markdown}\label{r-markdown}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Создание экспоненциально{-}модулированного гармонического ряда}
+\NormalTok{CreateExponentialTimeSeries }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(A, alpha, freq, angle, N)\{}
+\NormalTok{  timeSeries }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+  
+  \CommentTok{\# Проверка на плохие случаи (частота, угол, длина ряда вне диапазона)}
+  \ControlFlowTok{if}\NormalTok{(N }\SpecialCharTok{\textless{}=} \DecValTok{0}\NormalTok{) }\FunctionTok{stop}\NormalTok{(}\StringTok{"Error: N \textless{}= 0"}\NormalTok{)}
+  \ControlFlowTok{if}\NormalTok{( freq }\SpecialCharTok{\textgreater{}}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{/}\DecValTok{2}\NormalTok{) }\SpecialCharTok{||}\NormalTok{ freq }\SpecialCharTok{\textless{}} \DecValTok{0}\NormalTok{) }\FunctionTok{stop}\NormalTok{(}\StringTok{"Error: frequency is out of bounds"}\NormalTok{)}
+  \ControlFlowTok{if}\NormalTok{(angle }\SpecialCharTok{\textgreater{}=} \DecValTok{2}\SpecialCharTok{*}\NormalTok{pi }\SpecialCharTok{||}\NormalTok{ angle }\SpecialCharTok{\textless{}} \DecValTok{0}\NormalTok{) }\FunctionTok{stop}\NormalTok{(}\StringTok{"Error: angle is out of bounds"}\NormalTok{)}
+  
+  \CommentTok{\# Построение временного ряда}
+  \ControlFlowTok{for}\NormalTok{(n }\ControlFlowTok{in} \DecValTok{0}\SpecialCharTok{:}\NormalTok{(N}\DecValTok{{-}1}\NormalTok{))\{}
+\NormalTok{    timeSeries }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(timeSeries, A}\SpecialCharTok{*}\FunctionTok{exp}\NormalTok{(alpha}\SpecialCharTok{*}\NormalTok{n)}\SpecialCharTok{*}\FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{freq}\SpecialCharTok{*}\NormalTok{n }\SpecialCharTok{+}\NormalTok{ angle))}
+\NormalTok{  \}}
+  
+  \FunctionTok{return}\NormalTok{(timeSeries)}
+\NormalTok{\}}
+
+
+\CommentTok{\# Создание полиномиального ряда}
+\NormalTok{CreatePolynomialTimeSeries }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(coefficientVector, N)\{}
+\NormalTok{  timeSeries }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+  
+  \CommentTok{\# Проверка на корректность ввода вектора коэффициентов полинома}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{typeof}\NormalTok{(coefficientVector) }\SpecialCharTok{!=} \StringTok{"double"} \SpecialCharTok{\&\&} \FunctionTok{typeof}\NormalTok{(coefficientVector) }\SpecialCharTok{!=} \StringTok{"vector"}\NormalTok{) }\FunctionTok{stop}\NormalTok{(}\StringTok{"Error: wrong coefficient type"}\NormalTok{)}
+  
+  \CommentTok{\# Построение временного ряда}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{0}\SpecialCharTok{:}\NormalTok{(N}\DecValTok{{-}1}\NormalTok{))\{}
+\NormalTok{    x }\OtherTok{\textless{}{-}} \DecValTok{0}
+    
+    \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(coefficientVector))\{}
+\NormalTok{      x }\OtherTok{=}\NormalTok{ x }\SpecialCharTok{+}\NormalTok{ coefficientVector[j]}\SpecialCharTok{*}\NormalTok{i}\SpecialCharTok{\^{}}\NormalTok{(j}\DecValTok{{-}1}\NormalTok{)}
+\NormalTok{    \}}
+    
+\NormalTok{    timeSeries }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(timeSeries, x)}
+\NormalTok{  \}}
+  
+  \FunctionTok{return}\NormalTok{(timeSeries)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Какая идея построения практических результатов? 1. Результат в виде
+графика (нужны векторы x, y) 2. Требуется применение спектрального
+разложения для сигналов меньшего размера
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{-1}
+\tightlist
+\item
+  Подготовительный этап. На выходе получим готовые линейный сигнал и
+  гармонику
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(Rssa)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: пакет 'Rssa' был собран под R версии 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Загрузка требуемого пакета: svd
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: пакет 'svd' был собран под R версии 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Загрузка требуемого пакета: forecast
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: пакет 'forecast' был собран под R версии 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Registered S3 method overwritten by 'quantmod':
+##   method            from
+##   as.zoo.data.frame zoo
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Присоединяю пакет: 'Rssa'
+\end{verbatim}
+
+\begin{verbatim}
+## Следующий объект скрыт от 'package:stats':
+## 
+##     decompose
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Параметры}
+\NormalTok{N }\OtherTok{\textless{}{-}} \DecValTok{200}
+\CommentTok{\# По смыслу не больше 3, так как иначе не получится траекторной матрицы}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{9}\SpecialCharTok{:}\NormalTok{N}
+\NormalTok{L }\OtherTok{\textless{}{-}}\NormalTok{ n}\SpecialCharTok{\%/\%}\DecValTok{3}
+\NormalTok{varphi }\OtherTok{\textless{}{-}}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{8}
+\NormalTok{omega }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\DecValTok{4}
+\NormalTok{tau }\OtherTok{\textless{}{-}} \DecValTok{3}
+\NormalTok{delta }\OtherTok{\textless{}{-}} \DecValTok{1}
+\CommentTok{\# Создание линейного сигнала (коэффициенты многочлена {-} 0, 1, 0, 0,...)}
+\NormalTok{H }\OtherTok{\textless{}{-}} \FunctionTok{CreatePolynomialTimeSeries}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), N)}
+\CommentTok{\# Создание гармонического ряда}
+\NormalTok{E }\OtherTok{\textless{}{-}} \FunctionTok{CreateExponentialTimeSeries}\NormalTok{(tau,}\DecValTok{0}\NormalTok{,omega,varphi, N)}
+\NormalTok{X }\OtherTok{\textless{}{-}}\NormalTok{ H }\SpecialCharTok{+}\NormalTok{ delta}\SpecialCharTok{*}\NormalTok{E}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Создание вектора максимальных ошибок восстановления ряда при
+  \(L = \lfloor N/3\rfloor\)
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Линейные сигналы с гармоникой после применения SSA}
+\NormalTok{Xssa }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+\CommentTok{\# Цикл для создания множества анализируемых линейных сигналов}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(n))}
+\NormalTok{\{}
+\NormalTok{  tempssa }\OtherTok{\textless{}{-}} \FunctionTok{ssa}\NormalTok{(X[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n[i]], L[i])}
+\NormalTok{  D }\OtherTok{\textless{}{-}} \FunctionTok{reconstruct}\NormalTok{(tempssa, }\AttributeTok{groups=}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{)}
+\NormalTok{  A }\OtherTok{\textless{}{-}}\NormalTok{ D}\SpecialCharTok{$}\NormalTok{F1 }\SpecialCharTok{+}\NormalTok{ D}\SpecialCharTok{$}\NormalTok{F2}
+\NormalTok{  r }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(}\FunctionTok{abs}\NormalTok{(A}\SpecialCharTok{{-}}\NormalTok{X[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n[i]]))}
+\NormalTok{  Xssa }\OtherTok{\textless{}{-}} \FunctionTok{append}\NormalTok{(Xssa, r)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Вывод графика (иллюстрация)
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(n, Xssa, }\AttributeTok{type=}\StringTok{"o"}\NormalTok{, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{, }\AttributeTok{main =} \StringTok{"Максимальная ошибка восстановления ряда L \textasciitilde{} N/3"}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{"N"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Максимальная ошибка"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <9c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <8c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <88>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <82>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b5>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <80>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b4>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <9c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <8c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <88>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b0>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{grid}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Prac_TaskCourse3_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{XN }\OtherTok{\textless{}{-}}\NormalTok{ Xssa}\SpecialCharTok{*}\NormalTok{n}
+\FunctionTok{plot}\NormalTok{(n, XN, }\AttributeTok{type=}\StringTok{"o"}\NormalTok{, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{, }\AttributeTok{main =} \StringTok{"Максимальная ошибка восстановления ряда L \textasciitilde{} N/3, умноженная на N"}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{"N"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Максимальная ошибка, умноженная на"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <9c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <8c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <88>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <82>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b5>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <80>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b4>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <83>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b6>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b5>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <9c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <8c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <88>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <83>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b6>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b5>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на'
+## в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{grid}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Prac_TaskCourse3_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Не относится к основной практической задаче. Проверка на соответствие
+  с результатами в справочном материале: ``Об асимптотической
+  разделимости линейных сигналов с гармониками методом Анализа
+  Сингулярного Спектра'' Н.В. Зенкова, В.В. Некруткин
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(Rssa)}
+\CommentTok{\# Параметры}
+\NormalTok{N }\OtherTok{\textless{}{-}} \DecValTok{101}
+\CommentTok{\# По смыслу не больше 3, так как иначе не получится траекторной матрицы}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{6}\SpecialCharTok{:}\NormalTok{N}
+\NormalTok{L }\OtherTok{\textless{}{-}}\NormalTok{ n}\SpecialCharTok{\%/\%}\DecValTok{2}
+\NormalTok{varphi }\OtherTok{\textless{}{-}} \DecValTok{0}
+\NormalTok{omega }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\DecValTok{3}
+\NormalTok{tau }\OtherTok{\textless{}{-}} \DecValTok{1}
+\NormalTok{delta }\OtherTok{\textless{}{-}} \DecValTok{1}
+\CommentTok{\# Создание линейного сигнала (коэффициенты многочлена {-} 0, 1, 0, 0,...)}
+\NormalTok{H }\OtherTok{\textless{}{-}} \FunctionTok{CreatePolynomialTimeSeries}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), N)}
+\CommentTok{\# Создание гармонического ряда}
+\NormalTok{E }\OtherTok{\textless{}{-}} \FunctionTok{CreateExponentialTimeSeries}\NormalTok{(tau,}\DecValTok{0}\NormalTok{,omega,varphi, N)}
+\NormalTok{X }\OtherTok{\textless{}{-}}\NormalTok{ H }\SpecialCharTok{+}\NormalTok{ delta}\SpecialCharTok{*}\NormalTok{E}
+\CommentTok{\# Линейные сигналы с гармоникой после применения SSA}
+\NormalTok{Xssa }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+\CommentTok{\# Цикл для создания множества анализируемых линейных сигналов}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(n))}
+\NormalTok{\{}
+\NormalTok{  tempssa }\OtherTok{\textless{}{-}} \FunctionTok{ssa}\NormalTok{(X[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n[i]], L[i])}
+\NormalTok{  D }\OtherTok{\textless{}{-}} \FunctionTok{reconstruct}\NormalTok{(tempssa, }\AttributeTok{groups=}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{)}
+\NormalTok{  A }\OtherTok{\textless{}{-}}\NormalTok{ D}\SpecialCharTok{$}\NormalTok{F1 }\SpecialCharTok{+}\NormalTok{ D}\SpecialCharTok{$}\NormalTok{F2}
+\NormalTok{  r }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(}\FunctionTok{abs}\NormalTok{(A}\SpecialCharTok{{-}}\NormalTok{X[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n[i]]))}
+\NormalTok{  Xssa }\OtherTok{\textless{}{-}} \FunctionTok{append}\NormalTok{(Xssa, r)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(n, Xssa, }\AttributeTok{type=}\StringTok{"o"}\NormalTok{, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{, }\AttributeTok{main =} \StringTok{"Максимальная ошибка восстановления ряда L \textasciitilde{} N/3"}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{"N"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Максимальная ошибка"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <9c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <8c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <88>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <82>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b5>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <80>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b4>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <9c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <8c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <88>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка' в 'mbcsToSbcs':
+## точка заменена на <b0>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{grid}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Prac_TaskCourse3_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{XN }\OtherTok{\textless{}{-}}\NormalTok{ Xssa}\SpecialCharTok{*}\NormalTok{n}
+\FunctionTok{plot}\NormalTok{(n, XN, }\AttributeTok{type=}\StringTok{"o"}\NormalTok{, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{, }\AttributeTok{main =} \StringTok{"Максимальная ошибка восстановления ряда L \textasciitilde{} N/3, умноженная на N"}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{"N"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Максимальная ошибка, умноженная на N"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <9c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <8c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <88>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <82>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b5>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <80>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b4>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <83>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b6>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b5>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка восстановления
+## ряда L ~ N/3, умноженная на N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <9c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <81>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <bb>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <8c>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <88>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b8>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <ba>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <83>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <bc>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <be>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b6>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b5>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d1>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <8f>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <d0>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in title(...): ошибка конвертации 'Максимальная ошибка, умноженная на
+## N' в 'mbcsToSbcs': точка заменена на <b0>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{grid}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Prac_TaskCourse3_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\end{document}

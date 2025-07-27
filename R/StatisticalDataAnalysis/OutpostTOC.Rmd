@@ -1,0 +1,178 @@
+---
+title: "OutpostTOC"
+author: "Yakovlev D.M."
+date: "2024-12-20"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    toc_depth: 3
+    number_sections: true
+    theme: lumen
+    df_print: paged
+---
+
+```{css, echo = FALSE}
+#TOC {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 50% !important;
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin: 0;
+  z-index: 1000 !important;
+  /*New styles for making toc scrollable*/
+   overflow-y: auto;  /* enable vertical scrolling */
+   overflow-x: hidden;  /* prevent horizontal scrolling */
+}
+
+#TOC .toc-content{
+    z-index:1001 !important;
+}
+
+/* Collapsed style */
+.toc-content.collapsed {
+    display: none;
+}
+
+.main-container {
+    padding-top: 50px !important;
+    width: 100% !important; /* set the width */
+    max-width: fit-content;
+    margin-left: auto !important; /* Align to the right*/
+    margin-right: auto !important; /* Align to the right*/
+     box-sizing: border-box;
+     display: block; /* Ensure it takes full width and the margin works */
+
+}
+
+/* Optional: Styles for the toc list */
+#TOC ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#TOC li {
+    margin-bottom: 5px;
+}
+```
+
+# Предварительный анализ данных 
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(GGally)
+library(ggplot2)
+library(psych)
+library(ggpubr)
+library(patchwork)
+library(kableExtra)
+library(skimr)
+library(fitdistrplus)
+library(car)
+library(nortest)
+library(plotrix)
+library(gridExtra)
+library(ppcor)
+knitr::opts_chunk$set(out.width="200%", fig.align="center")
+```
+
+```{r}
+library(readxl)
+col_I_sn<-read_excel("stat2021_sm\\us_col.std\\I_shortname.xls")
+col_I<-read_excel("stat2021_sm\\us_col.std\\I.xls")
+```
+
+```{r}
+head(col_I_sn)|>rmarkdown::paged_table()
+summary(col_I_sn)
+```
+
+```{r}
+col_I_sn$PPIND=ifelse(col_I_sn$PPIND==1, "public", "private")
+```
+
+NA review
+```{r}
+col_I_sn_noNA<-col_I_sn|>na.omit()
+paste("col_I_sn dim: ", paste(dim(col_I_sn),collapse=", "))
+paste("col_I_sn_noNA dim: ", paste(dim(col_I_sn_noNA), collapse=", "))
+```
+
+```{r}
+naCol<-colSums(is.na(col_I_sn))|>sort(decreasing=TRUE)
+naCol
+table(naCol)
+```
+
+log dataset
+```{r message=FALSE, warning=FALSE}
+q_cols<-sapply(col_I_sn, is.numeric)
+q_cols[c("PPIND", "FICE")]<-FALSE
+q_cols<-names(q_cols)[q_cols==TRUE]
+
+col_I_sn_log<-col_I_sn|>
+  mutate(across(q_cols, ~log(.x)))|>
+  rename_with(~paste0("log-", .x), q_cols)
+
+head(col_I_sn_log)|>rmarkdown::paged_table()
+```
+
+## Разобраться в том, что означают признаки.
+
+Выделим основные признаки, по которым будет проходить дальнейший анализ данных
+
+### Список признаков.
+
+Setup
+```{r}
+colNames<-c("ADD_FEE", "BOOK", "R_B_COST","IN_STATE","OUT_STAT","NEW10","AVRCOMB","SF_RATIO","PH_D","GRADUAT","PPIND")
+colFin<-c("ADD_FEE", "BOOK", "PPIND")
+colCost<-c("R_B_COST", "IN_STATE", "OUT_STAT", "PPIND")
+colNew<-c("NEW10", "AVRCOMB", "PPIND")
+colStud<-c("SF_RATIO", "PH_D", "GRADUAT", "PPIND")
+col_I_comp<-col_I_sn[colNames]
+col_I_comp_log<-col_I_sn_log[c(paste0("log-", colNames)[-length(colNames)], "PPIND")]
+head(col_I_comp_log)|>rmarkdown::paged_table()
+```
+
+```{r}
+unique_info <- function(column) {
+  column<-na.omit(column)
+  list(ratio=length(unique(column)) / length(column), unique=length(unique(column)), total=length(column), moda = max(table(column)))
+}
+
+ratios <- sapply(col_I_comp, unique_info)
+ratios
+```
+### Количественные признаки {.tabset .tabset-fade .tabset-pills}
+#### Непрерывные признаки 
+
+1. ADD_FEE
+1. R_B_COST
+1. IN_STATE
+1. OUT_STATE
+1. AVRCOMB
+1. SF_RATIO
+1. GRADUAT
+
+#### Дискретные признаки
+
+1. BOOK (непрерывный, но дискретный из-за моды. Может быть округление)
+1. PH_D (считаем из-за плохой точности и округления данных)
+1. NEW10 (по ratio и moda, низкая точность)
+
+### Качественные признаки
+
+* PPIND - private/public.
+
+## Если признак порядковый и для него использованы текстовые метки, то проверить, что кодировка текстовых меток соответствует их естественному порядку.
+
+---
+
+## Построить matrix plot (pairs plot), его долго разглядывать с точки зрения outliers, неоднородностей, вида распределений, вида зависимостей (линейные/нелинейные) и пр.
+
+
+### Первое построение pairs plot. Общие наблюдения.

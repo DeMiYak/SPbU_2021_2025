@@ -1,0 +1,129 @@
+---
+title: "TV_Cont"
+author: "Yakovlev D.M."
+date: "2025-03-11"
+output: html_document
+---
+
+```{r}
+options(warn=-1)
+library(tidyverse)
+library(lm.beta)
+library(ggplot2)
+library(GGally)
+library(car)
+```
+
+# Первая часть
+
+## 1. Посмотреть на данные
+
+```{r}
+tv_data <- read.fwf("televisions.dat", widths = c(22, 6, 7, 5, 4, 4),
+                   col.names = c("Country", "Life_Expectancy", "People_per_TV",
+                                 "People_per_Physician", "Female_Life_Exp", "Male_Life_Exp"))[1:40,]
+
+tv_data[tv_data == "*"] <- NA
+tv_data$Life_Expectancy <- as.numeric(gsub(",", ".", tv_data$Life_Expectancy))
+tv_data$People_per_TV <- as.numeric(gsub(",", ".", tv_data$People_per_TV))
+
+head(tv_data)
+tv_data$Country[is.na(tv_data$People_per_TV)]
+```
+
+## 2. Посмотреть на графики
+
+```{r}
+ggpairs(
+  data = tv_data,
+  columns = 2:4,  # Числовые колонки
+  diag = list(
+    continuous = wrap("barDiag", bins = 20, fill = "skyblue", color = "black")  # Гистограммы
+  ),
+  upper = list(continuous = wrap("cor", size = 5)),  # Корреляции
+  lower = list(continuous = wrap("points", alpha = 0.5))  # Точечные графики
+) + 
+  theme_bw()
+```
+
+### 2.1. Изменение графиков
+```{r}
+tv_data_log<-tv_data
+tv_data_log$People_per_TV<-log(tv_data$People_per_TV)
+tv_data_log$People_per_Physician<-log(tv_data$People_per_Physician)
+tv_data_log<-tv_data_log|>rename(People_per_Physician_log=People_per_Physician, People_per_TV_log=People_per_TV)
+```
+
+```{r}
+ggpairs(
+  data = tv_data_log,
+  columns = 2:4,  # Числовые колонки
+  diag = list(
+    continuous = wrap("barDiag", bins = 20, fill = "skyblue", color = "black")  # Гистограммы
+  ),
+  upper = list(continuous = wrap("cor", size = 5)),  # Корреляции
+  lower = list(continuous = wrap("points", alpha = 0.5))  # Точечные графики
+) + 
+  theme_bw()
+```
+
+## 3. Построение моделей
+
+```{r}
+model_tv_log <- lm(Life_Expectancy ~ People_per_TV_log + People_per_Physician_log, data = tv_data_log)
+model_tv_log_beta<-lm.beta(model_tv_log)
+```
+
+# Вторая часть
+
+```{r}
+model_summary<-summary(model_tv_log_beta)
+```
+
+## Посмотреть на: значимость регрессии (F-statistics), значимость коэффициентов регрессии, в частности, b0 (Coefficients)
+
+```{r}
+model_summary
+```
+
+## Нарисовать доверительный эллипсоид для beta1, beta2.
+
+```{r}
+tv_data_std <- tv_data_log %>%
+  mutate(
+    Life_Expectancy = scale(Life_Expectancy)[,1],
+    People_per_TV_log = scale(People_per_TV_log)[,1],
+    People_per_Physician_log = scale(People_per_Physician_log)[,1]
+  )
+
+model_std <- lm(Life_Expectancy ~ People_per_TV_log + People_per_Physician_log + 0, 
+                data = tv_data_std)
+
+confidenceEllipse(model_std, which.coef = c(1, 2), level = 0.95,
+                 main = "95% Доверительный эллипс для ст. коэффициентов",
+                 xlab = "Beta1 (People_per_TV_log)",
+                 ylab = "Beta2 (People_per_Physician_log)")
+
+model_std
+```
+
+## Посмотреть, что будет со значимостью, значением R^2 и adjusted, если один из признаков убрать.
+```{r}
+summary_physician_log<-summary(lm.beta(lm(Life_Expectancy ~ People_per_Physician_log, data = tv_data_log)))
+summary_people_log<-summary(lm.beta(lm(Life_Expectancy ~ People_per_TV_log, data = tv_data_log)))
+```
+
+### Полная модель:
+```{r}
+model_summary
+```
+
+### Модель без People_per_TV_log
+```{r}
+summary_physician_log
+```
+
+### Модель без Physician_per_TV_log
+```{r}
+summary_people_log
+```

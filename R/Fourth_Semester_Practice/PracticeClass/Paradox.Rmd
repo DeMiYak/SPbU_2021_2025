@@ -1,0 +1,121 @@
+---
+title: "Paradox"
+author: "Yakovlev D.M."
+date: "2023-11-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#>
+#> Monty-Hall's dilemma
+#>
+MH_game <- function(){
+  doors <- c("1","2", "3")
+  # Prize n' player dislocation
+  prize <- sample(doors, 1)
+  player <- sample(doors, 1)
+  
+  # Host choice
+  choice_host <- setdiff(doors, c(player, prize))
+  host <- sample(choice_host, 1)
+  
+  # Switch choice
+  switch <- setdiff(doors, c(host, player))
+  return(switch == prize)
+}
+
+i <- 14
+num_games <- 2^i+1
+# Running multiple simulations of the game
+results <- replicate(num_games, MH_game())
+data <- data.frame("switch.percent" = numeric(), 
+                   "noswitch.percent" = numeric(), 
+                   "simulations.num" = numeric())
+
+for(x in 1:i){
+  num <- 2^x
+  switch.mean <- mean(results[1:num+1])
+  data[nrow(data)+1,] = c(switch.mean, 1-switch.mean, num)
+}
+
+rmarkdown::paged_table(data)
+
+plot(y = data$switch.percent, x = seq_along(data$switch.percent), type = "l", xaxt="n")+
+axis(1, at = 1:length(num_games), labels = num_games)+
+abline(h = 0.66667, col = 'red')
+```
+
+```{r}
+#>
+#> Bride and Groom's dilemma
+#> нарисовать график зависимости вероятности выбрать наилучшего кандидата в задаче о невесте от количества просмотренных на первом этапе кандидатов (мы сначала смотрим k кандидатов, а потом выбираем первого, который лучше всех просмотренных)
+#>
+n <- 50
+bg_simulations <- c(10, 50, 100, 500, 1000, 1500, 2000, 3000)
+sample.size <- 10
+```
+
+```{r}
+run_bg <- function(k, n){
+  # Creating a vector of candidates
+  candidates <- sample(n)
+  # First best choice
+  k_max <- max(candidates[1:k])
+  first_best <- candidates[k+1:n][candidates[k+1:n]>k_max][1]
+  return (!is.na(first_best) & first_best == n)
+}
+
+find_optimal_k <- function(n, bg_simulations){
+  res <- numeric(0)
+  #> Finding probability for each k of given guests
+  for(k in 1:n){
+    res <- c(res, replicate(bg_simulations, run_bg(k, n))
+                |> mean())
+  }
+  #> Returning the optimal k
+  return (which.max(res))
+}
+
+build_matrix <- function(n, bg_simulations, sample.size){
+  m <- matrix(0, 
+               length(bg_simulations), 
+               sample.size)
+  
+  for(i in seq_along(bg_simulations))
+    for(j in 1:sample.size)
+      m[i, j] = find_optimal_k(n, bg_simulations[i])
+  
+  return (t(m))
+  }
+```
+
+```{r}
+res <- build_matrix(n, bg_simulations, sample.size)
+```
+
+```{r}
+plot(rep(seq_along(bg_simulations), each = sample.size), as.vector(res),
+     xaxt = 'n', xlab = 'bg_simulations', ylab = 'optimal_k')
+axis(1, at = seq_along(bg_simulations), labels = bg_simulations)
+abline(h = n/exp(1), col = 'red')
+```
+
+```{r}
+candidates <- sample(100)
+  
+  # Best choice
+  best <- max(candidates)
+  
+  # First best choice
+  first_best <- max(candidates[1:5])
+  for(i in 6:length(candidates)){
+    if(candidates[i] > first_best){
+      first_best <- candidates[i]
+      break 
+    }
+  }
+```

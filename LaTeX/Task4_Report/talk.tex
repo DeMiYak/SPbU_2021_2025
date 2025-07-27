@@ -1,0 +1,101 @@
+\documentclass[notheorems, handout]{beamer}
+
+\usetheme[numbers,totalnumbers,compress, nologo]{Statmod}
+\usefonttheme[onlymath]{serif}
+\setbeamertemplate{navigation symbols}{}
+
+\mode<handout> {
+    \usepackage{pgfpages}
+    \setbeameroption{show notes}
+    \pgfpagesuselayout{2 on 1}[a4paper, border shrink=5mm]
+    \setbeamercolor{note page}{bg=white}
+    \setbeamercolor{note title}{bg=gray!10}
+    \setbeamercolor{note date}{fg=gray!10}
+}
+
+\usepackage[utf8x]{inputenc}
+%\usepackage[cp1251]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{tikz}
+\usepackage{ragged2e}
+
+\newtheorem{theorem}{Теорема}
+
+\title[Короткая тема]{Длинная тема}
+
+\author{Иванов Иван Иванович, гр.18.Б04-мм}
+
+\institute[Санкт-Петербургский Государственный Университет]{%
+    \small
+    Санкт-Петербургский государственный университет\\
+    Прикладная математика и информатика\\
+    Вычислительная стохастика и статистические модели\\
+    \vspace{1.25cm}
+    Отчет по производственной практике}
+
+\date[Зачет]{Санкт-Петербург, 2021}
+
+\subject{Talks}
+
+\begin{document}
+
+\begin{frame}[plain]
+    \titlepage
+
+    \note{Научный руководитель  к.ф.-м.н., доцент Петров П.П.,\\
+    кафедра статистического моделирования}
+\end{frame}
+
+
+%\section{Короткая тема}
+%\subsection{Общие слова}
+
+\setbeameroption{show notes}
+
+\begin{frame}{Введение}
+    Тут какое-то введение.
+    Что за задача решается, какое метод используется, какая цель работы.
+
+    \note{
+        Текст про введение
+    }
+\end{frame}
+
+\begin{frame}{Обозначения и известные результаты}
+    Обозначения, нужные понятия и нужные известные результаты.
+
+    \note{
+        Текст про это
+    }
+\end{frame}
+
+\begin{frame}{Полученные результаты}
+    Тут ваши личные результаты
+
+    \note{
+        Текст про это
+    }
+\end{frame}
+
+\begin{frame}{Заключение}
+    Тут какое-то заключение.
+    Что сделано, резюме по результатам.
+
+    \note{
+        Текст про заключение
+    }
+\end{frame}
+
+\begin{frame}{Список литературы}
+\begin{thebibliography}{3}
+\bibitem{main}Самая главная работ
+\bibitem{another} Еще одна
+\end{thebibliography}    
+
+    \note{
+        На данном слайде представлен список основных источников, используемых в моей работе.
+    }
+\end{frame}
+
+\end{document}

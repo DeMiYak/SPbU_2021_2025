@@ -1,0 +1,2570 @@
+---
+title: "collegeSummary"
+author: "Yakovlev D.M."
+date: "2024-12-20"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    toc_depth: 3
+    number_sections: true
+    theme: lumen
+    df_print: paged
+---
+
+```{css, echo = FALSE}
+#TOC {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 50% !important;
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin: 0;
+  z-index: 1000 !important;
+  /*New styles for making toc scrollable*/
+   overflow-y: auto;  /* enable vertical scrolling */
+   overflow-x: hidden;  /* prevent horizontal scrolling */
+}
+
+#TOC .toc-content{
+    z-index:1001 !important;
+}
+
+/* Collapsed style */
+.toc-content.collapsed {
+    display: none;
+}
+
+.main-container {
+    padding-top: 50px !important;
+    width: 100% !important; /* set the width */
+    max-width: fit-content;
+    margin-left: auto !important; /* Align to the right*/
+    margin-right: auto !important; /* Align to the right*/
+     box-sizing: border-box;
+     display: block; /* Ensure it takes full width and the margin works */
+
+}
+
+/* Optional: Styles for the toc list */
+#TOC ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#TOC li {
+    margin-bottom: 5px;
+}
+```
+
+```{r}
+options(warn = -1)
+options(repr.plot.width=15, repr.plot.height=15)
+```
+
+# Предварительный анализ данных 
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(GGally)
+library(ggplot2)
+library(psych)
+library(ggpubr)
+library(patchwork)
+library(kableExtra)
+library(skimr)
+library(fitdistrplus)
+library(car)
+library(nortest)
+library(plotrix)
+library(gridExtra)
+library(ppcor)
+```
+
+
+
+```{r}
+library(readxl)
+col_I_sn<-read_excel("stat2021_sm\\us_col.std\\I_shortname.xls")
+col_I<-read_excel("stat2021_sm\\us_col.std\\I.xls")
+```
+
+```{r}
+head(col_I_sn)|>rmarkdown::paged_table()
+summary(col_I_sn)
+```
+
+```{r}
+col_I_sn$PPIND=ifelse(col_I_sn$PPIND==1, "public", "private")
+```
+
+NA review
+```{r}
+col_I_sn_noNA<-col_I_sn|>na.omit()
+paste("col_I_sn dim: ", paste(dim(col_I_sn),collapse=", "))
+paste("col_I_sn_noNA dim: ", paste(dim(col_I_sn_noNA), collapse=", "))
+```
+```{r}
+naCol<-colSums(is.na(col_I_sn))|>sort(decreasing=TRUE)
+naCol
+table(naCol)
+```
+
+log dataset
+```{r}
+q_cols<-sapply(col_I_sn, is.numeric)
+q_cols[c("PPIND", "FICE")]<-FALSE
+q_cols<-names(q_cols)[q_cols==TRUE]
+
+col_I_sn_log<-col_I_sn|>
+  mutate(across(q_cols, ~log(.x)))|>
+  rename_with(~paste0("log-", .x), q_cols)
+
+head(col_I_sn_log)|>rmarkdown::paged_table()
+```
+
+## Разобраться в том, что означают признаки.
+
+Выделим основные признаки, по которым будет проходить дальнейший анализ данных.
+
+### Список признаков. {.tabset .tabset-fade .tabset-pills}
+
+#### Количественные признаки:
+
+* AVRMATH Average Math SAT score                     
+* AVRVERB Average Verbal SAT score                   
+* AVRCOMB Average Combined SAT score
+* AVR_ACT Average ACT score                     
+* MATH_1 First quartile - Math SAT                    
+* MATH_3 Third quartile - Math SAT                   
+* VERB_1 First quartile - Verbal SAT
+* VERB_3 Third quartile - Verbal SAT
+* ACT_1 First quartile - ACT                          
+* ACT_3 Third quartile - ACT              
+* APP_REC Number of applications received             
+* APP_ACC Number of applicants accepted             
+* NEW_STUD Number of new students enrolled   
+* FULLTIME Number of fulltime undergraduates          
+* PARTTIME Number of parttime undergraduates
+* IN_STATE In-state tuition                        
+* OUT_STAT Out-of-state tuition                       
+* R_B_COST Room and board costs
+* ROOM Room costs                                    
+* BOARD Board costs                              
+* ADD_FEE Additional fees                            
+* BOOK Estimated book costs                 
+* PERSONAL Estimated personal spending
+* PH_D Pct. of faculty with Ph.D.'s          
+* TERM_D Pct. of faculty with terminal degree         
+* SAL_FULL Average salary - full professor          
+* SAL_AC Average salary - associate professor         
+* SAL_AS Average salary - assistant professor         
+* SAL_ALL Average salary - all ranks       
+* COMP_FUL Average compensation - full professor   
+* COMP_AC Average compensation - associate professor  
+* COMP_AS Average compensation - assistant professor  
+* COMP_ALL Average compensation - all ranks           
+* NUM_FULL Number of full professor
+* NUM_AC Number of associate professor                
+* NUM_AS Number of assistant professor                
+* NUM_INS Number of instructors                
+* NUM_ALL Number of faculty - all ranks   
+* INSTRUCT Instructional expenditure per student
+* GRADUAT Graduation rate
+* SF_RATIO Student/faculty ratio
+* DONATE Pct.alumni who donate
+* NEW10 Pct. new students from top 10% of H.S. class - % студентов из топ 10% своей старшей школы
+* NEW25 Pct. new students from top 25% of H.S. class - % студентов из топ 25% своей старшей школы
+
+#### Качественные признаки:
+
+* FICE - Federal ID Number
+* ...1 - Название университета 
+* PPIND Public/private indicator (public=1, private=2)
+* STATE State (postal code)
+* TYPE - I (можно удалить)
+
+Всего 49 признаков. 
+
+## Если признаков очень много, то отобрать признаки (примерно 7-10)...
+
+Отберём из условий задачи и по смыслу
+
+1. PPIND (для группировки) 
+
+Из условий задачи:
+2. ADD_FEE - дополнительные выплаты
+3. BOOK - плата за бронирование
+4. NEW10 (зависимая переменная, также NEW25)
+
+NEW10 зависит от AVRMATH, MATH_1, MATH_3, AVRVERB, VERB_1, VERB_3, AVR_ACT, ACT_1, ACT_3 и AVRCOMB. Признаков много, так что выберем самый обобщающий - AVRCOMB 
+5. AVRCOMB
+
+6. SF_RATIO
+7. PH_D
+8. GRADUAT
+6-8 из предположения, что они взаимосвязаны
+
+9. R_B_COST
+10. IN_STATE
+11. OUT_STAT
+9-11 - зависимость стоимости проживания (как окажется дальше из matrix plot, IN_STATE - фиктивный признак, то есть не информативный)
+
+## Определить вид признаков (колич., порядковые, качеств.)...
+
+Проделаем это для рассматриваемых 11 признаков.
+
+Setup
+```{r}
+colNames<-c("ADD_FEE", "BOOK", "R_B_COST","IN_STATE","OUT_STAT","NEW10","AVRCOMB","SF_RATIO","PH_D","GRADUAT","PPIND")
+colFin<-c("ADD_FEE", "BOOK", "PPIND")
+colCost<-c("R_B_COST", "IN_STATE", "OUT_STAT", "PPIND")
+colNew<-c("NEW10", "AVRCOMB", "PPIND")
+colStud<-c("SF_RATIO", "PH_D", "GRADUAT", "PPIND")
+col_I_comp<-col_I_sn[colNames]
+col_I_comp_log<-col_I_sn_log[c(paste0("log-", colNames)[-length(colNames)], "PPIND")]
+head(col_I_comp_log)|>rmarkdown::paged_table()
+```
+
+```{r}
+unique_info <- function(column) {
+  column<-na.omit(column)
+  list(ratio=length(unique(column)) / length(column), unique=length(unique(column)), total=length(column), moda = max(table(column)))
+}
+
+ratios <- sapply(col_I_comp, unique_info)
+ratios
+```
+### Количественные признаки {.tabset .tabset-fade .tabset-pills}
+#### Непрерывные признаки 
+
+1. ADD_FEE
+1. R_B_COST
+1. IN_STATE
+1. OUT_STATE
+1. AVRCOMB
+1. SF_RATIO
+1. GRADUAT
+
+#### Дискретные признаки
+
+1. BOOK (непрерывный, но дискретный из-за моды. Может быть округление)
+1. PH_D (считаем из-за плохой точности и округления данных)
+1. NEW10 (по ratio и moda, низкая точность)
+
+### Качественные признаки
+
+* PPIND - private/public.
+
+## Построить matrix plot (pairs plot), его долго разглядывать с точки зрения outliers, неоднородностей, вида распределений, вида зависимостей (линейные/нелинейные) и пр.
+
+
+### Первое построение pairs plot. Общие наблюдения.
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_I_comp, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+#### Наблюдения: 
+
+1. IN_STATE и OUT_STAT для private выстраивает линейную зависимость, для public - близкая к линейной зависимости. Отличительная особенность признака IN_STATE от OUT_STAT - наличие других факторов на образование цены обучения. OUT_STATE более приложим для анализа данных, поэтому IN_STATE можно считать фиктивным признаком. 
+1. ADD_FEE похоже на log-normal. Заметны Outliers.
+
+##### Outliers, ADD_FEE:
+```{r}
+col_I_sn|>filter(ADD_FEE>3000)
+```
+University of California, Massachusetts - особые индивиды, в связи с высоким ВВП штатов.
+
+1. По histogram plot неоднородности (по PPIND) в R_B_COST, IN_STATE, OUT_STAT, SF_RATIO, GRADUAT. 
+
+Видим, что NEW10 зависит от PH_D, GRADUAT, AVRCOMB, отдельно для private зависит от OUT_STAT, IN_STATE, для public - от ADD_FEE, BOOK, R_B_COST
+
+## Если есть сильно несимметричные (с хвостом вправо) распределения на положительной полуоси, то...
+
+### Второе построение pairs plot.
+
+Прологарифмируем ADD_FEE
+```{r}
+col_I_mixed<-col_I_comp|>mutate(ADD_FEE=col_I_comp_log$`log-ADD_FEE`)|>rename(`log-ADD_FEE`=ADD_FEE)|>dplyr::select(-IN_STATE)
+head(col_I_mixed)
+```
+```{r}
+ggpairs(col_I_mixed, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+#### Наблюдения:
+
+* Неоднородности (по PPIND) R_B_COST, OUT_STAT, NEW10. 
+* Близкие к линейномй зависимости NEW10/ AVRCOMB.
+* Outliers, BOOK
+
+##### Outliers, BOOK
+
+Особые индивиды
+```{r}
+col_I_sn|>filter(BOOK>=900 | BOOK <= 350)
+```
+
+Howard, Tulane, Hofstra University, Rensselaer Polytechn - особенности расположения, штата.
+
+## Если есть outliers, то попробовать объяснить причину (ошибка в данных, особые индивиды) и удалить их. {.tabset .tabset-fade .tabset-pills}
+
+### BOOK
+```{r}
+ggpairs(col_I_mixed[,c("log-ADD_FEE", "BOOK", "PPIND")], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+```{r}
+col_I_sn|>filter(BOOK>=900 | BOOK <= 350)
+```
+
+Может быть как низкой, так и высокой в зависимости от штата, политики университета и скрытых факторов.
+
+### ADD_FEE
+```{r}
+col_I_sn|>filter(ADD_FEE>3000)
+```
+University of California, Massachusetts - особые индивиды (из-за ВВП).
+
+### AVRCOMB/NEW10
+```{r}
+ggpairs(col_I_mixed[colNew], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+```{r}
+col_I_sn|>filter(AVRCOMB<=1200 & NEW10>=75)
+```
+University of California, North Carolina. Причиной может быть низкий порог для поступления.
+
+### PH_D
+
+```{r}
+ggpairs(col_I_mixed[colStud], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+```{r}
+col_I_sn|>filter(PH_D<=70)
+```
+Незначительные выбросы - особые индивиды. Могут быть связаны с низким GRADUAT и высоким SF_RATIO.
+
+### OUT_STAT
+```{r}
+ggpairs(col_I_mixed[,c("R_B_COST", "OUT_STAT", "PPIND")], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+```{r}
+col_I_sn|>filter(OUT_STAT>=14000 & PPIND=="public")
+col_I_sn|>filter(OUT_STAT<=10500 & PPIND=="private")
+```
+Цены на обучение варьируются по штатам и самим университетам.
+
+---
+
+## Если есть неоднородности (например, видны два облака точек), то объяснить причину (найти категоризующую переменную, объясняющую эту неоднородность).
+
+```{r}
+ggpairs(col_I_mixed, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+Выделим неоднородности R_B_COST, OUT_STAT. Явное разделение на два облака точек для этих признаков может быть связано с разницей финансирования. Для public - государство, штат и граждане, для private - только граждане.
+
+---
+
+## В дальнейшем вид pairs plots, распределения признаков и корреляции анализировать отдельно для неоднородных групп.
+
+---
+
+## Посмотрите также на descriptive statistics с точки зрения минимумов-максимумов, асимметрии, эксцесса и пр.
+
+```{r}
+results <- describeBy(col_I_mixed, group=col_I_comp$PPIND)
+df_results <- map_dfr(results, ~as.data.frame(.x), .id = "group")
+kable(df_results, "html") %>%
+  kable_styling(full_width = FALSE) %>%
+  scroll_box(width = "100%", height = "400px")
+```
+
+### Наблюдения:
+
+#### Mean, median, skew:
+NEW10 и AVRCOMB имеют skew, близкий к 0 (private),
+SF_RATIO, GRADUAT, log-ADD_FEE околонулевой skew (public).
+
+#### Kurtosis:
+Близкий к 0 (private): log-ADD_FEE (но skew ~ -0.44).
+
+
+# 2. О виде распределений и о сравнении распределений
+
+## Первые два пункта индивидуального задания нужно делать не по указанному порядку, а как того требует логика статистики. Чтобы сравнивать выборки по t-критерию, нужно знать о том, близки ли распределения в сравниваемых группах к нормальным или хотя бы к унимодальным и симметричным. Чтобы проверять распределения признаков на нормальность, нужно знать, что рассматривается однородная выборка.
+
+```{r}
+col_split_mixed<-split(col_I_mixed, col_I_mixed$PPIND)
+names(col_split_mixed)<-c("private", "public")
+colMixed<-names(col_I_mixed)
+colMixed<-colMixed[-length(colMixed)]
+colMixed
+```
+### Проверка на нормальность по хи-квадрат критерию (Авторство: Яковлев Д.М.)
+```{r}
+chi_squared_normality_test <- function(data) {
+  data <- na.omit(data)
+  n <- length(data)
+  if (n < 10) stop("Sample size too small for this test. Need at least 10 observations.")
+
+  mu <- mean(data)
+  sigma <- sd(data)
+
+   # Calculate quantiles for breaks
+   probs <- seq(5/n, 1 - 5/n, by = 5/n)
+   breaks <- qnorm(probs, mean = mu, sd = sigma)
+  
+  breaks <- c(qnorm(0), breaks, qnorm(1))
+  #Observed Frequencies
+  observed <- hist(data, breaks = breaks, plot = FALSE)$counts
+
+  #Expected Frequencies (using pnorm)
+  expected <- diff(pnorm(breaks, mean = mu, sd = sigma)) * n
+    
+  chi_squared <- sum((observed - expected)^2 / expected)
+  df <- length(expected) - 3  #Corrected degrees of freedom
+
+  p_value <- pchisq(chi_squared, df = df, lower.tail = FALSE)
+
+  return(list(p_value = p_value, statistic = chi_squared, df = df))
+}
+```
+
+#### Проверка на достоверность (p-value должно иметь равномерное распределение на (0, 1))
+```{r}
+n = 500
+test<-replicate(5000, chi_squared_normality_test(rnorm(n))$p_value)
+quantile(test)
+```
+
+### Тесты на нормальность
+```{r}
+perform_normality_tests <- function(df, cols) {
+  # Input validation (remains the same)
+    # Function to perform a single normality test (simplified)
+  run_test <- function(data, test_name) {
+    if (test_name == "Chi-squared") {
+      chisq_test<-chi_squared_normality_test(data)
+      return(chisq_test[c("p_value", "statistic", "df")])
+    }
+    test_result <- switch(test_name,
+                          "Lilliefors" = lillie.test(data),
+                          "Anderson-Darling" = ad.test(data),
+                          "Shapiro-Wilk" = shapiro.test(data)
+    )
+    return(list(p_value = test_result$p.value, statistic = test_result$statistic, df=length(na.omit(data))))  # Removed test_name
+  }
+     results <- lapply(cols, function(col) {
+    data <- df[[col]]
+    n_na <- sum(is.na(data))
+    if (n_na > 0) {
+      warning(paste0("Removed ", n_na, " NA values from column '", col, "' before testing."))
+      data <- na.omit(data)
+    }
+    test_results <- lapply(c("Lilliefors", "Anderson-Darling", "Shapiro-Wilk", "Chi-squared"), function(test) run_test(data, test))
+    list(column = col, tests = test_results)
+  })
+
+  results_df <- do.call(rbind, lapply(results, function(x) {
+    test_names <- c("Lilliefors", "Anderson-Darling", "Shapiro-Wilk", "Chi-squared")
+    p_values <- sapply(x$tests, "[[", "p_value")
+    data.frame(
+      Column = x$column,
+      Test = test_names, #Directly use test_names vector
+      Statistic = sapply(x$tests, "[[", "statistic"),
+      P_value = p_values,
+      Size = sapply(x$tests, "[[", "df"),
+      Significance = sapply(p_values, function(p) ifelse(p < 0.05, "\u2714", "\u2716")),
+      stringsAsFactors = FALSE
+    )
+  }))
+
+  plots <- lapply(cols, function(col) {
+    data <- df[[col]]
+    data <- na.omit(data)
+    ggqqplot(data, title = paste("Normal Probability Plot for", col))
+
+  })
+  names(plots)<-cols
+  list(results = results_df, plots = plots)
+}
+```
+
+## Так как визуально однородность при предварительном анализе была уже исследована, то можно начинать с анализа вида распределения признаков, возможно, по группам. Сюда входит: normal probability plot (что это такое?), проверка по критериям Лиллиефорса, AD, хи-квадрат, Шапиро-Уилка. По критерию хи-квадрат, а также визуально по PP-plot можно проверить и гипотезы о согласии с другими распределениями, например, логнормальным. Задаваемые вопросы: чем отличается критерий Лиллиефорса от критерия Колмогорова, в чем отличие AD, как выглядят статистики критериев, что такое PP-plot и normal probability plot, почему естественно при рисовании normal probability plot одновременно смотреть на результаты критерия Шапиро-Уилка. {.tabset .tabset-fade .tabset-pills}
+
+### Public: проверка на нормальность, тесты
+```{r}
+# colSums(is.na(col_split_mixed$public))
+col_norm_public<-col_split_mixed$public|>perform_normality_tests(colMixed)
+col_norm_public$plots
+col_norm_public$results|>dplyr::select(-Statistic)|>rmarkdown::paged_table()
+```
+
+#### Наблюдения:
+
+Хи-квадрат: не отвергаем AVRCOMB, SF_RATIO, PH_D, GRADUAT, R_B_COST, OUT_STAT, 
+
+Можно заметить "хвосты" на некоторых графиках.
+
+### Private: проверка на нормальность, тесты
+```{r}
+col_norm_private<-col_split_mixed$private|>perform_normality_tests(colMixed)
+col_norm_private$plots
+col_norm_private$results|>dplyr::select(-Statistic)|>rmarkdown::paged_table()
+```
+
+#### Наблюдения:
+
+Хи-квадрат: не отвергаем log-ADD_FEE, R_B_COST, NEW10, AVRCOMB, SF_RATIO, GRADUAT
+
+
+## Сначала имеет смысл посмотреть на сравнение распределений в группах с помощью ящиков с усами. С помощью ящиков с усами там, где групп больше двух, можно выбрать две из них, которые интересно сравнить с помощью критериев.
+
+
+Совместно со следующим заданием.
+
+
+---
+
+## Если в задании есть сравнение независимых выборок (точнее, распределений независимых случайных величин), то начинать нужно с t-критерия, который мощный против альтернатив, заключающихся в наиболее легко интерпретируемом сдвиге (т.е. разнице средних). Нужно не забыть, что у критерия есть варианты для модели с одинаковыми дисперсиями (получается точное p-value, которое может быть неправильным, если на самом деле дисперсии одинаковые) и с произвольными дисперсиями. В результате, получатся два критерия для гипотезы о равенстве средних и два критерия о равенстве разбросов. Нужно уметь объяснять, что это за критерии и при каких условиях их можно применять. Не забудьте, что при использовании асимптотических критериев нужно обращать внимание на объемы выборок. Сделайте выводы о том, для каких признаков есть разница в сдвиге.
+
+### Тесты на равенство дисперсий/матожиданий, тест Wilcoxon.
+```{r}
+perform_tests <- function(data,
+                          quantitative_columns,
+                          categorical_column,
+                          alpha = 0.05) {
+  results <- list()
+  
+  for (col in quantitative_columns) {
+    levene_test<-leveneTest(data[[col]] ~ data[[categorical_column]])
+    var_test <- var.test(data[[col]] ~ data[[categorical_column]])
+    wilcox_test <- wilcox.test(data[[col]]~data[[categorical_column]])
+    t_test_equal <- t.test(data[[col]] ~ data[[categorical_column]], var.equal = TRUE)
+    t_test_unequal <- t.test(data[[col]] ~ data[[categorical_column]], var.equal = FALSE)
+    ks_test<-ks.test(data[[col]]~data[[categorical_column]])
+  
+    results[[col]] <- list(
+      t_test_unequal_p_value = t_test_unequal$p.value,
+      t_test_equal_p_value = t_test_equal$p.value,
+      wilcox_test_p_value = wilcox_test$p.value,
+      levene_test_p_value = levene_test$`Pr(>F)`[1],
+      var_test_p_value = var_test$p.value,
+      ks_test_p_value = ks_test$p.value
+    )
+  }
+  
+  return(results |> enframe(name = "attribute", value = "p_values") |>
+  unnest_wider(p_values))
+}
+```
+
+```{r}
+df_tests = perform_tests(col_I_mixed, colMixed, "PPIND")
+```
+
+```{r}
+df_long <- col_I_mixed|>
+  pivot_longer(cols = -PPIND, names_to = "attribute", values_to = "value")
+```
+
+```{r}
+# Объединяем результаты теста с основными данными
+df_with_tests <- df_long %>%
+  left_join(df_tests, by = "attribute")
+```
+
+```{r}
+df_with_tests_cost <- df_with_tests[df_with_tests$attribute%in%colCost[-length(colCost)],]
+df_with_tests_new <- df_with_tests[df_with_tests$attribute%in%colNew[-length(colNew)],]
+df_with_tests_stud <- df_with_tests[df_with_tests$attribute%in%colStud[-length(colStud)],]
+df_with_tests_fin <- df_with_tests[df_with_tests$attribute%in%c("log-ADD_FEE", "BOOK"),]
+
+p<-ggplot(df_with_tests_cost,
+       aes(x = attribute,
+           y = value,
+           fill = PPIND)) +
+  geom_boxplot() +
+  labs(title = "Boxplot",
+       x = "Attribute",
+       y = "Value")+
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.caption = element_text(size = 8, hjust = 0)) +
+  scale_fill_manual(values = c("private" = "red", "public" = "lightblue"))
+```
+
+
+### AVRCOMB, NEW10.
+```{r}
+p$data<-df_with_tests_new|>filter(attribute%in%"AVRCOMB")
+p
+p$data<-df_with_tests_new|>filter(attribute%in%"NEW10")
+p
+df_with_tests|>dplyr::filter(attribute%in%colNew[-length(colNew)])|>dplyr::select(-PPIND, -value)|>slice_head(n=2)|>rmarkdown::paged_table()
+```
+
+#### Наблюдения:
+
+Можем сказать, что public и private для AVRCOMB и NEW10 имеют разные матожидания.
+
+В случае гипотезы о равенстве дисперсий, критерий Левена (Levene) и критерий Фишера (var) имеют разные мощности. Критерий Фишера используется, если сравниваемые выборки имеют нормальное распределение. Поскольку группа public признака NEW10 отвергла гипотезу о нормальном распределении, применять критерий Фишера нельзя.
+
+Отвергаем равенство дисперсий для AVRCOMB, NEW10.
+
+### BOOK, log-ADD_FEE.
+```{r}
+p$data<-df_with_tests_fin|>filter(attribute%in%"BOOK")
+p
+p$data<-df_with_tests_fin|>filter(attribute%in%"log-ADD_FEE")
+p
+df_with_tests|>dplyr::filter(attribute%in%c("log-ADD_FEE", "BOOK"))|>dplyr::select(-PPIND, -value)|>head(length(colFin)-1)|>rmarkdown::paged_table()
+```
+
+#### Наблюдения:
+
+Исходя из p_value не отвергаем, что public и private имеют равные матожидания. Тест Вилкоксона также характеризует их однородность. 
+
+#### Задача 1.1 из .tsk
+
+Проверим log-ADD_FEE и BOOK друг с другом
+```{r}
+compare_column_tests <- function(column_1,
+                          column_2,
+                          alpha = 0.05) {
+  levene_test<-leveneTest(column_2, column_1)
+  var_test <- var.test(column_1, column_2)
+  wilcox_test <- wilcox.test(column_1, column_2)
+  t_test_equal <- t.test(column_1, column_2, var.equal = TRUE)
+  t_test_unequal <- t.test(column_1, column_2, var.equal = FALSE)
+  
+  results <- data.frame(
+    t_test_unequal_p_value = t_test_unequal$p.value,
+    t_test_equal_p_value = t_test_equal$p.value,
+    levene_test_p_value = levene_test$`Pr(>F)`[1],
+    var_test_p_value = var_test$p.value,
+    wilcox_test_p_value = wilcox_test$p.value
+  )
+}
+```
+
+```{r}
+af_pr<-col_I_sn$ADD_FEE[col_I_sn$PPIND=="private"]
+af_pu<-col_I_sn$ADD_FEE[col_I_sn$PPIND=="public"]
+b_pr<-col_split_mixed$private$BOOK
+b_pu<-col_split_mixed$public$BOOK
+
+print(compare_column_tests(af_pr, b_pr))
+print(compare_column_tests(af_pu, b_pu))
+```
+
+##### Наблюдения:
+
+В общем случае тесты показывают, что разница есть в случае общественных вузов, но для частных вузов не отвергаем равенство дисперсий (из levene's test) и матожиданий.
+
+### GRADUAT, PH_D, SF_RATIO
+```{r}
+p$data<-df_with_tests_stud
+p
+df_with_tests|>dplyr::filter(attribute%in%colStud[-length(colStud)])|>dplyr::select(-PPIND, -value)|>head(length(colStud)-1)|>rmarkdown::paged_table()
+
+```
+
+#### Наблюдения:
+
+Отвергаем равенство матожиданий для GRADUAT, SF_RATIO, PH_D.
+Не отвергаем равенство дисперсий GRADUAT, SF_RATIO, PH_D.
+---
+### OUT_STAT, R_B_COST
+```{r}
+p$data<-df_with_tests_cost
+p
+df_with_tests|>dplyr::filter(attribute%in%colCost[-length(colCost)])|>dplyr::select(-PPIND, -value)|>head(length(colCost)-2)|>rmarkdown::paged_table()
+
+```
+
+#### Наблюдения:
+
+Отвергаем равенство матожиданий для OUT_STAT, R_B_COST.
+Не отвергаем равенство дисперсий для R_B_COST.
+
+## Далее, объясняете, в каких случаях (распределение далеко от нормального, могут быть выделяющиеся наблюдения, нас интересует другая характеристика положения) t-критерий не удовлетворителен и нужно переходить к непараметрическим критериям. Рассказываете, какой из непараметрических критериев является аналогом t-критерия, как он строится и против какой альтернативы мощный. Вы уже догадались, что это критерий Манна-Уитни, он же критерий Вилкоксона.
+
+t-критерий неудовлетворителен в нескольких ситуациях:
+
+1. Малый объём выборки. Если форма распределения признака неизвестна или не нормальна, то t-критерий асимптотически точный.
+1. Наличие выбросов. t-критерий неусточив по отношению к выбросам.
+1. Другие цели эксперимента. t-критерий мощный против альтернатив о неравенстве матожиданий, его нельзя применить для построения других гипотез, например, гипотезы о равенстве дисперсий.
+
+В качестве замены t-критерия можно воспользоваться непараметрическим критерием Манна-Уитни (Вилкоксона).
+
+## Смотрите на результаты применения критерия Манна-Уитни, сравниваете с результатами применения t-критерия. Проводите сравнительный анализ критериев с теоретической точки зрения (чем один лучше другого и чем хуже).
+
+```{r}
+df_tests|>dplyr::select(attribute,t_test_unequal_p_value, t_test_equal_p_value, wilcox_test_p_value)|>rmarkdown::paged_table()
+```
+### Наблюдения:
+В случаях, где Манн-Уитни мощнее t-test: BOOK, R_B_COST, OUT_STAT, SF_RATIO, GRADUAT; причиной этого могут быть выбросы.
+В случаях, где Манн-Уитни не мощнее t-test: log-ADD_FEE, NEW10, AVRCOMB, PH_D; могут отсутствовать выбросы, из-за чего t-test оказывается мощнее.
+
+### Теоретическое сравнение:
+Как непараметрический критерий, тест Вилкоксона уступает t-тесту в мощности против альтернативы о неравенстве матожиданий. С другой стороны, тест Вилкоксона устойчив к выбросам, мощный против альтернативы о неравенстве распределения двух случайных величин. Если известно, что две случайные величины имеют одинаковые формы распределения, то тест Вилкоксона автоматически ставит гипотезу о равенстве матожиданий.
+
+## Далее, переходите к критериям, которые умеют сравнивать не только характеристики положения, но и формы распределений (это критерий Колмогорова-Смирнова, например). Для каждого критерия (включая критерий Манна-Уитни), нужно уметь объяснять, что означают столбцы в таблицах результатов критериев. Также, при разных результатах проверки гипотезы о равенстве распределений нужно объяснять, почему один критерий, например, не отверг гипотезу, а другой – отверг.
+
+### Сравнение форм распределения public и private
+
+```{r}
+df_tests|>dplyr::select(attribute, wilcox_test_p_value, ks_test_p_value)|>rmarkdown::paged_table()
+```
+#### Наблюдения:
+Столбец wilcox_test_p_value - p-value из критерия Вилкоксона.
+Столбец ks_test_p_value - p-value из критерия Колмогорова-Смирнова.
+Критерии Вилкоксона и Колмогорова-Смирнова мощны против альтернативы о неравенстве распределения. Критерии не отвергают равенство форм распределений для log-ADD_FEE и BOOK, но отвергают для остальных.
+Среди рассматриваемых признаков нет случаев, когда один критерий отвергает гипотезу, а другой - не отвергает.
+
+---
+
+
+# Об анализе зависимостей
+
+## Вспомните, какие бывают виды зависимостей и чем они измеряются, по каким формулам. Посмотрите на основе pairs plot, какие зависимости у вас в данных. Не забудьте, что при неоднородных данных изучать зависимости имеет смысл только внутри групп по-отдельности.
+
+```{r}
+col_split_mixed<-split(col_I_mixed, col_I_mixed$PPIND)
+names(col_split_mixed)<-c("private", "public")
+col_split_mixed<-lapply(col_split_mixed, function(x){
+  dplyr::select(x, -PPIND)
+})
+colMixed<-names(col_I_mixed)
+colMixed<-colMixed[-length(colMixed)]
+col_split_mixed$private|>rmarkdown::paged_table()
+col_split_mixed$public|>rmarkdown::paged_table()
+```
+### Private:
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_split_mixed$private, aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+#### Наблюдения:
+
+Можно заметить, что NEW10/AVRCOMB разбивается на две части (поскольку AVRCOMB имеет много пропусков и сам AVRCOMB подразумевает разделение на подгруппы).
+
+```{r}
+col_I_sn[col_I_sn$PPIND=="private",]|>filter(NEW10<=50 & !is.na(AVRCOMB))|>rmarkdown::paged_table()
+col_I_sn[col_I_sn$PPIND=="private",]|>filter(NEW10>50 & !is.na(AVRCOMB))|>rmarkdown::paged_table()
+```
+
+Среди частных университетов только один "Delaware University" имеет расхождения между IN_STATE и OUT_STAT. Сейчас идёт такое ценообразование.
+
+##### University of Delaware.
+
+University of Delaware's tuition is \$15,410 for in-state and \$37,930 for out-of-state.
+```{r}
+col_I_sn[col_I_sn$IN_STATE!=col_I_sn$OUT_STAT & col_I_sn$PPIND=="private",]
+```
+
+### Public:
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_split_mixed$public, aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+#### Наблюдения
+
+На pairs plot можно заметить выбросы в признаках log-ADD_FEE, OUT_STAT, NEW10, которые влияют на коэффициент корреляции Пирсона. 
+
+
+## Начинать нужно с анализа линейных зависимостей. На основе коэффициента корреляции Пирсона нужно проинтерпретировать значимые зависимости. При наличие в данных пропусков обратите внимание на выбор между casewise and pairwise MD deletion (в чем разница, какие недостатки и достоинства у этих вариантов?).
+
+Учитывая ограниченный объём данных, тем более после разделения по группам (например, наименьшая в private размера 29 без NA), следует воспользоваться pairwise. Более того, из-за признака AVRCOMB использование casewise неявно рассматривает корреляцию в другой подгруппе. Минусом pairwise является то, что из-за попарной проверки могут учитываться данные, пропущенные в других парах.
+
+---
+## Затем можно переходить к ранговым коэффициентам корреляции. Расскажите, при каких условиях коэффициенты корреляции Пирсона и Спирмена примерно равны. Приведите примеры, когда один из них больше другого и наоборот. Сравните результаты на ваших данных. Если при сравнении будут найдены заметные различия в результатах, то попробуйте объяснить причину.
+
+```{r}
+compute_corr <- function(group_data) {
+  corr_pairwise_pearson <- cor(group_data, use = "pairwise.complete.obs", method = "pearson")
+  corr_pairwise_spearman <- cor(group_data, use = "pairwise.complete.obs", method = "spearman")
+  return(list(pairwise_pearson = corr_pairwise_pearson, pairwise_spearman = corr_pairwise_spearman))
+}
+
+make_corr_plots <- function(corr_list, group) {
+  p1 <- ggcorrplot(corr_list$pairwise_pearson,
+                   lab = TRUE,
+                   lab_size = 1.9,
+                   colors = c("blue", "white", "red"),
+                   title = paste("Pairwise Cor Pearson Matrix for Group", group),
+                   ggtheme = theme_minimal() +
+                     theme(plot.title = element_text(size = 6)) # Reduced title size
+  )
+  p2 <- ggcorrplot(corr_list$pairwise_spearman,
+                   lab = TRUE,
+                   lab_size = 1.9,
+                   colors = c("blue", "white", "red"),
+                   title = paste("Pairwise Cor Spearman Matrix for Group", group),
+                   ggtheme = theme_minimal() +
+                     theme(plot.title = element_text(size = 6)) # Reduced title size
+  )
+  grid.arrange(p1, p2, ncol = 2, widths = c(4, 4),  # Adjust widths here
+               padding = unit(1, "cm"))  # Add padding for extra space
+}
+```
+
+```{r}
+library(ggcorrplot)
+for (group in names(col_split_mixed)) {
+    group_data <- col_split_mixed[[group]]
+    cor_matrix <- compute_corr(group_data)
+    plot_pearson_spearman <- make_corr_plots(cor_matrix, group)
+    print(plot_pearson_spearman)
+}
+```
+### Наблюдения, различия между коэффициентом корреляции Пирсона и Спирмена:
+
+#### Private:
+Пирсон мощнее Спирмена: 
+
+* OUT_STAT/R_B_COST - почти линейный график и выбросы,
+* SF_RATIO/BOOK - выбросы при данных, похожих на облако. 
+* R_B_COST/PH_D - выбросы усиливают линейную зависимость, 
+* R_B_COST/GRADUAT - выбросы усиливают линейную зависимость.
+
+
+Спирмен мощнее Пирсона: 
+
+* OUT_STAT/NEW10 - нелинейные данные, 
+* R_B_COST/BOOK - выбросы, 
+* log-ADD_FEE/OUT_STAT - выбросы, 
+* BOOK/GRADUAT - выбросы.
+
+#### Public:
+Пирсон мощнее Спирмена: 
+
+* R_B_COST/log-ADD_FEE - выбросы,  
+* NEW10/log-ADD_FEE - выбросы усиливают линейную зависимость.
+
+Спирмен мощнее Пирсона: 
+
+* OUT_STAT/log-ADD_FEE - выбросы, 
+* AVRCOMB/NEW10 - выбросы уменьшают коэффициент корреляции Пирсона.
+
+### Теоретическое объяснение (сравнение коэффициента корреляции Пирсона и Спирмена):
+В тех ячейках, где совпадают или близки коэффициенты корреляции Пирсона и Спирмена почти нет выбросов и у scatterplot эллиптическая структура, если Пирсон значительно больше Спирмена - есть заметные выбросы. Спирмен может быть больше Пирсона, если выбросы имеются, но их положение не очень значимо относительно других наблюдений.
+
+Значительные корреляции:
+
+### Private: 
+
+* Выраженный блок GRADUAT, PH_D, SF_RATIO, AVRCOMB, NEW10, OUT_STAT.
+
+### Public:
+
+* Блок NEW10, AVRCOMB, PH_D, GRADUAT;
+* Пара NEW10, R_B_COST - нельзя сказать (по смыслу) о зависимости переменных. Могут зависеть от внешней переменной (скрытого фактора). 
+
+## Проинтерпретируйте найденные корреляции - можно ли сказать, что является причиной, что следствием. Если есть какая-то другая причина, которая влияет одновременно на оба признака (скрытый фактор), то попробуйте убрать его влияние с помощью частных корреляций.
+
+### Private: {.tabset .tabset-fade .tabset-pills}
+
+#### R_B_COST, SF_RATIO (hidden OUT_STAT)
+
+Для R_B_COST и SF_RATIO выберем следующие скрытые факторы:
+
+* OUT_STAT - стоимость обучения связана с ценой проживания R_B_COST и качеством образования, что влияет на SF_RATIO.
+
+
+Поставим уровень значимости alpha = 0.05
+
+```{r}
+res<-pcor(col_split_mixed$private[,c("R_B_COST", "SF_RATIO", "OUT_STAT")])
+res$estimate["R_B_COST", "SF_RATIO"]
+res$p.value["R_B_COST", "SF_RATIO"]
+```
+
+estimate - получившаяся частная корреляция. Замечаем, что без OUT_STAT коэффициент корреляции Пирсона близок к 0, а p-value ~ 0.90. 
+
+#### AVRCOMB/BOOK (hidden OUT_STAT, NEW10)
+
+* Для AVRCOMB/BOOK можно выделить OUT_STAT по тем же причинам, что и в предыдущем примере и NEW10, так как они влияют на AVRCOMB
+
+```{r}
+group_1<-c("AVRCOMB", "BOOK")
+res<-pcor(na.omit(col_split_mixed$private[,c(group_1, "NEW10")]))
+res
+```
+
+```{r}
+res_2<-pcor(na.omit(col_split_mixed$private[,c(group_1, "OUT_STAT", "NEW10")]))
+res_2
+```
+
+Получаем, что частная корреляция AVRCOMB/BOOK больше зависит от NEW10, чем от NEW10/OUT_STAT.
+
+### Public: {.tabset .tabset-fade .tabset-pills}
+
+#### NEW10, R_B_COST (hidden OUT_STAT)
+
+OUT_STAT - можно предположить, что цена обучения влияет на NEW10, R_B_COST.
+```{r}
+group<-c("NEW10", "R_B_COST")
+res<-pcor(na.omit(col_split_mixed$public[,c(group,"OUT_STAT")]), method="pearson")
+res
+```
+
+Из estimate и p.value - отвергаем OUT_STAT как скрытый фактор. 
+
+#### GRADUAT, R_B_COST (hidden OUT_STAT, NEW10)
+
+* Зависимость между GRADUAT и R_B_COST. Скрытые факторы: OUT_STAT и NEW10.
+
+```{r}
+group_2<-c("GRADUAT", "R_B_COST")
+res_1<-pcor(na.omit(col_split_mixed$public[,c(group_2, "OUT_STAT", "NEW10")]), method = "spearman")
+res_1
+```
+Коэффициент корреляции Спирмена понизился, p-value ~ 0.22. Не отвергаем влияния совокупности скрытых факторов OUT_STAT и NEW10.
+
+#### OUT_STAT, PH_D (hidden NEW10, SF_RATIO)
+
+* Коэффициент корреляции Спирмена OUT_STAT и PH_D равен 0.24, хотя визуально кажется, что они коррелируют сильнее. Скрытыми факторами могут быть NEW10, так как NEW10 отражает престижность вузов (NEW10 может зависеть от PH_D, поскольку лучшие студенты хотят найти лучших преподавателей), а OUT_STAT зависит от NEW10 и PH_D.
+
+```{r}
+group_3<-c("PH_D", "OUT_STAT")
+res_3<-pcor(na.omit(col_split_mixed$public[,c(group_3, "NEW10")]), method = "spearman")
+res_3
+```
+
+Не отвергаем влияние NEW10 на PH_D и OUT_STAT. Можно также рассмотреть частную корреляцию от SF_RATIO, так как это отражает (неявно) процент PH_D и стоимость OUT_STAT за счёт студентов и профессоров.
+
+```{r}
+res_4<-pcor(na.omit(col_split_mixed$public[,c(group_3, "SF_RATIO")]), method = "spearman")
+res_4
+```
+
+Отвергаем влияние SF_RATIO как скрытого фактора. Не отвергаем, что PH_D скрытый фактор относительно SF_RATIO/OUT_STAT.
+
+
+# Регрессионный анализ
+
+Задача: провести регрессию качества поступающих студентов (NEW10) на остальные признаки. С помощью пошаговой регрессии уменьшить число признаков
+
+```{r}
+library(lm.beta)
+```
+
+## Подготовка данных
+
+### Выбор признаков
+Рассматриваемые наблюдения:
+1. PPIND (для группировки) 
+2. ADD_FEE - дополнительные выплаты
+3. BOOK - плата за бронирование
+4. NEW10 (зависимая переменная, также NEW25) - студентов из топ 10% своей старшей школы
+5. AVRCOMB - средний комбинированный балл
+6. SF_RATIO - Student/Faculty ratio
+7. PH_D - Pct. of faculty with Ph.D.'s 
+8. GRADUAT - Graduation rate
+9. R_B_COST - Room and board costs
+10. OUT_STAT - Out-of-state tuition
+
+
+
+```{r}
+colNames<-c("...1", "ADD_FEE", "BOOK", "R_B_COST","OUT_STAT","NEW10","AVRCOMB","SF_RATIO","PH_D","GRADUAT","PPIND")
+col_I_regr<-col_I_sn[c(colNames)]
+col_I_regr<-col_I_regr|>mutate(ADD_FEE = log(ADD_FEE))|>rename(log_ADD_FEE=ADD_FEE)
+col_I_regr_split<-split(col_I_regr, col_I_regr$PPIND)
+```
+
+```{r}
+# Автор: -Николай-
+library(GGally)
+library(ggplot2)
+library(dplyr)
+library(rlang)
+
+plot_numeric_pairs <- function(df, title = NULL, highlight = NULL) {
+  # Выбираем имена всех numeric-столбцов
+  numeric_cols <- df %>% dplyr::select(dplyr::where(is.numeric)) %>% names()
+  
+  # Функция для нижних панелей с возможностью выделения точек разными цветами
+  custom_points <- function(data, mapping, ...) {
+    # Отрисовываем базовые точки синим цветом
+    p <- ggplot(data, mapping) +
+      geom_point(alpha = 0.6, size = 2, color = "blue", ...)
+    
+    if (!is.null(highlight)) {
+      # Если highlight не является списком, превращаем его в список с одним элементом и цветом "red"
+      if (!is.list(highlight) || inherits(highlight, "data.frame")) {
+        highlight <- list(red = highlight)
+      }
+      
+      # Получаем имена переменных из mapping с помощью as_label()
+      xvar <- as_label(mapping$x)
+      yvar <- as_label(mapping$y)
+      
+      # Для каждого набора точек в списке highlight
+      for (col in names(highlight)) {
+        hl_df <- highlight[[col]]
+        # Проверяем, что hl_df содержит нужные переменные
+        if(all(c(xvar, yvar) %in% names(hl_df))) {
+          # Находим совпадающие строки между данными панели и hl_df
+          data_highlight <- semi_join(data, hl_df, by = c(xvar, yvar))
+          # Накладываем выделенные точки нужного цвета
+          p <- p + geom_point(data = data_highlight, mapping = mapping,
+                              alpha = 0.6, size = 2, color = col, ...)
+        }
+      }
+    }
+    p
+  }
+  
+  # Строим матрицу парных графиков
+  ggpairs(df,
+          columns      = numeric_cols,
+          columnLabels = numeric_cols,
+          title        = title,
+          upper        = list(continuous = wrap("cor", size = 3)),
+          lower        = list(continuous = custom_points),
+          diag         = list(continuous = wrap("barDiag", bins = 10, fill = "lightblue", color = "black"))
+  ) +
+    theme_bw() +
+    theme(
+      strip.text.x  = element_text(size = 7, angle = 0, hjust = 0),
+      strip.text.y  = element_text(size = 8, angle = 0, hjust = 0),
+      axis.text = element_text(size = 6),
+      plot.margin   = unit(c(1, 2, 1, 1), "cm")
+    )
+}
+```
+
+## Анализ частных вузов
+
+```{r}
+pr_data<-col_I_regr_split$private
+print(paste0("Число наблюдений: ", dim(pr_data)[1]))
+colSums(is.na(pr_data))
+```
+
+Много пропусков в AVRCOMB
+```{r}
+plot_numeric_pairs(pr_data, "Частные вузы")
+```
+
+### Выбросы "на глаз"
+
+```{r}
+outlier_pr_book_eye<-pr_data[pr_data$BOOK>875,]
+outlier_pr_out_eye<-pr_data[pr_data$OUT_STAT<5000,]
+outlier_pr_book_eye
+outlier_pr_out_eye
+```
+
+```{r}
+plot_numeric_pairs(pr_data, "Частные вузы", highlight = list(red=outlier_pr_book_eye, black=outlier_pr_out_eye))
+```
+
+### Построение линейной регрессии
+
+Здесь условия из .tsk файла
+
+Стоит помнить, что у AVRCOMB много NA. В такой модели не будет выбросов "на глаз"
+```{r}
+model_pr_new <- lm(NEW10 ~ AVRCOMB + BOOK + log_ADD_FEE + R_B_COST + PH_D + SF_RATIO + GRADUAT + OUT_STAT,
+           data = pr_data)|>lm.beta()
+```
+
+### Интерпретация результатов
+
+```{r}
+summary(model_pr_new)
+```
+
+
+### Построение доверительных эллипсоидов
+
+```{r}
+
+# Автор: -Вадим-
+create_ellipse <- function(center, cov_matrix, level = 0.95, n = 100) {
+  # Уровень доверия преобразуем в квантиль хи-квадрат
+  chi_sq <- qchisq(level, df = 2)
+
+  # Вычисляем собственные значения и собственные векторы
+  eigen_res <- eigen(cov_matrix)
+
+  # Углы для точек эллипса
+  angles <- seq(0, 2 * pi, length.out = n)
+
+  # Радиусы эллипса (основаны на собственных значениях)
+  radii <- sqrt(chi_sq * eigen_res$values)
+  # Создаем эллипс в стандартной ориентации
+  ellipse_points <- cbind(radii[1] * cos(angles), radii[2] * sin(angles))
+
+  # Поворачиваем эллипс в соответствии с собственными векторами
+  ellipse_points <- t(eigen_res$vectors %*% t(ellipse_points))
+
+  # Добавляем смещение
+  ellipse_points <- sweep(ellipse_points, 2, center, "+")
+
+  ellipse_points <- as.data.frame(ellipse_points)
+  colnames(ellipse_points) <- c("x", "y") # Assign column names 
+
+  return(ellipse_points)
+}
+
+plot_confidence_ellipse <- function(model, which.coeff = c(2, 4), level = 0.95, 
+                               xlab = NULL, ylab = NULL, main = "Доверительный эллипс",
+                               margin = 0.1) {
+  
+  # Проверка на то, что переданы именно 2 коэффициента
+  if (length(which.coeff) != 2) {
+    stop("which.coeff должен содержать ровно 2 индекса коэффициентов")
+  }
+  
+  # Получение необходимых данных из модели
+  model_summary <- summary(model)
+  coef_estimates <- coef(model)
+  сov_matrix <- model_summary$cov.unscaled
+  
+  # Проверка допустимости индексов коэффициентов
+  if (any(which.coeff > length(coef_estimates))) {
+    stop("Индекс коэффициента превышает их количество в модели")
+  }
+  
+  # Создание эллипса
+  ellipse_points <- create_ellipse(
+    center = coef_estimates[which.coeff], 
+    cov_matrix = сov_matrix[which.coeff, which.coeff], 
+    level = level
+  )
+  
+  # Определение границ графика с учетом отступов
+  x_min <- min(ellipse_points$x)
+  x_max <- max(ellipse_points$x)
+  y_min <- min(ellipse_points$y)
+  y_max <- max(ellipse_points$y)
+  
+  x_range <- c(x_min - margin * (x_max - x_min), x_max + margin * (x_max - x_min))
+  y_range <- c(y_min - margin * (y_max - y_min), y_max + margin * (y_max - y_min))
+  
+  # Если не указаны названия осей, используем имена коэффициентов
+  if (is.null(xlab)) {
+    xlab <- names(coef_estimates)[which.coeff[1]]
+  }
+  if (is.null(ylab)) {
+    ylab <- names(coef_estimates)[which.coeff[2]]
+  }
+  
+  # Создаем data.frame с центральной точкой
+  center_point <- data.frame(
+    x = coef_estimates[which.coeff[1]],
+    y = coef_estimates[which.coeff[2]]
+  )
+  
+  # Создаем объект ggplot
+  p <- ggplot2::ggplot() +
+    # Добавляем эллипс
+    ggplot2::geom_path(data = ellipse_points, ggplot2::aes(x = x, y = y), color = "blue") +
+    # Добавляем точку с оценкой коэффициента
+    ggplot2::geom_point(data = center_point, ggplot2::aes(x = x, y = y), color = "red", size = 3) +
+    # Добавляем вертикальную и горизонтальную линии через центр
+    ggplot2::geom_vline(xintercept = center_point$x, linetype = "dashed", color = "gray") +
+    ggplot2::geom_hline(yintercept = center_point$y, linetype = "dashed", color = "gray") +
+    # Настраиваем оси и заголовок
+    ggplot2::xlim(x_range) +
+    ggplot2::ylim(y_range) +
+    ggplot2::labs(
+      x = xlab,
+      y = ylab,
+      title = main
+    ) +
+    ggplot2::theme_light()
+  
+  return(p)
+}
+
+```
+
+
+```{r}
+plot_confidence_ellipse(model_pr_new, c(3, 2), level=0.95)
+```
+
+На примере этой пары: AVRCOMB и SF_RATIO значимы
+
+
+### Влияние корреляции на качество оценки
+
+На примере, PH_D и OUT_STAT
+```{r}
+phcor<-cor(pr_data$PH_D, pr_data$OUT_STAT, use = "complete.obs")
+
+y <- pr_data$NEW10
+X <- pr_data[, c("PH_D", "OUT_STAT")]
+
+model_cor <- lm(NEW10 ~ PH_D + OUT_STAT, data = pr_data)
+sum_cor<-summary(model_cor)
+sum_cor
+
+# Оцениваем дисперсию ошибок
+sigma_s_squared <- (sum_cor$sigma/sd(y, na.rm=TRUE))^2 #  оценка дисперсии ошибок
+# Размер выборки
+n <- nobs(model_cor)
+
+R_XX<-cor(X, use="complete.obs")
+print("Inverse R_XX")
+solve(R_XX)
+cov_beta<-sigma_s_squared/n*solve(R_XX)
+print("Cov_beta:")
+cov_beta
+
+print("Determinant")
+detcoef<-1/(1-phcor^2)
+detcoef
+print("-rho/(1-rho^2)")
+-phcor*detcoef
+phcor
+```
+
+### Множественная корреляция
+
+```{r}
+
+# Автор: -Евгений-
+
+# Вычисление множественной корреляции
+calc_multicollinearity <- function(var, data) {
+  X <- as.matrix(data[, setdiff(names(data), var)])  # Матрица остальных регрессоров
+  y <- as.matrix(data[[var]])  # Текущий регрессор как зависимая переменная
+  model <- lm(y ~ X) 
+  sqrt(summary(model)$r.squared)  
+}
+
+calc_partial_correlation <- function(var, data) {
+  # Остатки регрессии текущего регрессора на остальные регрессоры
+  data<-data|>na.omit()
+  model_X <- lm(data[[var]] ~ ., data = data[, !names(data) %in% c(var, "NEW10")])
+  res_X <- residuals(model_X)
+  
+  # Остатки регрессии Y на остальные регрессоры
+  model_Y <- lm(NEW10 ~ ., data = data[, !names(data) %in% var])
+  res_Y <- residuals(model_Y)
+  
+  cor(res_X, res_Y, use = "complete.obs")  # Корреляция остатков
+}
+
+regressors <- setdiff(names(pr_data), c("...1", "PPIND", "NEW10"))
+regressors_full<-c(regressors, "NEW10")
+redundancy_table <- data.frame(
+  Регрессор = regressors,
+  Множественная_корреляция = sapply(regressors, calc_multicollinearity, pr_data[, regressors_full]),
+  Частная_корреляция = sapply(regressors, calc_partial_correlation, pr_data[,regressors_full])
+)
+
+print(redundancy_table)
+```
+
+Сильно положительные множественные корреляции вместе с частными корреляциями, следует сравнить по отдельности
+
+```{r}
+regr_high <- c("R_B_COST", "OUT_STAT", "AVRCOMB", "SF_RATIO", "PH_D", "GRADUAT")
+regr_fullhigh<-c(regr_high, "NEW10")
+redund_high <- data.frame(
+  Регрессор = regr_high,
+  Множественная_корреляция = sapply(regr_high, calc_multicollinearity, pr_data[, regr_fullhigh]),
+  Частная_корреляция = sapply(regr_high, calc_partial_correlation, pr_data[,regr_fullhigh])
+)
+
+print(redund_high)
+```
+
+Видно, что PH_D имеет высокую множественную корреляцию и низкую частную корреляцию, поэтому выбросим её
+
+```{r}
+model_pr_noPhD<-lm(NEW10 ~ AVRCOMB + BOOK + log_ADD_FEE + R_B_COST + SF_RATIO + GRADUAT + OUT_STAT, data=pr_data)|>lm.beta()
+summary(model_pr_noPhD)
+AIC(model_pr_noPhD)
+```
+
+```{r}
+regressors <- setdiff(names(pr_data), c("...1", "PPIND", "NEW10", "PH_D"))
+regressors_full<-c(regressors, "NEW10")
+redundancy_table <- data.frame(
+  Регрессор = regressors,
+  Множественная_корреляция = sapply(regressors, calc_multicollinearity, pr_data[, regressors_full]),
+  Частная_корреляция = sapply(regressors, calc_partial_correlation, pr_data[,regressors_full])
+)
+
+print(redundancy_table)
+```
+
+Попробуем убрать BOOK (из-за низкой частной корреляции) и GRADUAT
+
+```{r}
+model_pr1<-lm(NEW10 ~ AVRCOMB + log_ADD_FEE + R_B_COST + SF_RATIO + OUT_STAT, data=pr_data)|>lm.beta()
+summary(model_pr1)
+AIC(model_pr1)
+```
+
+```{r}
+regressors <- setdiff(names(pr_data), c("...1", "PPIND", "NEW10", "PH_D", "BOOK", "GRADUAT"))
+regressors_full<-c(regressors, "NEW10")
+redundancy_table <- data.frame(
+  Регрессор = regressors,
+  Множественная_корреляция = sapply(regressors, calc_multicollinearity, pr_data[, regressors_full]),
+  Частная_корреляция = sapply(regressors, calc_partial_correlation, pr_data[,regressors_full])
+)
+
+print(redundancy_table)
+```
+
+```{r}
+AIC(model_pr_new)
+AIC(model_pr_noPhD)
+AIC(model_pr1)
+```
+
+### OLS. Пошаговый AIC.
+
+```{r}
+library(olsrr)
+backward_aic<-ols_step_backward_aic(model_pr_new, progress=TRUE, details=TRUE)
+forward_aic<-ols_step_forward_aic(model_pr_new, progress=TRUE, details=TRUE)
+```
+
+
+Получили, что forward_aic имеет лучшее значение, чем backward_aic, то есть, является более хорошей линейной моделью. К тому же, у forward_aic меньше признаков.
+
+#### Forward
+
+```{r}
+forward_aic
+```
+
+#### Backward
+
+```{r}
+backward_aic
+```
+
+Здесь можно сравнить по R^2, например.
+
+```{r}
+model_pr_new<-lm(NEW10 ~ AVRCOMB + SF_RATIO, data=pr_data)|>lm.beta()
+summary(model_pr_new)
+AIC(model_pr_new)
+```
+
+
+### Построение и анализ графиков
+
+```{r}
+shapiro.test(residuals(model_pr_new))
+```
+
+```{r}
+plot(model_pr_new, 1:5)
+```
+
+У 15-го сильное плечо (ещё видно, как линия идёт к ней)
+
+
+### Поиск outliers по Residuals vs. Deleted Residuals
+
+```{r}
+plot(residuals(model_pr_new), rstudent(model_pr_new))
+```
+
+Все значения не так сильно отличаются, так что посмотрим на outliers по Куку и Махаланобису
+
+### Поиск outliers по Cook и Mahalanobis
+
+#### Cook
+
+```{r}
+# Рассчитаем Cook's distance для модели с логарифмами
+cooks_vals <- cooks.distance(model_pr_new)
+cook_df <- data.frame(
+  obs  = seq_along(cooks_vals),
+  cook = cooks_vals
+) %>%
+  arrange(desc(cook))
+# Создадим вектор x для индексов (уже упорядоченных)
+x <- seq_len(nrow(cook_df))
+
+
+plot(
+  x, cook_df$cook,
+  type  = "h",
+  main  = "Cook's Distance",
+  xlab  = "Номер наблюдения (из исходного df)",
+  ylab  = "Cook's distance",
+  xaxt  = "n"                # убираем автоматическую ось X
+)
+axis(side = 1, at = x, labels = cook_df$obs, las = 2, cex.axis = 0.8)
+abline(h = 1, col = "red", lty = 2)
+```
+
+#### Mahalanobis
+
+```{r}
+# 7.2. Расстояние Махаланобиса (Mahalanobis Distance)
+# Расстояние Махаланобиса в пространстве предикторов (регрессоров)
+mahalanobis_distance <- mahalanobis(model.matrix(model_pr_new)[,-1],
+                                     center = colMeans(model.matrix(model_pr_new)[,-1]),
+                                     cov = cov(model.matrix(model_pr_new)[,-1]))
+mah_df <- data.frame(
+  obs  = seq_along(mahalanobis_distance),
+  mah = mahalanobis_distance
+) %>%
+  arrange(desc(mah))
+# Создадим вектор x для индексов (уже упорядоченных)
+x <- seq_len(nrow(mah_df))
+alpha<-0.05
+
+# Scatter plot для расстояния Махаланобиса
+plot(
+  x, mah_df$mah,
+  type  = "h",
+  main  = "Mahalanobis's Distance",
+  xlab  = "Номер наблюдения (из исходного df)",
+  ylab  = "Mahalanobis's distance",
+  xaxt  = "n"                
+)
+axis(side = 1, at = x, labels = mah_df$obs, las = 2, cex.axis = 0.8)
+abline(h = qchisq(p = 1 - alpha, df = nrow(mah_df)), col = "red", lty = 2)
+```
+
+Не нашёл outliers (в случае AVRCOMB)
+
+### Итог: прогнозирование
+
+```{r}
+set.seed(456) # Другое зерно для генерации новых значений
+max_AVRCOMB<-max(pr_data$AVRCOMB, na.rm=TRUE)
+max_SF_RATIO<-max(pr_data$SF_RATIO, na.rm=TRUE)
+new_data <- data.frame(
+  AVRCOMB = max_AVRCOMB + 1:8,
+  SF_RATIO = max_SF_RATIO + 1:8
+)
+
+# Прогнозируем значение NEW10
+predicted_values <- predict(model_pr_new, newdata = new_data)
+cat("Прогнозируемые значения NEW10:\n")
+print(predicted_values)
+
+# 6. Доверительные и предсказательные интервалы
+
+# Доверительный интервал (confidence interval) для среднего значения NEW10
+confidence_intervals <- predict(model_pr_new, newdata = new_data, interval = "confidence", level = 0.95)
+print("Доверительные интервалы (95%):\n")
+print(confidence_intervals)
+
+# Предсказательный интервал (prediction interval) для отдельного наблюдения NEW10
+prediction_intervals <- predict(model_pr_new, newdata = new_data, interval = "prediction", level = 0.95)
+print("Предсказательные интервалы (95%):\n")
+print(prediction_intervals)
+
+# Создаем data.frame для прогнозов и интервалов
+predictions_df <- data.frame(
+  AVRCOMB = new_data$AVRCOMB,
+  SF_RATIO = new_data$SF_RATIO,
+  Predicted = predicted_values,
+  Lower_Conf = confidence_intervals[, "lwr"],
+  Upper_Conf = confidence_intervals[, "upr"],
+  Lower_Pred = prediction_intervals[, "lwr"],
+  Upper_Pred = prediction_intervals[, "upr"]
+)
+predictions_df
+# Визуализация (только для демонстрации, нужен более сложный график для нескольких предикторов)
+ggplot(predictions_df, aes(x = 1:nrow(predictions_df), y = Predicted)) + # Условная ось x, т.к. несколько предикторов
+  geom_point() +
+  geom_errorbar(aes(ymin = Lower_Conf, ymax = Upper_Conf), color = "blue", width = 0.2) + # Доверительные интервалы
+  geom_errorbar(aes(ymin = Lower_Pred, ymax = Upper_Pred), color = "red", width = 0.2) + # Предсказательные интервалы
+  labs(title = "Прогнозы NEW10 с доверительными и предсказательными интервалами",
+       x = "Прогноз (номер)",
+       y = "NEW10") +
+  scale_x_continuous(breaks = 1:nrow(predictions_df)) + # Подписи для оси x
+  theme_bw()
+  # annotate("text", x = 1, y = max(predictions_df$Upper_Pred) * 0.9, label = "Синие: Доверительные интервалы", color = "blue", hjust = 0) +
+  # annotate("text", x = 1, y = max(predictions_df$Upper_Pred) * 0.8, label = "Красные: Предсказательные интервалы", color = "red", hjust = 0)
+```
+
+## Анализ общественных вузов
+
+```{r}
+pub_data<-col_I_regr_split$public
+print(paste0("Число наблюдений: ", dim(pub_data)[1]))
+colSums(is.na(pub_data))
+```
+
+Много пропусков в AVRCOMB
+```{r}
+plot_numeric_pairs(pub_data, "Общественные вузы")
+```
+
+### Выбросы "на глаз"
+
+```{r}
+outlier_pub_out_eye<-pub_data[pub_data$OUT_STAT>14001,]
+outlier_pub_out_eye
+```
+
+```{r}
+plot_numeric_pairs(pub_data, "Общественные вузы", highlight = list(red=outlier_pub_out_eye))
+```
+
+### Построение линейной регрессии
+
+Здесь условия из .tsk файла
+
+Стоит помнить, что у AVRCOMB много NA. В такой модели не будет выбросов "на глаз"
+```{r}
+model_pub_new <- lm(NEW10 ~ AVRCOMB + BOOK + log_ADD_FEE + R_B_COST + PH_D + SF_RATIO + GRADUAT + OUT_STAT,
+           data = pub_data)|>lm.beta()
+```
+
+### Интерпретация результатов
+
+```{r}
+summary(model_pub_new)
+```
+
+
+### Построение доверительных эллипсоидов
+
+```{r}
+plot_confidence_ellipse(model_pub_new, c(3, 2), level=0.95)
+```
+
+На примере этой пары: AVRCOMB и SF_RATIO значимы
+
+### Множественная корреляция
+
+```{r}
+regressors <- setdiff(names(pub_data), c("...1", "PPIND", "NEW10"))
+regressors_full<-c(regressors, "NEW10")
+redundancy_table <- data.frame(
+  Регрессор = regressors,
+  Множественная_корреляция = sapply(regressors, calc_multicollinearity, pub_data[, regressors_full]),
+  Частная_корреляция = sapply(regressors, calc_partial_correlation, pub_data[,regressors_full])
+)
+
+print(redundancy_table)
+```
+
+Можем убрать OUT_STAT и GRADUAT
+
+```{r}
+AIC(model_pub_new)
+```
+
+```{r}
+model_pub1 <- lm(NEW10 ~ AVRCOMB + BOOK + log_ADD_FEE + R_B_COST + PH_D + SF_RATIO,
+           data = pub_data)|>lm.beta()
+summary(model_pub1)
+AIC(model_pub1)
+```
+
+AIC увеличился, а значит предпочтительнее выбирать model_pub_new.
+
+```{r}
+regr_high <- setdiff(names(pub_data), c("...1", "PPIND", "NEW10", "OUT_STAT", "GRADUAT"))
+regr_fullhigh<-c(regr_high, "NEW10")
+redund_high <- data.frame(
+  Регрессор = regr_high,
+  Множественная_корреляция = sapply(regr_high, calc_multicollinearity, pub_data[, regr_fullhigh]),
+  Частная_корреляция = sapply(regr_high, calc_partial_correlation, pub_data[,regr_fullhigh])
+)
+
+print(redund_high)
+```
+
+### OLS. Пошаговый AIC.
+
+```{r}
+library(olsrr)
+backward_aic_pub<-ols_step_backward_aic(model_pub_new, progress=TRUE, details=TRUE)
+forward_aic_pub<-ols_step_forward_aic(model_pub_new, progress=TRUE, details=TRUE)
+```
+
+
+Получили совпадение результатов пошагового forward и пошагового backward.
+
+#### Forward
+
+```{r}
+forward_aic_pub
+```
+
+#### Backward
+
+```{r}
+backward_aic_pub
+```
+
+
+```{r}
+model_pub_new<-lm(NEW10 ~ AVRCOMB + BOOK + log_ADD_FEE + R_B_COST, data=pub_data)|>lm.beta()
+summary(model_pub_new)
+AIC(model_pub_new)
+```
+
+
+### Построение и анализ графиков
+
+```{r}
+shapiro.test(residuals(model_pub_new))
+```
+
+```{r}
+plot(model_pub_new)
+```
+
+На первом графике Residuals vs. Fitted заметен сильный изгиб (матожидание ошибки ненулевое)
+
+### Поиск outliers по Residuals vs. Deleted Residuals
+
+```{r}
+plot(residuals(model_pub_new), rstudent(model_pub_new))
+```
+
+Все значения не так сильно отличаются, так что посмотрим на outliers по Куку и Махаланобису
+
+### Поиск outliers по Cook и Mahalanobis
+
+#### Cook
+
+```{r}
+# Рассчитаем Cook's distance для модели с логарифмами
+cooks_vals <- cooks.distance(model_pub_new)
+cook_df <- data.frame(
+  obs  = seq_along(cooks_vals),
+  cook = cooks_vals
+) %>%
+  arrange(desc(cook))
+# Создадим вектор x для индексов (уже упорядоченных)
+x <- seq_len(nrow(cook_df))
+
+
+plot(
+  x, cook_df$cook,
+  type  = "h",
+  main  = "Cook's Distance",
+  xlab  = "Номер наблюдения (из исходного df)",
+  ylab  = "Cook's distance",
+  xaxt  = "n"                # убираем автоматическую ось X
+)
+axis(side = 1, at = x, labels = cook_df$obs, las = 2, cex.axis = 0.8)
+abline(h = 1, col = "red", lty = 2)
+```
+
+#### Mahalanobis
+
+```{r}
+# 7.2. Расстояние Махаланобиса (Mahalanobis Distance)
+# Расстояние Махаланобиса в пространстве предикторов (регрессоров)
+mahalanobis_distance <- mahalanobis(model.matrix(model_pub_new)[,-1],
+                                     center = colMeans(model.matrix(model_pub_new)[,-1]),
+                                     cov = cov(model.matrix(model_pub_new)[,-1]))
+
+mah_df <- data.frame(
+  obs  = seq_along(mahalanobis_distance),
+  mah = mahalanobis_distance
+) %>%
+  arrange(desc(mah))
+# Создадим вектор x для индексов (уже упорядоченных)
+x <- seq_len(nrow(mah_df))
+alpha<-0.05
+
+# Scatter plot для расстояния Махаланобиса
+plot(
+  x, mah_df$mah,
+  type  = "h",
+  main  = "Mahalanobis's Distance",
+  xlab  = "Номер наблюдения (из исходного df)",
+  ylab  = "Mahalanobis's distance",
+  xaxt  = "n"                
+)
+axis(side = 1, at = x, labels = mah_df$obs, las = 2, cex.axis = 0.8)
+abline(h = qchisq(p = 1 - alpha, df = nrow(mah_df)), col = "red", lty = 2)
+```
+
+Не нашёл outliers (в случае AVRCOMB)
+
+### Итог: прогнозирование
+
+```{r}
+set.seed(456) # Другое зерно для генерации новых значений
+max_AVRCOMB<-max(pub_data$AVRCOMB, na.rm=TRUE)
+max_BOOK<-max(pub_data$BOOK, na.rm=TRUE)
+max_log_ADD_FEE<-max(pub_data$log_ADD_FEE, na.rm=TRUE)
+max_R_B_COST<-max(pub_data$R_B_COST, na.rm=TRUE)
+new_data <- data.frame(
+  AVRCOMB = max_AVRCOMB - seq(50, 120, by = 10),
+  BOOK = max_BOOK - seq(10, 80, by = 10),
+  log_ADD_FEE = max_log_ADD_FEE - seq(0.01, 0.08, by=0.01),
+  R_B_COST = max_R_B_COST - seq(10, 80, by=10)
+)
+# Прогнозируем значение NEW10
+predicted_values <- predict(model_pub_new, newdata = new_data)
+cat("Прогнозируемые значения NEW10:\n")
+print(predicted_values)
+
+# 6. Доверительные и предсказательные интервалы
+
+# Доверительный интервал (confidence interval) для среднего значения NEW10
+confidence_intervals <- predict(model_pub_new, newdata = new_data, interval = "confidence", level = 0.95)
+print("Доверительные интервалы (95%):\n")
+print(confidence_intervals)
+
+# Предсказательный интервал (prediction interval) для отдельного наблюдения NEW10
+prediction_intervals <- predict(model_pub_new, newdata = new_data, interval = "prediction", level = 0.95)
+print("Предсказательные интервалы (95%):\n")
+print(prediction_intervals)
+
+
+predictions_df <- data.frame(
+  AVRCOMB = new_data$AVRCOMB,
+  BOOK = new_data$BOOK,
+  log_ADD_FEE = new_data$log_ADD_FEE,
+  R_B_COST = new_data$R_B_COST,
+  Predicted = predicted_values,
+  Lower_Conf = confidence_intervals[, "lwr"],
+  Upper_Conf = confidence_intervals[, "upr"],
+  Lower_Pred = prediction_intervals[, "lwr"],
+  Upper_Pred = prediction_intervals[, "upr"]
+)
+predictions_df
+
+ggplot(predictions_df, aes(x = 1:nrow(predictions_df), y = Predicted)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin = Lower_Conf, ymax = Upper_Conf), color = "blue", width = 0.2) + # Доверительные интервалы
+  geom_errorbar(aes(ymin = Lower_Pred, ymax = Upper_Pred), color = "red", width = 0.2) + # Предсказательные интервалы
+  labs(title = "Прогнозы NEW10 с доверительными и предсказательными интервалами",
+       x = "Прогноз (номер)",
+       y = "NEW10") +
+  scale_x_continuous(breaks = 1:nrow(predictions_df)) + # Подписи для оси x
+  theme_bw()
+```
+
+
+## Исправления.
+
+Важные пункты для исправления:
+
+* Использование AVRCOMB (особенно в случае частных вузов) не интересно. Поэтому уберём её из рассматриваемых признаков.
+
+* Доверительный эллипсоид некорректно строится, поэтому нужно использовать другую функцию построения доверительного эллипсоида.
+
+* Рассмотреть прологарифмированный NEW10 для общественных вузов
+
+## Подготовка данных
+
+### Выбор признаков
+Рассматриваемые наблюдения:
+1. PPIND (для группировки) 
+2. ADD_FEE - дополнительные выплаты
+3. BOOK - плата за бронирование
+4. NEW10 (зависимая переменная, также NEW25) - студентов из топ 10% своей старшей школы
+5. AVRCOMB - средний комбинированный балл (лишний признак)
+6. SF_RATIO - Student/Faculty ratio
+7. PH_D - Pct. of faculty with Ph.D.'s 
+8. GRADUAT - Graduation rate
+9. R_B_COST - Room and board costs
+10. OUT_STAT - Out-of-state tuition
+
+
+
+```{r}
+colNames<-c("...1", "ADD_FEE", "BOOK", "R_B_COST","OUT_STAT","NEW10", "SF_RATIO","PH_D","GRADUAT","PPIND")
+col_I_regr<-col_I_sn[c(colNames)]
+col_I_regr<-col_I_regr|>mutate(ADD_FEE = log(ADD_FEE))|>rename(log_ADD_FEE=ADD_FEE)
+col_I_regr_split<-split(col_I_regr, col_I_regr$PPIND)
+```
+
+```{r}
+# Автор: -Николай-
+library(GGally)
+library(ggplot2)
+library(dplyr)
+library(rlang)
+
+plot_numeric_pairs <- function(df, title = NULL, highlight = NULL) {
+  # Выбираем имена всех numeric-столбцов
+  numeric_cols <- df %>% dplyr::select(dplyr::where(is.numeric)) %>% names()
+  
+  # Функция для нижних панелей с возможностью выделения точек разными цветами
+  custom_points <- function(data, mapping, ...) {
+    # Отрисовываем базовые точки синим цветом
+    p <- ggplot(data, mapping) +
+      geom_point(alpha = 0.6, size = 2, color = "blue", ...)
+    
+    if (!is.null(highlight)) {
+      # Если highlight не является списком, превращаем его в список с одним элементом и цветом "red"
+      if (!is.list(highlight) || inherits(highlight, "data.frame")) {
+        highlight <- list(red = highlight)
+      }
+      
+      # Получаем имена переменных из mapping с помощью as_label()
+      xvar <- as_label(mapping$x)
+      yvar <- as_label(mapping$y)
+      
+      # Для каждого набора точек в списке highlight
+      for (col in names(highlight)) {
+        hl_df <- highlight[[col]]
+        # Проверяем, что hl_df содержит нужные переменные
+        if(all(c(xvar, yvar) %in% names(hl_df))) {
+          # Находим совпадающие строки между данными панели и hl_df
+          data_highlight <- semi_join(data, hl_df, by = c(xvar, yvar))
+          # Накладываем выделенные точки нужного цвета
+          p <- p + geom_point(data = data_highlight, mapping = mapping,
+                              alpha = 0.6, size = 2, color = col, ...)
+        }
+      }
+    }
+    p
+  }
+  
+  # Строим матрицу парных графиков
+  ggpairs(df,
+          columns      = numeric_cols,
+          columnLabels = numeric_cols,
+          title        = title,
+          upper        = list(continuous = wrap("cor", size = 3)),
+          lower        = list(continuous = custom_points),
+          diag         = list(continuous = wrap("barDiag", bins = 10, fill = "lightblue", color = "black"))
+  ) +
+    theme_bw() +
+    theme(
+      strip.text.x  = element_text(size = 7, angle = 0, hjust = 0),
+      strip.text.y  = element_text(size = 8, angle = 0, hjust = 0),
+      axis.text = element_text(size = 6),
+      plot.margin   = unit(c(1, 2, 1, 1), "cm")
+    )
+}
+```
+
+## Общий парный график
+
+```{r}
+ggpairs(col_I_regr[,-which(names(col_I_regr)=="...1")], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+Комментарий: замечаем, что для публичных вузов NEW10 имеет выраженный правый хвост. 
+Поэтому стоит использовать log_NEW10 для публичных вузов.
+
+При постановке вопроса о построении линейной модели с категориальным признаком стоит обратить внимание
+на то, близки ли корреляции разных групп. Если они отличаются, то лучше рассматривать каждую категорию
+по отдельности. Если близки, то вместе. Это связано с тем, что разные корреляции
+по разному влияют на общую модель, будут возникать неоднородности.
+
+## Анализ частных вузов
+
+```{r}
+pr_data<-col_I_regr_split$private
+print(paste0("Число наблюдений: ", dim(pr_data)[1]))
+colSums(is.na(pr_data))
+```
+
+### График
+
+
+```{r}
+plot_numeric_pairs(pr_data, "Частные вузы")
+```
+
+### Выбросы "на глаз"
+
+```{r}
+outlier_pr_book_eye<-pr_data[pr_data$BOOK>875,]
+outlier_pr_out_eye<-pr_data[pr_data$OUT_STAT<5000,]
+outlier_pr_book_eye
+outlier_pr_out_eye
+```
+
+```{r}
+plot_numeric_pairs(pr_data, "Частные вузы", list(red = outlier_pr_book_eye, green = outlier_pr_out_eye))
+```
+
+### Линейная модель
+
+```{r}
+library(lm.beta)
+model_pr_full <- lm(NEW10 ~ BOOK + log_ADD_FEE + R_B_COST + PH_D + SF_RATIO + GRADUAT + OUT_STAT, 
+                    data = pr_data) |> lm.beta()
+summary(model_pr_full)
+```
+
+
+### Доверительные эллипсы
+
+```{r}
+plot_confidence_ellipse(model_pr_full, c(2, 3))
+```
+
+```{r}
+plot_confidence_ellipse(model_pr_full, c(4, 5))
+```
+
+```{r}
+plot_confidence_ellipse(model_pr_full, c(6, 7))
+```
+
+```{r}
+plot_confidence_ellipse(model_pr_full, c(8, 2))
+```
+
+```{r}
+
+# Автор: -Евгений-
+
+# Вычисление множественной корреляции
+calc_multicollinearity <- function(var, data) {
+  X <- as.matrix(data[, setdiff(names(data), var)])  # Матрица остальных регрессоров
+  y <- as.matrix(data[[var]])  # Текущий регрессор как зависимая переменная
+  model <- lm(y ~ X) 
+  sqrt(summary(model)$r.squared)  
+}
+
+calc_partial_correlation <- function(var, data) {
+  # Остатки регрессии текущего регрессора на остальные регрессоры
+  data<-data|>na.omit()
+  model_X <- lm(data[[var]] ~ ., data = data[, !names(data) %in% c(var, "NEW10")])
+  res_X <- residuals(model_X)
+  
+  # Остатки регрессии Y на остальные регрессоры
+  model_Y <- lm(NEW10 ~ ., data = data[, !names(data) %in% var])
+  res_Y <- residuals(model_Y)
+  
+  cor(res_X, res_Y, use = "complete.obs")  # Корреляция остатков
+}
+
+regressors <- setdiff(names(pr_data), c("...1", "PPIND", "NEW10"))
+regressors_full<-c(regressors, "NEW10")
+redundancy_table <- data.frame(
+  Регрессор = regressors,
+  Множественная_корреляция = sapply(regressors, calc_multicollinearity, pr_data[, regressors_full]),
+  Частная_корреляция = sapply(regressors, calc_partial_correlation, pr_data[,regressors_full])
+)
+
+print(redundancy_table)
+```
+
+Комментарий: Стоит исключить PH_D из-за высокой множественной и низкой частной корреляций
+(также можно исключить BOOK из-за низкой частной корреляции).
+
+```{r}
+AIC(model_pr_full)
+summary(model_pr_full)
+```
+
+```{r}
+model_pr_nono<-lm(NEW10 ~ log_ADD_FEE + R_B_COST + SF_RATIO + GRADUAT + OUT_STAT, data=pr_data)|>lm.beta()
+summary(model_pr_nono)
+AIC(model_pr_nono)
+```
+
+Комментарий: замечаем, что после того, как убрали BOOK и PH_D увеличился Adj.R^2, немного уменьшился
+R^2, уменьшился p-value, но увеличился AIC.
+
+```{r}
+regressors <- setdiff(names(pr_data), c("...1", "PPIND", "NEW10", "PH_D", "BOOK"))
+regressors_full<-c(regressors, "NEW10")
+redundancy_table <- data.frame(
+  Регрессор = regressors,
+  Множественная_корреляция = sapply(regressors, calc_multicollinearity, pr_data[, regressors_full]),
+  Частная_корреляция = sapply(regressors, calc_partial_correlation, pr_data[,regressors_full])
+)
+
+print(redundancy_table)
+```
+
+Попробуем убрать log_ADD_FEE
+
+```{r}
+model_pr1<-lm(NEW10 ~ GRADUAT + R_B_COST + SF_RATIO + OUT_STAT, data=pr_data)|>lm.beta()
+summary(model_pr1)
+AIC(model_pr1)
+```
+
+Комментарий: AIC увеличилась, а R^2 сильно уменьшились, p-value увеличился.
+
+```{r}
+regressors <- setdiff(names(pr_data), c("...1", "PPIND", "NEW10", "PH_D", "BOOK", "log_ADD_FEE"))
+regressors_full<-c(regressors, "NEW10")
+redundancy_table <- data.frame(
+  Регрессор = regressors,
+  Множественная_корреляция = sapply(regressors, calc_multicollinearity, pr_data[, regressors_full]),
+  Частная_корреляция = sapply(regressors, calc_partial_correlation, pr_data[,regressors_full])
+)
+
+print(redundancy_table)
+```
+
+```{r}
+AIC(model_pr_full)
+AIC(model_pr_nono)
+AIC(model_pr1)
+```
+
+### OLS. Пошаговый AIC.
+
+#### Backward
+
+```{r}
+library(olsrr)
+backward_aic<-ols_step_backward_aic(model_pr_full, progress=TRUE, details=TRUE)
+```
+
+```{r}
+backward_aic
+```
+
+
+#### Forward
+
+```{r}
+forward_aic<-ols_step_forward_aic(model_pr_full, progress=TRUE, details=TRUE)
+```
+
+```{r}
+forward_aic
+```
+
+Комментарий: строим Backward и Forward AIC. Backward AIC исключил всё, кроме SF_RATIO и GRADUAT.
+Forward AIC включил только GRADUAT и SF_RATIO. Оба пошаговых алгоритма дали один и тот же результат.
+
+Интерпретация параметров: число лучших 10% студентов NEW10 увеличивается с увеличением выпускников GRADUAT
+и уменьшается с числом студентов на преподавателя SF_RATIO.
+
+Здесь можно сравнить по R^2, например.
+
+### Построение и анализ графиков
+
+```{r}
+model_pr_full<-lm(NEW10 ~ GRADUAT + SF_RATIO, data=pr_data)
+summary(model_pr_full)
+```
+
+```{r}
+plot(model_pr_full, 1:5)
+```
+
+У 51-го сильное плечо (ещё видно, как линия идёт к ней)
+
+
+### Поиск outliers по Residuals vs. Deleted Residuals
+
+```{r}
+plot(residuals(model_pr_full), rstudent(model_pr_full))
+```
+
+Комментарий: замечаем точку (51), которая сильно влияет на линейную модель.
+
+```{r}
+influence.measures(model_pr_full)
+```
+
+```{r}
+row.names(model_pr_full$model)
+outlier_cook<-pr_data|>dplyr::filter(NEW10==48&SF_RATIO==20.5)
+```
+
+```{r}
+outlier_cook
+```
+
+Комментарий: выбросом оказался Brigham Young University.
+
+### Поиск outliers по Cook и Mahalanobis
+
+#### Cook
+
+```{r}
+# Рассчитаем Cook's distance для модели с логарифмами
+cooks_vals <- cooks.distance(model_pr_full)
+cook_df <- data.frame(
+  obs  = row.names(model_pr_full$model),
+  cook = cooks_vals
+) %>%
+  arrange(desc(cook))
+# Создадим вектор x для индексов (уже упорядоченных)
+x <- seq_len(nrow(cook_df))
+
+
+plot(
+  x, cook_df$cook,
+  type  = "h",
+  main  = "Cook's Distance",
+  xlab  = "Номер наблюдения (из исходного df)",
+  ylab  = "Cook's distance",
+  xaxt  = "n"                # убираем автоматическую ось X
+)
+axis(side = 1, at = x, labels = cook_df$obs, las = 2, cex.axis = 0.8)
+abline(h = 1, col = "red", lty = 2)
+```
+
+Комментарий: высокие значения у 29 и 38.
+
+#### Mahalanobis
+
+```{r}
+# 7.2. Расстояние Махаланобиса (Mahalanobis Distance)
+# Расстояние Махаланобиса в пространстве предикторов (регрессоров)
+mahalanobis_distance <- mahalanobis(model.matrix(model_pr_full)[,-1],
+                                     center = colMeans(model.matrix(model_pr_full)[,-1]),
+                                     cov = cov(model.matrix(model_pr_full)[,-1]))
+mah_df <- data.frame(
+  obs  = row.names(model_pr_full$model),
+  mah = mahalanobis_distance
+) %>%
+  arrange(desc(mah))
+# Создадим вектор x для индексов (уже упорядоченных)
+x <- seq_len(nrow(mah_df))
+alpha<-0.05
+
+# Scatter plot для расстояния Махаланобиса
+plot(
+  x, mah_df$mah,
+  type  = "h",
+  main  = "Mahalanobis's Distance",
+  xlab  = "Номер наблюдения (из исходного df)",
+  ylab  = "Mahalanobis's distance",
+  xaxt  = "n"                
+)
+axis(side = 1, at = x, labels = mah_df$obs, las = 2, cex.axis = 0.8)
+abline(h = qchisq(p = 1 - alpha, df = nrow(mah_df)), col = "red", lty = 2)
+```
+
+Комментарий: 29-ое наблюдение имеет большое расстояние по Махаланобису.
+
+### Линейная модель без выброса
+
+```{r}
+pr_data_outlier<-pr_data[-c(51),]
+```
+
+```{r}
+plot_numeric_pairs(pr_data_outlier)
+```
+
+```{r}
+model_pr_outlier<-lm(NEW10~GRADUAT + SF_RATIO, data=pr_data_outlier)
+summary(model_pr_full|>lm.beta())
+summary(model_pr_outlier|>lm.beta())
+```
+
+```{r}
+model_pr_outlier<-lm(NEW10~BOOK + log_ADD_FEE + R_B_COST + PH_D + SF_RATIO + GRADUAT + OUT_STAT, data=pr_data_outlier)
+summary(model_pr_outlier)
+backward_model_outlier<-ols_step_backward_aic(model_pr_outlier, progress=TRUE, details=TRUE)
+```
+
+```{r}
+forward_model_outlier<-ols_step_forward_aic(model_pr_outlier, progress=TRUE, details=TRUE)
+```
+
+Комментарий: замечаем существенную разницу в R^2, p-value и значимости SF_RATIO.
+
+```{r}
+plot(model_pr_outlier, 1:5)
+```
+
+```{r}
+AIC(model_pr_full)
+AIC(model_pr_outlier)
+```
+
+Можем заметить, что модель без выброса лучше по AIC, чем с выбросом.
+
+### Итог: прогнозирование
+
+```{r}
+set.seed(456) # Другое зерно для генерации новых значений
+max_GRADUAT<-max(pr_data$GRADUAT, na.rm=TRUE)
+max_SF_RATIO<-max(pr_data$SF_RATIO, na.rm=TRUE)
+new_data <- data.frame(
+  GRADUAT = max_GRADUAT - 1:8,
+  SF_RATIO = max_SF_RATIO - 1:8
+)
+
+# Прогнозируем значение NEW10
+predicted_values <- predict(model_pr_outlier, newdata = new_data)
+cat("Прогнозируемые значения NEW10:\n")
+print(predicted_values)
+
+# 6. Доверительные и предсказательные интервалы
+
+# Доверительный интервал (confidence interval) для среднего значения NEW10
+confidence_intervals <- predict(model_pr_outlier, newdata = new_data, interval = "confidence", level = 0.95)
+print("Доверительные интервалы (95%):\n")
+print(confidence_intervals)
+
+# Предсказательный интервал (prediction interval) для отдельного наблюдения NEW10
+prediction_intervals <- predict(model_pr_outlier, newdata = new_data, interval = "prediction", level = 0.95)
+print("Предсказательные интервалы (95%):\n")
+print(prediction_intervals)
+
+# Создаем data.frame для прогнозов и интервалов
+predictions_df <- data.frame(
+  GRADUAT = new_data$GRADUAT,
+  SF_RATIO = new_data$SF_RATIO,
+  Predicted = predicted_values,
+  Lower_Conf = confidence_intervals[, "lwr"],
+  Upper_Conf = confidence_intervals[, "upr"],
+  Lower_Pred = prediction_intervals[, "lwr"],
+  Upper_Pred = prediction_intervals[, "upr"]
+)
+predictions_df
+# Визуализация (только для демонстрации, нужен более сложный график для нескольких предикторов)
+ggplot(predictions_df, aes(x = 1:nrow(predictions_df), y = Predicted)) + # Условная ось x, т.к. несколько предикторов
+  geom_point() +
+  geom_errorbar(aes(ymin = Lower_Conf, ymax = Upper_Conf), color = "blue", width = 0.2) + # Доверительные интервалы
+  geom_errorbar(aes(ymin = Lower_Pred, ymax = Upper_Pred), color = "red", width = 0.2) + # Предсказательные интервалы
+  labs(title = "Прогнозы NEW10 с доверительными и предсказательными интервалами",
+       x = "Прогноз (номер)",
+       y = "NEW10") +
+  scale_x_continuous(breaks = 1:nrow(predictions_df)) + # Подписи для оси x
+  theme_bw()
+  # annotate("text", x = 1, y = max(predictions_df$Upper_Pred) * 0.9, label = "Синие: Доверительные интервалы", color = "blue", hjust = 0) +
+  # annotate("text", x = 1, y = max(predictions_df$Upper_Pred) * 0.8, label = "Красные: Предсказательные интервалы", color = "red", hjust = 0)
+```
+
+
+## Анализ общественных вузов
+
+```{r}
+pub_data<-col_I_regr_split$public
+pub_data<-pub_data|>mutate(NEW10 = log(NEW10))|>rename(log_NEW10 = NEW10)
+print(paste0("Число наблюдений: ", dim(pub_data)[1]))
+colSums(is.na(pub_data))
+```
+
+Много пропусков по log_ADD_FEE (около четверти).
+
+### График
+
+```{r}
+plot_numeric_pairs(pub_data, "Общественные вузы")
+```
+
+### Выбросы "на глаз"
+
+```{r}
+outlier_pub_out_eye<-pub_data[pub_data$OUT_STAT>14000,]
+outlier_pub_out_eye
+```
+
+```{r}
+plot_numeric_pairs(pub_data, "Общественные вузы", list(red = outlier_pub_out_eye))
+```
+
+### Линейная модель
+
+```{r}
+library(lm.beta)
+model_pub_full <- lm(log_NEW10 ~ BOOK + log_ADD_FEE + R_B_COST + PH_D + SF_RATIO + GRADUAT + OUT_STAT, 
+                    data = pub_data)
+summary(model_pub_full|>lm.beta())
+```
+
+### Доверительные эллипсы
+
+```{r}
+plot_confidence_ellipse(model_pub_full, c(2, 3))
+```
+
+```{r}
+plot_confidence_ellipse(model_pub_full, c(4, 5))
+```
+
+```{r}
+plot_confidence_ellipse(model_pub_full, c(6, 7))
+```
+
+```{r}
+plot_confidence_ellipse(model_pub_full, c(8, 2))
+```
+
+```{r}
+
+# Автор: -Евгений-
+
+# Вычисление множественной корреляции
+calc_multicollinearity <- function(var, data) {
+  X <- as.matrix(data[, setdiff(names(data), var)])  # Матрица остальных регрессоров
+  y <- as.matrix(data[[var]])  # Текущий регрессор как зависимая переменная
+  model <- lm(y ~ X) 
+  sqrt(summary(model)$r.squared)  
+}
+
+calc_partial_correlation <- function(var, data) {
+  # Остатки регрессии текущего регрессора на остальные регрессоры
+  data<-data|>na.omit()
+  model_X <- lm(data[[var]] ~ ., data = data[, !names(data) %in% c(var, "log_NEW10")])
+  res_X <- residuals(model_X)
+  
+  # Остатки регрессии Y на остальные регрессоры
+  model_Y <- lm(log_NEW10 ~ ., data = data[, !names(data) %in% var])
+  res_Y <- residuals(model_Y)
+  
+  cor(res_X, res_Y, use = "complete.obs")  # Корреляция остатков
+}
+
+regressors <- setdiff(names(pub_data), c("...1", "PPIND", "log_NEW10"))
+regressors_full<-c(regressors, "log_NEW10")
+redundancy_table <- data.frame(
+  Регрессор = regressors,
+  Множественная_корреляция = sapply(regressors, calc_multicollinearity, pub_data[, regressors_full]),
+  Частная_корреляция = sapply(regressors, calc_partial_correlation, pub_data[,regressors_full])
+)
+
+print(redundancy_table)
+```
+
+Исключим log_ADD_FEE и SF_RATIO (так как у них низкие частные корреляции)
+
+```{r}
+AIC(model_pub_full)
+summary(model_pub_full)
+```
+
+```{r}
+model_pub_nono<-lm(log_NEW10 ~ R_B_COST + PH_D + GRADUAT + OUT_STAT + BOOK, data=pub_data)
+summary(model_pub_full|>lm.beta())
+AIC(model_pub_full)
+summary(model_pub_nono|>lm.beta())
+AIC(model_pub_nono)
+```
+
+Комментарий: AIC увеличился, p-value уменьшился. Теперь каждый признак, кроме R_B_COST является значимым (при alpha=0.05).
+
+```{r}
+regressors <- setdiff(names(pub_data), c("...1", "PPIND", "log_NEW10", "log_ADD_FEE", "SF_RATIO"))
+regressors_full<-c(regressors, "log_NEW10")
+redundancy_table <- data.frame(
+  Регрессор = regressors,
+  Множественная_корреляция = sapply(regressors, calc_multicollinearity, pub_data[, regressors_full]),
+  Частная_корреляция = sapply(regressors, calc_partial_correlation, pub_data[,regressors_full])
+)
+
+print(redundancy_table)
+```
+
+Тут уже не так понятно. Перейдём к пошаговому AIC.
+
+```{r}
+AIC(model_pub_full)
+AIC(model_pub_nono)
+```
+
+### OLS. Пошаговый AIC.
+
+#### Backward
+
+```{r}
+library(olsrr)
+backward_aic<-ols_step_backward_aic(model_pub_full, progress=TRUE, details=TRUE)
+```
+
+```{r}
+backward_aic
+```
+
+
+#### Forward
+
+```{r}
+forward_aic<-ols_step_forward_aic(model_pub_full, progress=TRUE, details=TRUE)
+```
+
+```{r}
+forward_aic
+```
+
+Комментарий: строим Backward и Forward AIC. Backward AIC исключил всё, кроме SF_RATIO и GRADUAT.
+Forward AIC включил только GRADUAT и SF_RATIO. Оба пошаговых алгоритма дали один и тот же результат.
+
+Интерпретация параметров: число лучших 10% студентов NEW10 увеличивается с увеличением выпускников GRADUAT, числом докторов (PH_D), ценой за бронирование (BOOK)
+и уменьшается со стоимостью оплаты OUT_STAT.
+
+Здесь можно сравнить по R^2, например.
+
+### Построение и анализ графиков
+
+```{r}
+model_pub_full<-lm(log_NEW10 ~ GRADUAT + PH_D + BOOK + OUT_STAT, data=pub_data)
+summary(model_pub_full)
+AIC(model_pub_full)
+summary(model_pub_nono)
+AIC(model_pub_nono)
+```
+
+Комментарий: эта модель в сравнении с model_pub_nono имеет более высокий p-value и более низкий R^2.
+
+```{r}
+plot(model_pub_full, 1:5)
+```
+
+
+### Поиск outliers по Residuals vs. Deleted Residuals
+
+```{r}
+plot(residuals(model_pub_full), rstudent(model_pub_full))
+```
+
+Комментарий: особых выбросов нет.
+
+```{r}
+influence.measures(model_pub_full)
+```
+
+### Поиск outliers по Cook и Mahalanobis
+
+#### Cook
+
+```{r}
+# Рассчитаем Cook's distance для модели с логарифмами
+cooks_vals <- cooks.distance(model_pub_full)
+cook_df <- data.frame(
+  obs  = row.names(model_pub_full$model),
+  cook = cooks_vals
+) %>%
+  arrange(desc(cook))
+# Создадим вектор x для индексов (уже упорядоченных)
+x <- seq_len(nrow(cook_df))
+
+
+plot(
+  x, cook_df$cook,
+  type  = "h",
+  main  = "Cook's Distance",
+  xlab  = "Номер наблюдения (из исходного df)",
+  ylab  = "Cook's distance",
+  xaxt  = "n"                # убираем автоматическую ось X
+)
+axis(side = 1, at = x, labels = cook_df$obs, las = 2, cex.axis = 0.8)
+abline(h = 1, col = "red", lty = 2)
+```
+
+Комментарий: высокие значения у 29 и 38.
+
+#### Mahalanobis
+
+```{r}
+# 7.2. Расстояние Махаланобиса (Mahalanobis Distance)
+# Расстояние Махаланобиса в пространстве предикторов (регрессоров)
+mahalanobis_distance <- mahalanobis(model.matrix(model_pub_full)[,-1],
+                                     center = colMeans(model.matrix(model_pub_full)[,-1]),
+                                     cov = cov(model.matrix(model_pub_full)[,-1]))
+mah_df <- data.frame(
+  obs  = row.names(model_pub_full$model),
+  mah = mahalanobis_distance
+) %>%
+  arrange(desc(mah))
+# Создадим вектор x для индексов (уже упорядоченных)
+x <- seq_len(nrow(mah_df))
+alpha<-0.05
+
+# Scatter plot для расстояния Махаланобиса
+plot(
+  x, mah_df$mah,
+  type  = "h",
+  main  = "Mahalanobis's Distance",
+  xlab  = "Номер наблюдения (из исходного df)",
+  ylab  = "Mahalanobis's distance",
+  xaxt  = "n"                
+)
+axis(side = 1, at = x, labels = mah_df$obs, las = 2, cex.axis = 0.8)
+abline(h = qchisq(p = 1 - alpha, df = nrow(mah_df)), col = "red", lty = 2)
+```
+
+
+### Итог: прогнозирование
+
+```{r}
+set.seed(456) # Другое зерно для генерации новых значений
+max_GRADUAT<-max(pub_data$GRADUAT, na.rm=TRUE)
+max_BOOK<-max(pub_data$BOOK, na.rm=TRUE)
+max_OUT_STAT<-max(pub_data$OUT_STAT, na.rm=TRUE)
+max_PH_D<-max(pub_data$PH_D, na.rm=TRUE)
+new_data <- data.frame(
+  GRADUAT = max_GRADUAT - 1:8,
+  BOOK = max_BOOK - 1:8,
+  OUT_STAT = max_OUT_STAT - seq(100, 800, by=100),
+  PH_D = max_PH_D - 1:8
+)
+# Прогнозируем значение NEW10
+predicted_values <- predict(model_pub_full, newdata = new_data)
+cat("Прогнозируемые значения NEW10:\n")
+print(predicted_values)
+
+# 6. Доверительные и предсказательные интервалы
+
+# Доверительный интервал (confidence interval) для среднего значения NEW10
+confidence_intervals <- predict(model_pub_full, newdata = new_data, interval = "confidence", level = 0.95)
+print("Доверительные интервалы (95%):\n")
+print(confidence_intervals)
+
+# Предсказательный интервал (prediction interval) для отдельного наблюдения NEW10
+prediction_intervals <- predict(model_pub_full, newdata = new_data, interval = "prediction", level = 0.95)
+print("Предсказательные интервалы (95%):\n")
+print(prediction_intervals)
+
+# Создаем data.frame для прогнозов и интервалов
+predictions_df <- data.frame(
+  GRADUAT = new_data$GRADUAT,
+  OUT_STAT = new_data$OUT_STAT,
+  BOOK = new_data$BOOK,
+  PH_D = new_data$PH_D,
+  Predicted = predicted_values,
+  Lower_Conf = confidence_intervals[, "lwr"],
+  Upper_Conf = confidence_intervals[, "upr"],
+  Lower_Pred = prediction_intervals[, "lwr"],
+  Upper_Pred = prediction_intervals[, "upr"]
+)
+predictions_df
+# Визуализация (только для демонстрации, нужен более сложный график для нескольких предикторов)
+ggplot(predictions_df, aes(x = 1:nrow(predictions_df), y = Predicted)) + # Условная ось x, т.к. несколько предикторов
+  geom_point() +
+  geom_errorbar(aes(ymin = Lower_Conf, ymax = Upper_Conf), color = "blue", width = 0.2) + # Доверительные интервалы
+  geom_errorbar(aes(ymin = Lower_Pred, ymax = Upper_Pred), color = "red", width = 0.2) + # Предсказательные интервалы
+  labs(title = "Прогнозы NEW10 с доверительными и предсказательными интервалами",
+       x = "Прогноз (номер)",
+       y = "NEW10") +
+  scale_x_continuous(breaks = 1:nrow(predictions_df)) + # Подписи для оси x
+  theme_bw()
+  # annotate("text", x = 1, y = max(predictions_df$Upper_Pred) * 0.9, label = "Синие: Доверительные интервалы", color = "blue", hjust = 0) +
+  # annotate("text", x = 1, y = max(predictions_df$Upper_Pred) * 0.8, label = "Красные: Предсказательные интервалы", color = "red", hjust = 0)
+```

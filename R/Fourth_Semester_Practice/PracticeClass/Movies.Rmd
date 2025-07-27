@@ -1,0 +1,275 @@
+---
+title: "Movies"
+author: "Yakovlev D.M."
+date: "2023-12-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("tidyverse")
+movieset <- read.csv("Top_rated_movies1.csv")
+movieset$release_date <- as.Date(movieset$release_date)
+```
+Изучаем датасет:
+```{r}
+rmarkdown::paged_table(movieset)
+```
+## Задачи:
+\begin{itemize}
+\item Производство фильмов по дате; +
+\item Производство фильмов по году, месяцу, дню; +
+\item Зависимость количественных атрибутов (популярности, среднего значения голоса,
+общего числа голосов) от даты выпуска; +
+\item Исследование названий фильмов.
+\end{itemize}
+```{r}
+MSDate <- movieset|>
+  group_by(release_date)|>
+  summarize(movie_number = n())
+
+ggplot(MSDate, aes(x = release_date, y = movie_number)) + theme_bw()+
+geom_point()
+```
+Чем-то похоже на параболу.
+```{r}
+summary(movieset$release_date)
+```
+### Исследуем зависимость количественных атрибутов
+```{r}
+range_year <- function(year){
+  if(year <= 1950)
+    return (paste("1902", "1950", sep='-'))
+  if (year < 2000)
+    return (paste(year - year%% 25, year - year %% 25 + 25, sep='-'))
+  if(year < 2020)
+    return(paste(year - year %% 5, year - year %% 5 + 5, sep='-'))
+  return (paste(year - year%%5, "2023", sep='-'))
+}
+```
+
+```{r}
+MSPop <- movieset|>
+  group_by(title, popularity)|>
+  mutate(score = sum(vote_average*vote_count),
+         year = year(release_date),
+         month = month(release_date),
+         day = day(release_date))
+```
+
+```{r}
+MSRange <- MSPop|>
+  mutate(year.range = sapply(year, range_year))
+```
+```{r}
+table(MSRange$year.range)
+summary(MSRange$year)
+```
+Производство фильмов по годам
+```{r}
+MSYear <- MSPop|>
+  group_by(year)|>
+  summarise(year.number = n())
+
+ggplot(MSYear, aes(x = year, y = log10(year.number)))+theme_classic()+
+  geom_line()
+ggplot(MSYear, aes(x = year, y = year.number))+theme_classic()+
+  geom_line() 
+rmarkdown::paged_table(MSYear)
+```
+```{r}
+summary(MSYear$year)
+summary(MSYear$year.number)
+```
+
+По месяцам:
+```{r}
+MSMonth <- MSPop|>
+  group_by(month)|>
+  summarise(month.number = n())
+
+barplot(MSMonth$month.number, names.arg = month.name[MSMonth$month],
+        xlab = "Month", ylab = "Movies produced",
+        main = "Movies produced from 1902 to 2023\nSelected by month")
+```
+```{r}
+summary(MSMonth$month.number)
+```
+
+По дням:
+```{r}
+MSDay <- MSPop|>
+  group_by(day)|>
+  summarize(day.number = n())
+
+barplot(MSDay$day.number, names.arg = MSDay$day,
+        xlab = "Day",
+        ylab = "Movies produced",
+        main = "Movies produced from 1902 to 2023\nSelected by day")+theme_classic()
+```
+
+```{r}
+summary(MSDay$day.number)
+```
+Самый продуктивный год/месяц/день:
+```{r}
+MSYear$year[which.max(MSYear$year.number)]
+month.name[MSMonth$month[which.max(MSMonth$month.number)]]
+MSDay$day[which.max(MSDay$day.number)]
+```
+
+```{r}
+summary(MSPop$score)
+```
+
+```{r}
+library("GGally")
+ggpairs(
+  MSRange|>mutate(popularity = log10(popularity)),                
+  columns = which(names(MSRange) %in% c("score", "vote_average",
+                                      "vote_count", "popularity", "release_date")),        
+  aes(
+    alpha = 0.5,
+    col = year.range
+  )
+)
+```
+```{r}
+library("GGally")
+ggpairs(
+  MSRange|>mutate(popularity = log10(popularity)),                
+  columns = which(names(MSRange) %in% c("score", "vote_average",
+                                      "vote_count", "popularity", "year")),        
+  aes(
+    alpha = 0.5,
+    col = year.range
+  )
+)
+```
+
+```{r}
+library("GGally")
+ggpairs(
+  MSRange|>mutate(popularity = log10(popularity)),                
+  columns = which(names(MSRange) %in% c("score", "vote_average",
+                                      "vote_count", "popularity", "month")),        
+  aes(
+    alpha = 0.5,
+    col = year.range
+  )
+)
+```
+
+```{r}
+library("GGally")
+ggpairs(
+  MSRange|>mutate(popularity = log10(popularity), vote_average = log10(vote_average), vote_count = log10(vote_count)),                
+  columns = which(names(MSRange) %in% c("score", "vote_average",
+                                      "vote_count", "popularity", "day")),        
+  aes(
+    alpha = 0.5,
+    col = year.range,
+  ),
+)
+```
+```{r}
+library("GGally")
+ggpairs(
+  MSRange|>mutate(popularity = log10(popularity)),                
+  columns = which(names(MSRange) %in% c("score", "vote_average",
+                                      "vote_count", "popularity", "id")),        
+  aes(
+    alpha = 0.5,
+    col = year.range
+  )
+)
+```
+
+```{r}
+MSRange|>
+  filter(year.range == "1902-1950")|>as.data.frame()|>
+  slice_max(order_by = popularity, n = 10)
+```
+
+```{r}
+MSRange |>
+  filter(year.range == "1902-1950")|>as.data.frame()|>
+  slice_min(order_by = popularity, n = 10)
+```
+
+По названиям фильмов: зачастую мелькают слова по типу "The", "A". Интересно,
+как много тайтлов начинаются с них
+
+```{r}
+library("stringr")
+MSTitle <- movieset |>
+  mutate(firstWord = word(title, 1))
+```
+
+```{r}
+MSTitle |> group_by(firstWord)|>
+  summarise(total.fw = n(), ratio = n()/nrow(MSTitle))|>as.data.frame()|>
+  arrange(desc(total.fw))|>
+  rmarkdown::paged_table()
+```
+Такая вот интересная статистика
+```{r}
+MSTitle |> 
+  filter(firstWord == "American")|>as.data.frame()|>
+  rmarkdown::paged_table()
+```
+
+А что насчёт самых подробных тайтлов?
+```{r}
+MSTitle <- MSTitle|>
+  mutate(title.length = sapply(title, function(x) nchar(x)), 
+         title.word.length = sapply(title, function(x) length(strsplit(x, " ")[[1]])))
+```
+
+```{r}
+MSTitle|>group_by(title.word.length)|>
+  summarise(Number = n())|>as.data.frame()|>
+  arrange(desc(Number))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+MSTitle|>group_by(title.length)|>
+  summarise(Number = n())|>as.data.frame()|>
+  arrange(desc(Number))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+MSMinWL <- MSTitle|>group_by(title.word.length)|>
+  summarise(Number = n())|>as.data.frame()|>
+  slice_min(order_by = Number, n = 50)
+
+MSMinL <- MSTitle|>group_by(title.length)|>
+  summarise(Number = n())|>as.data.frame()|>
+  slice_min(order_by = Number, n = 50)
+```
+
+```{r}
+MSTitle|>
+  filter(title.word.length %in% (MSMinWL|>pull(title.word.length)))|>
+  as.data.frame()|>arrange(desc(title.word.length))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+MSTitle|>
+  filter(title.length %in% (MSMinL|>pull(title.length)))|>
+  as.data.frame()|>arrange(desc(title.length))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+MSTitle|>
+  filter(title.length <= 10)|>
+  as.data.frame()|>arrange(title.length)|>
+  rmarkdown::paged_table()
+```

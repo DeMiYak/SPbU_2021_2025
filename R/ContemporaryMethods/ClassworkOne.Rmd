@@ -1,0 +1,209 @@
+---
+title: "ClassworkOne"
+author: "Yakovlev D.M."
+date: "2024-09-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Сбор пакетов
+```{r}
+library("dplyr")
+library("tidyr")
+library("data.table")
+```
+
+```{r}
+df <- read.csv("Advanced Tools and Methods of Bla Bla Bla/flights14.csv", header=TRUE)
+head(df)
+```
+
+### Проверка на скорость выполнения операций
+
+#### 1. data[data$...,]
+```{r}
+a<-Sys.time()
+df[df$year==2014,]
+b<-c(Sys.time()-a)
+
+a<-Sys.time()
+df[df$month>3,]
+b<-c(b, Sys.time()-a)
+
+a<-Sys.time()
+df[df$arr_delay%in%c(0:4),]
+b<-c(b, Sys.time()-a)
+
+a<-Sys.time()
+df[df$origin=="JFK",]
+b<-c(b, Sys.time()-a)
+
+a<-Sys.time()
+df[df$dest%in%c("LAX", "PBI"),]
+b<-c(b, Sys.time()-a)
+
+d1 <- mean(b)
+```
+
+#### 2. data|>filter(...)
+```{r}
+a<-Sys.time()
+df|>filter(year==2014)
+b<-c(Sys.time()-a)
+
+a<-Sys.time()
+df|>filter(month>3)
+b<-c(b, Sys.time()-a)
+
+a<-Sys.time()
+df|>filter(arr_delay%in%c(0:4))
+b<-c(b, Sys.time()-a)
+
+a<-Sys.time()
+df|>filter(origin=="JFK")
+b<-c(b, Sys.time()-a)
+
+a<-Sys.time()
+df|>filter(dest%in%c("LAX", "PBI"))
+b<-c(b, Sys.time()-a)
+
+d2 <- mean(b)
+```
+
+#### 3. data[...]
+
+```{r}
+df<-as.data.table(df)
+
+a<-Sys.time()
+df[year==2014,]
+b<-c(Sys.time()-a)
+
+a<-Sys.time()
+df[month>3,]
+b<-c(b, Sys.time()-a)
+
+a<-Sys.time()
+df[arr_delay%in%c(0:4),]
+b<-c(b, Sys.time()-a)
+
+a<-Sys.time()
+df[origin=="JFK",]
+b<-c(b, Sys.time()-a)
+
+a<-Sys.time()
+df[dest%in%c("LAX", "PBI"),]
+b<-c(b, Sys.time()-a)
+
+d3 <- mean(b)
+```
+
+```{r}
+d1
+d2
+d3
+```
+
+Надо было так сделать...
+
+```{r}
+flights <- read.csv("Advanced Tools and Methods of Bla Bla Bla/flights14.csv")
+tv_flights <- as_tibble(flights)
+dt_flights <- data.table(flights)
+
+
+N <- 100
+base_time = 0
+tv_time = 0
+dt_time = 0
+for (i in 1:N)
+{
+  start = Sys.time()
+  flights[flights$origin == "JFK" & flights$month == 6L, ]
+  base_time <- base_time + Sys.time() - start
+  
+  start = Sys.time()
+  tv_flights|>
+    filter(origin == "JFK" & month == 6L)
+  tv_time <- tv_time + Sys.time() - start
+  
+  start = Sys.time()
+  dt_flights[origin == "JFK" & month == 6L]
+  dt_time <- dt_time + Sys.time() - start
+}
+```
+
+### 2. Selecting columns
+```{r}
+
+N<-1000
+c_base_time<-0
+c_tv_time<-0
+c_dt_time<-0
+
+for(i in 1:N){
+    start = Sys.time()
+  flights[, c(1:5)]
+  c_base_time <- c_base_time + Sys.time() - start
+  
+  start = Sys.time()
+  tv_flights|>
+    select(1:5)
+  c_tv_time <- c_tv_time + Sys.time() - start
+  
+  start = Sys.time()
+  dt_flights[,c(1:5)]
+  c_dt_time <- c_dt_time + Sys.time() - start
+}
+table(c_base_time, c_tv_time, c_dt_time)
+```
+
+### 3. Sorting
+```{r}
+
+N<-1
+s_base_time<-0
+s_tv_time<-0
+s_dt_time<-0
+
+for(i in 1:N){
+    start = Sys.time()
+  flights[order(flights$origin),]
+  s_base_time <- s_base_time + Sys.time() - start
+  
+  start = Sys.time()
+  tv_flights|>
+    arrange(origin)
+  s_tv_time <- s_tv_time + Sys.time() - start
+  
+  start = Sys.time()
+  dt_flights[order(origin),]
+  s_dt_time <- s_dt_time + Sys.time() - start
+}
+table(s_base_time, s_tv_time, s_dt_time)
+```
+
+### 4. Calculating mean within each group
+
+```{r}
+N<-500
+m_base_time<-0
+m_tv_time<-0
+m_dt_time<-0
+
+for(i in 1:N){
+  
+  start = Sys.time()
+  tv_flights|>
+    group_by(year, month, day)|>summarize(avg=mean(air_time))
+  m_tv_time <- m_tv_time + Sys.time() - start
+  
+  start = Sys.time()
+  dt_flights[,avg:=mean(air_time), by=c("year","month","day")]
+  m_dt_time <- m_dt_time + Sys.time() - start
+}
+table(m_base_time, m_tv_time, m_dt_time)
+```

@@ -1,0 +1,476 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[a4paper,
+mag=1000, includefoot,
+left=3cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\ifpdf\usepackage{epstopdf}\fi
+
+\usepackage{mwe}
+\usepackage{bbm}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{amsmath,amssymb,amsthm,amscd,amsfonts}
+\usepackage{cmap}
+\usepackage{euscript}
+\usepackage{mathdots}
+\usepackage{graphicx}
+\usepackage[russian]{cleveref}
+
+% Нумерация подсекций в оглавлении
+\setcounter{secnumdepth}{2}
+
+% Включать подсекции в оглавление
+\setcounter{tocdepth}{3}
+
+\newenvironment{definition}{\paragraph{Определение.}\hfill\\}{}
+\newenvironment{theorem}{\paragraph{Теорема.}\hfill\\\itshape}{\par}
+\newtheorem{lemma}{Лемма}
+%\newenvironment{proof}{\paragraph{Доказательство.}\\}{\hfill\blacksquare\\}
+\newcommand{\R}{\mathbb{R}}
+\begin{document}
+	\begin{titlepage}
+		\centering
+		{\LARGE \textsc{Лекция 3.}\par}
+		\vspace{1cm}
+		{\Large \bfseries\textsc{Применение теоремы эквивалентности. C-оптимальные планы}\par}
+		\vspace{1.5cm}
+		{\Large\itshape Яковлев Д.~М.\par}
+		\vspace{1cm}
+		{\Large\itshape д.\,ф.-м.\,н.,\\профессор Мелас В.~Б.}
+		\vfill
+		
+		% Bottom of the page
+		{\large \today\par}
+	\end{titlepage}
+	\tableofcontents
+	\newpage
+	\section{Полиномиальная регрессионная модель}
+	Рассматривается полиномиальная регрессионная модель
+	\begin{equation*}
+		y=\eta(x,\theta) + \epsilon,~x\in[-1, 1],
+	\end{equation*}
+	где
+	\begin{equation*}
+		\eta(x, \theta) = \theta^\mathrm{T}f(x) - \text{линейная функция регрессии}
+	\end{equation*}
+	и
+	\begin{equation*}
+		f(x)=( f_1(x),\dots, f_m(x))^\mathrm{T}=(1, x,\dots,x^{m-1})^T.
+	\end{equation*}
+	Случайная величины $\epsilon_i, ~i=1,\dots,N$ --- ошибки наблюдений, для которой предполагаем:
+	\begin{enumerate}
+		\item $E\epsilon_i = 0$ --- несмещённость;
+		\item $E\epsilon_i\epsilon_j = 0,~i\not=j$ --- некоррелированность;
+		\item $D\epsilon=E\epsilon_i^2=\sigma^2>0$ --- равномощность. 
+	\end{enumerate}
+	Общей задачей является нахождение оптимальных планов, или планов, доставляющих экстремальное значение некоторой выпуклой (или вогнутой) функции, заданной на множестве информационных матриц. Планы $\xi\in\Xi$, где $\Xi=\cup_{n=1}^\infty\Xi_n$, где $\Xi_n$ --- множество приближённых планов, заданных в $n$ точках (с ненулевыми коэффициентами).
+	
+	Тогда для такой модели верна следующая теорема:
+	\begin{theorem}
+		Для полиномиальной регрессии на отрезке $[-1,1]$ D-оптимальный план существует, единственен и сосредоточен с равными весами в $m$ точках, которые являются корнями $(x^2 - 1)P'_{m-1}(x)$, где $P_{m-1}(x)$ --- полином Лежандра порядка $m-1$.
+	\end{theorem}
+	\begin{proof}
+		Из непрерывности регрессионных функций $f(x)$ и компактности множества информационных матриц $\mathcal{M}$ получаем, по обобщённой теореме Вейерштрасса (так как критерий --- непрерывная функция) существование D-оптимального плана. Поскольку $\mathcal{M}$ --- компактно, то можно воспользоваться теоремой Кифера-Вольфовица
+		\begin{theorem}\textbf{(Кифер-Вольфовец)}\\
+			Пусть множество информационных матриц компактно. Тогда следующие условия эквивалентны
+			\begin{enumerate}
+				\item план $\xi^*$ --- D-оптимальный;
+				\item план $\xi^*$ --- G-оптимальный;
+				\item $\max\limits_{x\in\mathcal{X}}d(x,\xi^*)=m$, 
+			\end{enumerate}
+			где $m$ --- число параметров модели. Причём, если план $\xi^*$ сосредоточен в конечном числе точек, то последнее равенство достигается в точках $x_i^*$ оптимального плана $\xi^*$. Кроме того, информационные матрицы всех оптимальных планов совпадают.
+		\end{theorem} 
+		Тогда нахождение D-оптимального плана $\xi^*$ можно заменить эквивалентной задачей --- нахождением плана $\xi^*:\max\limits_{x\in\mathcal{X}}d(x,\xi^*)=m$.
+		\begin{equation*}
+			\max_{x\in\mathcal{X}}d(x,\xi^*)=\max_{x\in\mathcal{X}}f^\mathrm{T}(x)\mathbf{D}(\xi^*)f(x)=\max_{x\in\mathcal{X}}\sum_{i,j=1}^md_{ij}(\xi^*)x^{i+j-2}=m,
+		\end{equation*}
+		где $\mathbf{D}(\xi^*)=(d_{ij}(\xi^*))_{i,j=1}^m$. $d(x,\xi^*)$ --- многочлен степени $2m-2$. Заметим, что из положительной определённости матрицы $\mathbf{D}(\xi^*)$ выходит, что её диагональные элементы положительны. По определению,
+		\begin{equation*}
+			\forall x\in\R^m\backslash\{0\}\quad(\mathbf{D}(\xi^*)x,x)>0.
+		\end{equation*}
+		Подбирая в качестве $x$ орты $e_i,~i=1,\dots, m$ получается, что $d_{ii}>0,~i=1,\dots, m$.\\
+%		с полиномиальным вектором регрессионных функций $f(x)$, то получаем, что
+%		\begin{equation*}
+%			\eta(x, \theta)=\theta^\mathrm{T}f(x)=\sum_{n=1}^m\theta_nx^{n-1}.
+%		\end{equation*}	
+		С одной стороны, $d(x, \xi^*)$ имеет не более $m$ точек локального максимума на отрезке $[-1,1]$, включая её концы. Это связано с чередованием знаков производной. Если предположить, что все корни --- вещественны, то получится $2m-1$ сегментов, откуда будет либо $m-1$, либо $m$ точек локального максимума.\\
+		С другой стороны, по теореме Кифера-Вольфовица локальный максимум для конечного оптимального плана $\xi^*$ достигается во всех его точках, а из свойств информационных матриц план невырожден, если число его точек не меньше $m$. Отсюда, план $\xi^*$ имеет вид
+		\begin{equation*}
+			\xi^*=
+			\begin{pmatrix}
+				x_1&x_2&\dots&x_{m-1}&x_m\\
+				\omega_1&\omega_2&\dots&\omega_{m-1}&\omega_m
+			\end{pmatrix}
+		\end{equation*}  
+		где $-1=x_1<x_2<\dots<x_{m-1}<x_m=1$.  \footnote{Кажется, что мы ищем полином наилучшего равномерного приближения (ПНРП). Тогда задачу с поиском оптимального плана можно свести к поиску минимума разности норм ПНРП степени $2m-2$ и ещё какой-то функции.}\\
+		Тогда перепишем информационную матрицу плана $\xi^*$ в матричный вид:
+		\begin{align*}
+			&\mathbf{M}(\xi^*)=\sum_{i=1}^mf(x_i)f^\mathrm{T}(x_i)\omega_i\\
+			&=
+			\underbrace{\begin{pmatrix}
+			1&\dots&1\\
+			x_1&\dots&x_m\\
+			\vdots&\ddots&\vdots\\
+			x_1^{m-1}&\dots&x_m^{m-1}	
+			\end{pmatrix}}_\mathbf{F}
+			\underbrace{\begin{pmatrix}
+				\omega_1&0&\dots&0\\
+				0&\omega_2&\dots&0\\
+				\vdots&\vdots&\ddots&\vdots\\
+				0&0&\dots&\omega_m
+			\end{pmatrix}}_\mathbf{W}
+			\underbrace{\begin{pmatrix}
+				1&x_1&\dots&x_1^{m-1}\\
+				1&x_2&\dots&x_2^{m-1}\\
+				\vdots&\vdots&\ddots&\vdots\\
+				1&x_m&\dots&x_m^{m-1}
+			\end{pmatrix}}_{\mathbf{F}^\mathrm{T}}
+		\end{align*}
+		Посчитаем определитель
+		\begin{equation}\label{eqn:m_sup}
+			\det(\mathbf{M}(\xi^*))=\det(\mathbf{FWF}^\mathrm{T})=\det(\mathbf{F}^\mathrm{T})^2\prod_{i=1}^n\omega_i,
+		\end{equation}
+		где $\det(\mathbf{F}^\mathrm{T})$ --- определитель Вандермонда. Обозначим $\triangle_{m-1}=\det(\mathbf{F}^\mathrm{T})$ и получим
+		\begin{equation*}
+			\triangle_{m-1}=\prod_{1\leqslant j < i\leqslant m}(x_i - x_j).
+		\end{equation*}
+		Чтобы теперь найти D-оптимальный план $\xi^*$:
+		\begin{equation*}
+			\xi^*=\arg\sup_{\xi\in\Xi}\det(\mathbf{M}(\xi)),
+		\end{equation*}
+		необходимо максимизировать определитель Вандермонда и $\prod_{i=1}^m\omega_i$, для которого максимум достигается при $\omega_1 = \dots = \omega_m=\frac{1}{m}$.\\
+		Максимизируем $\triangle_{m-1}$, найдя точку экстремума. Так как $x_1=-1, x_2=1$ уже фиксированы, то получаем для $x_i,~i=2,\dots,m-1$ систему уравнений:
+		\begin{align*}
+			&\dfrac{\partial\triangle_{m-1}}{\partial x_i}=0\Leftrightarrow\dfrac{1}{x_i-x_1}+\dots+\dfrac{1}{x_i-x_{i-1}}+\dfrac{1}{x_i-x_{i+1}}+\dots+\dfrac{1}{x_i-x_m}=0.
+		\end{align*}
+		Для проверки достаточно посчитать производную и разделить на $\triangle_{m-1}$. Если взять функцию $\varphi(x) = (x-x_2)\dots(x-x_{m-1})$, то систему можно переписать как
+		\begin{align*}
+			&\dfrac{1}{x_i+1}+\dfrac{1}{x_i-1}+\dfrac{\varphi''(x_i)}{2\varphi'(x_i)}=0,~i=2,\dots,m-1\Leftrightarrow\\
+			&(x_i^2-1)\varphi''(x_i)+4x_i\varphi'(x_i)=0,~i=2,\dots,m-1.
+		\end{align*}
+		Из равенства их корней и степеней с многочленом $\varphi(x)$ следует, что эти многочлены подобные, тогда
+		\begin{equation*}
+			(x^2-1)\varphi''(x)+4x\varphi'(x)=const\varphi(x)
+		\end{equation*} 
+		Приравняв коэффициенты при $x^{m-2}$ находим $const = (m-2)(m+1) = m(m-1)-2$ и получаем ОДУ второго порядка
+		\begin{equation*}
+			(x^2-1)\varphi''(x)+4x\varphi'(x)-(m(m-1)-2)\varphi(x)=0.
+		\end{equation*}
+		$\varphi(x)$ можно связать с полиномом Лагранжа $P_{m-1}(x)$, выписав его характеристическое дифференциальное уравнение и взяв производную
+		\begin{align*}
+			&((x^2-1)P_{m-1}''(x)+2xP_{m-1}'(x)-m(m-1)P_{m-1}(x))'=0\Leftrightarrow\\
+			&(x^2-1)P_{m-1}'''(x)+4xP_{m-1}''(x)-(m(m-1)-2)P_{m-1}'(x)=0
+		\end{align*}
+		Откуда $\varphi(x)=P_{m-1}'(x)$.\footnote{Если успею, то напишу подробнее про многочлен Лагранжа}.
+	\end{proof}
+	\section{Тригонометрическая регрессионная модель}
+	Рассматривается тригонометрическая регрессионная модель
+	\begin{equation*}
+		y=\eta(x,\theta) + \epsilon,~x\in[-\pi, \pi],
+	\end{equation*}
+	где
+	\begin{equation*}
+		\eta(x, \theta) = \theta^\mathrm{T}f(x) - \text{линейная функция регрессии}
+	\end{equation*}
+	и
+	\begin{align*}
+		&f(x)=( f_1(x),\dots, f_{2m+1}(x))^\mathrm{T}\\
+		&=(1,\sin(x), \cos(x),\dots,\sin(x(m-1)), \cos(x(m-1)), \sin(xm), \cos(xm))^T.
+	\end{align*}
+	Ошибки наблюдений $\epsilon_i$ предполагаются такими же, как и в случае полиномиальной регрессионной модели (стандартное предположение). Сформулируем теорему для D-оптимального плана.
+	\begin{theorem}
+		Пусть $\mathcal{X}=[-\pi, \pi]$. Непрерывным D-оптимальным планом для тригонометрической регрессионной модели является любой план
+		\begin{align*}
+			&\xi_N^*=
+			\begin{pmatrix}
+				x_1^*&\dots&x_N^*\\
+				1/N&\dots&1/N
+			\end{pmatrix},
+			\\
+			&x_i^*=\dfrac{i-1}{N}2\pi-\pi,~i=1,\dots,N,~N\geqslant2m+1,~m - \text{порядок регрессионной модели.}
+		\end{align*}
+		Также D-оптимальным является равномерный план
+		\begin{equation*}
+			\xi^*\sim U(-\pi, \pi).
+		\end{equation*}
+	\end{theorem}
+	\begin{proof}
+		В идеях воспользоваться 3-им условием эквивалентности из теоремы Кифера-Вольфовица.\\
+		Знаем, что в $L_2[-\pi, \pi]$ базис можно образовать ортогональной тригонометрической системой. Тогда 
+		\begin{align*}
+			\|1\|^2=1, \|\sin(kx)\|^2=\|\cos(kx)\|^2=\dfrac{1}{2},~k=1,2,\dots,N,N+1,\dots.
+		\end{align*}
+		По этой причине, для равномерного плана информационная матрица диагонализируется и получится
+		\begin{equation*}
+			\mathbf{M}(\xi^*)=\dfrac{1}{2\pi}\int_{-\pi}^\pi f(x)f^\mathrm{T}\xi(dx)=
+			\begin{pmatrix}
+				1&0&\dots&0\\
+				0&\frac{1}{2}&\dots&0\\
+				\vdots&\vdots&\ddots&\vdots\\
+				0&0&\dots&\frac{1}{2}\\
+			\end{pmatrix}
+		\end{equation*}
+		Понятно, какая матрица $\mathbf{D}(\xi^*)$ получится. Пользуясь теоремой Кифера-Вольфовица, покажем, что $d(x, \xi^*)=1+2m$. Тогда
+		\begin{equation*}
+			d(x, \xi^*) = f^\mathrm{T}(x)\mathbf{D}(\xi^*)f(x)=1+2(\sin^2x+\cos^2x+\dots+\sin^2mx+\cos^2mx)=1+2m.
+		\end{equation*}
+		Таким образом, показали результат для равномерного плана $\xi^*$.\\
+		Для оптимального конечного плана $\xi^*_N$ из условий теоремы:
+		\begin{itemize}
+			\item На диагонали получим $\textit{diag}~\mathbf{M}(\xi_N^*)=(1,\frac{1}{2},\frac{1}{2},\dots, \frac{1}{2})$;
+			\item На не-диагонали получим, например, для $a_{2i,2j+1},~i\not=j$:
+			\begin{equation*}
+				a_{2i,2j+1}=\dfrac{1}{N}\sum_{k=1}^N\sin(ix_k^*)\cos(jx_k^*)
+			\end{equation*}
+		\end{itemize}
+		Получаются суммы из произведений косинусов или синусов. Их можно разложить на суммы или разности косинусов или синусов, и показать, Что их суммы равны нулю. Тогда достигается $d(x,\xi_N^*)$ и $\xi_N^*$ --- D-оптимальный план.
+	\end{proof}
+	\section{C-критерий оптимальности}
+	Итак, рассматривали до этого задачи, построенные на нахождении D-оптимальных планов, пользовались определителем. Теперь мы хотим оценить величину типа $c^\mathrm{T}\theta$, где $c$ --- заданный вектор в стандартной линейной по параметрам регрессионной модели. Заметим, что первый символ в названии критерия определяет, чем или относительно чего будет искаться оптимальный план. Вектор $c$ может быть произвольным, например, быть ортой, производной от регрессионной функции $f'(x)$ и так далее.\\
+	\begin{definition}
+		План $\xi$ допустим в задаче оценивания величины $c^\mathrm{T}\theta$, если величина оцениваема по результатам эксперимента. 	
+	\end{definition}
+	\begin{definition}
+		$c$-оптимальный план $\xi^*$ --- допустимый план, который минимизирует дисперсию оценки $c^\mathrm{T}\theta$.
+	\end{definition}\\
+	Таким образом, рассматривается не минимизация дисперсии $\xi$, а оценки $c^\mathrm{T}\theta$, что уместно для линейных регрессионных моделей (про нелинейные, наверно, всё не так однозначно).\\
+	Когда $C$-критерий оптимальности может быть полезен? Например, когда рассматривается задача экстраполяции. Пусть имеется линейная регрессионная модель
+	\begin{equation*}
+		y=\eta(x,\theta)+\epsilon,~x\in\mathcal{X},
+	\end{equation*}
+	где $\eta(x,\theta)=f(x)\theta^\mathrm{T}$. Для $z\not\in\mathcal{X}$ хотим подобрать такой план $\xi^*$, чтобы минимизировать оценку $f(z)\theta^\mathrm{T}$, где $c=f(z)$. 
+	\section{Теорема Гаусса-Маркова в случае матриц неполного ранга}
+	Сформулируем теорему Гаусса-Маркова в случае матриц неполного ранга. Для чего она нужна? До этого была теорема Гаусса-Маркова для невырожденных матриц. Эта теорема рассматривает условия оцениваемости для вырожденных матриц.
+	\begin{definition}
+		Векторная параметрическая функция $\tau=\mathbf{T}\theta,~(\mathbf{T}\in\R^{k\times m},~k\in\{1,\dots,m\})$ --- оцениваема, если для неё $\exists$ несмещённая оценка вида $\hat{\tau}=\mathbf{A}Y,~(\mathbf{A}\in\R^{k\times N})$.
+	\end{definition}
+	\begin{theorem}
+		Для линейной (классической) регрессионной модели
+		\begin{itemize}
+			\item Параметрическая функция $\tau=\mathbf{T}\theta,~(\mathbf{T}\in\R^{k\times m},~k\in\{1,\dots,m\})$ оцениваема тогда и только тогда, когда
+			\begin{equation*}
+				\mathbf{T}(\mathbf{X}^\mathrm{T}\mathbf{X})^-\mathbf{X}^\mathrm{T}\mathbf{X}=\mathbf{T};
+			\end{equation*}
+			\item если выполнено это условие, то оценка для $\tau$ имеет вид
+			\begin{equation*}
+				\hat{\tau}=\mathbf{T}(\mathbf{X}^\mathrm{T}\mathbf{X})^-\mathbf{X}^\mathrm{T}Y,
+			\end{equation*}
+			определена однозначно и является наилучшей линейной несмещённой оценкой. Ковариационная матрица оценки $\hat{\tau}$ имеет вид
+			\begin{equation*}
+				\mathbf{D}_{\hat{\tau}}=\sigma^2\mathbf{D},~\mathbf{D}=\mathbf{T}(\mathbf{X}^\mathrm{T}\mathbf{X})^-\mathbf{T}^\mathrm{T}.
+			\end{equation*}
+			Доказательство --- обобщение теоремы Гаусса-Маркова для невырожденных матриц и несколько лемм об оцениваемых параметрических функциях.
+		\end{itemize}
+	\end{theorem}
+	\section{Теорема эквивалентности для C-критерия}
+	Если теорема Гаусса-Марков для вырожденных матриц не используется здесь, то можно переместить тему ближе к $c$-критерию оптимальности.\\
+	Сначала будем рассматривать невырожденный $c$-оптимальный план, а затем вырожденный план.\\
+	Случай невырожденного $c$-оптимального плана. Введём функцию
+	\begin{equation*}
+		\varphi(x,\xi)=(f(x)^\mathrm{T}\mathbf{M}^{-1}(\xi)c)^2.
+	\end{equation*}
+	Почему же используется именно такая функция? Прежде всего, для нашего критерия хотим учитывать $c$-вектор, затем хотим среди доступных планов найти $c$-оптимальный, а это подразумевает минимизацию дисперсионной матрицы для оценки $c^\mathrm{T}\theta$.
+	
+	\begin{theorem}
+		Если существует невырожденный $c$-оптимальный план, то невырожденный план $\xi^*$ является $c$-оптимальным
+		\begin{equation*}
+			\Leftrightarrow \max_{x\in\mathcal{X}}\varphi(x,\xi^*)=c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c.
+		\end{equation*}
+		Кроме того, в опорных точках оптимального плана функция $\varphi(x,\xi^*)$ достигает своего максимального значения.
+	\end{theorem}
+	Вывод в виде достижения максимального значения в точках оптимального плана напоминает теорему Кифера-Вольфовица. Заметим, что схема доказательства теоремы эквивалентности для $C$-критерия аналогична схеме доказательства теоремы Кифера-Вольфовица. Это связано с тем, что сам $C$-критерий отличается от D-критерия наличием $c$ векторов при минимизации $\mathbf{D}(\xi)$.
+	\begin{lemma}
+		Для произвольного $k\in\mathbb{N}$ и фиксированного вектора $c\in\R^k$ функция $\psi(\mathbf{A})=c^\mathrm{T}\mathbf{A}c$ --- выпуклая на множестве положительно определённых матриц $k\times k$.	
+	\end{lemma}
+	\begin{proof}
+		Проверяем, что
+		\begin{equation*}
+			\psi((1-\alpha)\mathbf{A}+\alpha\mathbf{B})\leqslant (1-\alpha)\psi(\mathbf{A})+\alpha\psi(\mathbf{B}).
+		\end{equation*}
+	\end{proof}
+	\begin{lemma}
+		Для произвольного фиксированного вектора $c\in\R^k$ и обратимой матрицы $\mathbf{A}$, элементы которой являются дифференцируемыми функциями параметра $\alpha$ имеет место формула
+		\begin{equation*}
+			\dfrac{\partial}{\partial\alpha}c^\mathrm{T}\mathbf{A}(\alpha)^{-1}c=c^\mathrm{T}\mathbf{A}(\alpha)^{-1}\mathbf{A}'(\alpha)\mathbf{A}(\alpha)^{-1}c.
+		\end{equation*} 
+	\end{lemma}
+	\begin{proof}
+		Рассмотрим $\mathbf{I}_k=\mathbf{A}(\alpha)^{-1}\mathbf{A}(\alpha).$ Тогда
+		\begin{align*}
+			&\mathbf{0}=(\mathbf{I}_k)'_\alpha=(\mathbf{A}(\alpha)^{-1}\mathbf{A}(\alpha))'=\mathbf{A}^{-1}(\alpha)'\mathbf{A}(\alpha)+\mathbf{A}^{-1}(\alpha)\mathbf{A}'(\alpha) \Leftrightarrow\\
+			&(\mathbf{A}^{-1}(\alpha))'=-\mathbf{A}^{-1}(\alpha)\mathbf{A}'(\alpha)\mathbf{A}^{-1}(\alpha)
+		\end{align*}
+		Домножая на $c,~c^\mathrm{T}$ где необходимо, получаем нашу формулу. 
+	\end{proof}
+	\begin{lemma}
+		Для любого невырожденного плана $\xi$ справедливо неравенство
+		\begin{equation*}
+			\max_{x\in\mathcal{X}}\varphi(x,\xi)\geqslant c^\mathrm{T}\mathbf{M}^{-1}(\xi)c.
+		\end{equation*}
+	\end{lemma}
+	\begin{proof}
+		\begin{align*}
+			&\max_{x\in\mathcal{X}}\varphi(x,\xi)\geqslant\int_\mathcal{X}\varphi(x,\xi)\xi(dx)=\int_\mathcal{X}(f^\mathrm{T}(x)\mathbf{M}^{-1}(\xi)c)^2\xi(dx)\\
+			&=\int_\mathcal{X}\textrm{tr}f^\mathrm{T}(x)\mathbf{M}^{-1}(\xi)cf^\mathrm{T}(x)\mathbf{M}^{-1}(\xi)c\xi(dx)=\int_\mathcal{X}\textrm{tr}f^\mathrm{T}(x)\mathbf{M}^{-1}(\xi)f(x)\xi(dx)~c^\mathrm{T}\mathbf{M}^{-1}(\xi)c\\
+			&=c^\mathrm{T}\mathbf{M}^{-1}(\xi)c,
+		\end{align*}
+		так как для следа матрицы выполняется:
+		\begin{equation*}
+			\mathrm{tr}\mathbf{AB}=\mathrm{tr}\mathbf{BA},~\mathrm{tr}\mathbf{A}=\mathrm{tr}\mathbf{A}^\mathrm{T}.
+		\end{equation*}
+	\end{proof}
+	Теперь докажем саму теорему.
+	\begin{proof}
+		\textbf{Необходимость.} Пусть $\xi^*$ --- $c$-оптимальный план. Рассмотрим план $\xi_\alpha=(1-\alpha)\xi^*+\alpha\xi_x$, где $\xi_x={x \choose 1}$ --- план, сосредоточенный в точке $x,~0<\alpha<1$. В силу $C$-оптимальности плана $\xi^*$ имеет место неравенство:
+		\begin{align*}
+			&c^\mathrm{T}\mathbf{M}^{-1}(\xi_\alpha)c\geqslant c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c\Leftrightarrow\\
+			&c^\mathrm{T}\dfrac{\mathbf{M}^{-1}(\xi_\alpha)-\mathbf{M}^{-1}(\xi^*)}{\alpha}c\geqslant0
+		\end{align*} 
+		В пределе $\alpha\rightarrow 0_+$:
+		\begin{align*}
+			&\dfrac{\partial}{\partial\alpha}c^\mathrm{T}\mathbf{M}^{-1}(\xi_\alpha)c|_{\alpha=0_+}\\
+			&=-c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)\dfrac{\partial}{\partial\alpha}\left(\mathbf{M}(\xi_\alpha)\right)|_{\alpha=0_+}\mathbf{M}^{-1}(\xi^*)c\geqslant0.
+		\end{align*}
+		Учитывая, что $\xi_\alpha=(1-\alpha)\xi^*+\alpha\xi_x$
+		\begin{equation*}
+			\dfrac{\partial}{\partial\alpha}\left(\mathbf{M}(\xi_\alpha)\right)|_{\alpha=0_+}=-\mathbf{M}(\xi^*)+\mathbf{M}(\xi_x).
+		\end{equation*}
+		Подставляя это в неравенство, получим
+		\begin{align*}
+			&-c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)\left(-\mathbf{M}(\xi^*)+\mathbf{M}(\xi_x)\right)\mathbf{M}^{-1}(\xi^*)c\geqslant0\Leftrightarrow\\
+			&c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c\geqslant c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)\mathbf{M}(\xi_x)\mathbf{M}^{-1}(\xi^*)c=c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)f(x)f^\mathrm{T}(x)\mathbf{M}^{-1}(\xi^*)c\\
+			&=(f^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c)^2=\varphi(x,\xi^*)
+		\end{align*} 
+		Отсюда, $\max\varphi(x,\xi^*)\leqslant c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c$. Используя лемму 3 (отметить), приходим к равенству.\\
+		\textbf{Достаточность.} От противного. Пусть существует план
+		\begin{equation*}
+			\xi^*:~\max_x(x,\xi^*)=c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c,
+		\end{equation*}
+		который не является $c$-оптимальным планом. Пусть $\xi_c$ --- $c$-оптимальный план. Для плана $\xi_\alpha=(1-\alpha)\xi^*+\alpha\xi_c$ в силу леммы 1 (о вогнутости на множестве положительно определённых матриц) имеем
+		\begin{equation*}
+			c^\mathrm{T}\mathbf{M}^{-1}(\xi_\alpha)c\leqslant (1-\alpha)c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c + \alpha c^\mathrm{T}\mathbf{M}^{-1}(\xi_c)c.
+		\end{equation*}
+		Вычитая $c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c$, получаем
+		\begin{equation*}
+		c^\mathrm{T}\mathbf{M}^{-1}(\xi_\alpha)c-c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c\leqslant \alpha c^\mathrm{T}(\mathbf{M}^{-1}(\xi_c)-\mathbf{M}^{-1}(\xi^*))c<0,
+		\end{equation*}
+		так как план $\xi^*$ не $c$-оптимальный. Из полученного неравенства следует, что
+		\begin{equation*}
+			c^\mathrm{T}\dfrac{\mathbf{M}^{-1}(\xi_\alpha)-\mathbf{M}^{-1}(\xi^*)}{\alpha}c<0,
+		\end{equation*}
+		и значит,
+		\begin{equation*}
+			\dfrac{\partial}{\partial\alpha}c^\mathrm{T}\mathbf{M}^{-1}(\xi_\alpha)c|_{\alpha=0_+}=-c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)\left(-\mathbf{M}(\xi^*)+\mathbf{M}(\xi_c)\right)\mathbf{M}^{-1}(\xi^*)c<0,
+		\end{equation*}
+		откуда
+		\begin{equation*}
+			c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c < c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)\mathbf{M}(\xi_c)\mathbf{M}^{-1}(\xi^*)c.
+		\end{equation*}
+		С другой стороны, план $\xi^*:~\max_x\varphi(x,\xi^*)=c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c$. Это означает, что
+		\begin{equation*}
+			c^\mathrm{T}\mathbf{M}^{-1}(\xi^*)\mathbf{M}(\xi_c)\mathbf{M}^{-1}(\xi^*)c=\int(f^\mathrm{T}\mathbf{M}^{-1}(\xi^*)c)^2\xi_c(dx)=\int\varphi(x,\xi^*)\xi_c(dx)\leqslant \max_x\varphi(x,\xi^*)
+		\end{equation*}
+		Получили противоречие. Следовательно, план $\xi^*$ --- $c$-оптимальный план.
+	\end{proof}
+	\section{Определения}
+	\begin{definition}
+		$\mathcal{X}$ --- некоторое заданное множество планов, предполагается компактным.
+	\end{definition}
+	\begin{definition}
+		Точный план эксперимента $\xi_N$ --- это дискретная вероятностная мера
+		\begin{equation*}
+			\xi_N \sim
+			\begin{pmatrix}
+				x_1 & x_2 & \dots & x_N\\
+				1/N & 1/N & \dots & 1/N
+			\end{pmatrix}
+			,~x_i\in\mathcal{X},~i=1,\dots,N.
+		\end{equation*}
+	\end{definition}
+	\begin{definition}
+		Приближённый план эксперимента $\xi$ --- это вероятностная мера
+		\begin{equation*}
+			\xi \sim
+			\begin{pmatrix}
+				x_1 & x_2 & \dots & x_n\\
+				\omega_1 & \omega_2 & \dots & \omega_n
+			\end{pmatrix},
+			~x_i\in\mathcal{X},~i=1,\dots,n;~\omega_i>0,~\sum_{i=1}^n\omega_i = 1.
+		\end{equation*}
+	\end{definition}
+	\begin{definition}
+		Информационная матрица $\mathbf{M}(\xi)$--- это
+		\begin{equation*}
+			\mathbf{M}(\xi) = \int_\mathcal{X}f(x)f(x)^\mathrm{T}\xi(dx),
+		\end{equation*}
+		где $f(x)=(f_0(x),\dots, f_m(x))^\mathrm{T}$, где$~f_i(x),~i=0,\dots, m$ --- заданные функции.   
+	\end{definition}
+	\begin{definition}
+		$\Xi_n$ --- множество приближённых планов, заданных в $n$ точках (с ненулевыми коэффициентами). $\Xi=\cup_{n=1}^\infty\Xi_n$ 
+	\end{definition}
+	\begin{definition}
+		\begin{equation*}
+			\mathcal{M}=\{\mathbf{M}:\mathbf{M}=\mathbf{M}(\xi),\xi\in\Xi\}
+		\end{equation*}
+		это множество всех информационных матриц.
+	\end{definition}
+	Если рассматривается линейная регрессионная модель, то $\mathcal{M}$ --- компактное множество в пр--ве $\R^{m(m+1)/2}$, где $m$ --- размерность вектора $f(x)$.
+	
+	\begin{definition}
+		Если для некоторого плана $\xi$ информационная матрица $\mathbf{M}(\xi)$ невырожденная, то $\xi$ --- невырожденный план.
+	\end{definition}
+	\begin{definition}
+		Дисперсионная матрица невырожденного плана $\xi$ --- это матрица
+		\begin{equation*}
+			\mathbf{D}(\xi) = \mathbf{M}(\xi)^{-1}.
+		\end{equation*}
+	\end{definition}
+	Теорема Каратеодори обосновывает применимость приближённых планов эксперимента.\\
+	Не очень понятно, для чего нужно высказывание: ``Как правило, не существует такого невырожденного плана $\xi^*$, что
+	\begin{equation*}
+		\mathbf{D}(\xi^*)\leqslant \mathbf{D}(\xi)
+	\end{equation*}
+	для любого невырожденного плана $\xi\in\Xi$.''\\
+	Тогда придумаем пример. Пусть $f(x) = x, \mathcal{X} = \R$, тогда \begin{equation*}
+		\mathbf{M}(\xi)=\int_\mathcal{X}x^2\xi(dx)=\sum_{i=1}^n w_ix_i^2.
+	\end{equation*}
+	Понятно, что
+	\begin{equation*}
+		\mathbf{D}(\xi)=\mathbf{M}(\xi)^{-1}=\left(\sum\limits_{i=1}^n w_ix_i^2\right)^{-1}.
+	\end{equation*}
+	Допустим,
+	\begin{equation*}
+		\xi = {x_1 \choose 1}.
+	\end{equation*}
+	Если $x_1\rightarrow\infty$, то $\mathbf{D}(\xi)\rightarrow 0$, из чего следует, что $\arg\inf\limits_{\mathcal{X}}\mathbf{D}(\xi)\not\in\mathcal{X}$.\\
+	Следующий вопросы: для чего нужны критерии оптимальности и что подразумевается под "вогнутыми функциями на множестве информационных матриц"? 
+	\begin{itemize}
+		\item Для чего нужны критерии оптимальности? Поскольку не существует универсального способа определения наилучшего невырожденного плана, предлагается ввести критерии оптимальности по которым можно найти оптимальный план --- решение критерия. Каждый критерий ставит свою задачу, для которой мы и находим оптимальный план.
+		\item Вогнутые функции на множестве информационных матриц/Выпуклые функции на множестве дисперсионных матриц --- на самом деле критерии можно интерпретировать как класс функций с определёнными свойствами, которые сами по себе интерпретируют информационную матрицу, сопоставляя ей какое-либо скалярное значением.\\
+		Тем самым, критерий --- скалярная функция от матрицы, для которой оптимальный план --- план $\xi\in\Xi$, на котором достигается $\inf,~\sup$. 
+	\end{itemize}
+	Далее возникает вопрос, считать ли $\inf$ критерия от $\mathbf{M}^-(\xi)$ ($=\mathbf{D}(\xi)$, если $\mathbf{M}^-(\xi)$ --- обратима) или от $\mathbf{M}(\xi)$? Наверно, хотим найти $\arg\inf\limits_\xi\mathbf{D}(\xi)$. В статистике оценка $\hat{\theta}$ называется эффективной (для несмещённых оценок), если на ней достигается $\inf\mathbf{D}\hat{\theta}$.
+	Приведём несколько примеров критериев:
+	\begin{definition}
+		\textit{D-критерий (D --- determinant).}
+		\begin{equation*}
+			\det\mathbf{M}(\xi)\rightarrow\sup_{\xi\in\Xi}
+		\end{equation*}
+		или
+		\begin{equation*}
+			\det\mathbf{D}(\xi)\rightarrow\inf_{\xi\in\Xi}.
+		\end{equation*}
+	\end{definition}
+	\begin{definition}
+		\textit{G-критерий. (G --- general variance).}
+		\begin{equation*}
+			\max_{x\in\mathcal{X}}d(x,\xi)\rightarrow\inf_{\xi\in\Xi_H},
+		\end{equation*}
+		где $d(x,\xi)=f^\mathrm{T}(x)\mathbf{D}(\xi)f(x)$.
+	\end{definition}
+	Эти критерии уместны для нахождения оптимального плана в классе линейных несмещённых оценок.
+\end{document}

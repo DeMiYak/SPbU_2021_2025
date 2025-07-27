@@ -1,0 +1,172 @@
+---
+title: "CollegeContinue"
+author: "Yakovlev D.M."
+date: "2025-04-01"
+output:
+  html_notebook:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r}
+options(warn = -1)
+options(repr.plot.width=15, repr.plot.height=15)
+```
+
+# Предварительный анализ данных 
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(GGally)
+library(ggplot2)
+library(lm.beta)
+```
+
+
+О регрессии в R (TODO)
+1. Показываете данные и объясняете, как готовили их к последующему применению линейной регрессии.
+```{r}
+library(readxl)
+col_I_sn<-read_excel("stat2021_sm\\us_col.std\\I_shortname.xls")
+col_I_sn$PPIND=ifelse(col_I_sn$PPIND==1, "public", "private")
+```
+```{r}
+summary(col_I_sn)
+```
+
+* AVRMATH Average Math SAT score                     
+* AVRVERB Average Verbal SAT score                   
+* AVRCOMB Average Combined SAT score
+* AVR_ACT Average ACT score                     
+* MATH_1 First quartile - Math SAT                    
+* MATH_3 Third quartile - Math SAT                   
+* VERB_1 First quartile - Verbal SAT
+* VERB_3 Third quartile - Verbal SAT
+* ACT_1 First quartile - ACT                          
+* ACT_3 Third quartile - ACT              
+* APP_REC Number of applications received             
+* APP_ACC Number of applicants accepted             
+* NEW_STUD Number of new students enrolled   
+* FULLTIME Number of fulltime undergraduates          
+* PARTTIME Number of parttime undergraduates
+* IN_STATE In-state tuition                        
+* OUT_STAT Out-of-state tuition                       
+* R_B_COST Room and board costs
+* ROOM Room costs                                    
+* BOARD Board costs                              
+* ADD_FEE Additional fees                            
+* BOOK Estimated book costs                 
+* PERSONAL Estimated personal spending
+* PH_D Pct. of faculty with Ph.D.'s          
+* TERM_D Pct. of faculty with terminal degree         
+* SAL_FULL Average salary - full professor          
+* SAL_AC Average salary - associate professor         
+* SAL_AS Average salary - assistant professor         
+* SAL_ALL Average salary - all ranks       
+* COMP_FUL Average compensation - full professor   
+* COMP_AC Average compensation - associate professor  
+* COMP_AS Average compensation - assistant professor  
+* COMP_ALL Average compensation - all ranks           
+* NUM_FULL Number of full professor
+* NUM_AC Number of associate professor                
+* NUM_AS Number of assistant professor                
+* NUM_INS Number of instructors                
+* NUM_ALL Number of faculty - all ranks   
+* INSTRUCT Instructional expenditure per student
+* GRADUAT Graduation rate
+* SF_RATIO Student/faculty ratio
+* DONATE Pct.alumni who donate
+* NEW10 Pct. new students from top 10% of H.S. class - % студентов из топ 10% своей старшей школы
+* NEW25 Pct. new students from top 25% of H.S. class - % студентов из топ 25% своей старшей школы
+
+
+Разделяем на общественные и частные вузы
+
+```{r}
+colNames<-c("ADD_FEE", "BOOK", "R_B_COST","OUT_STAT","NEW10","AVRCOMB","SF_RATIO","PH_D","GRADUAT","PPIND")
+colFin<-c("ADD_FEE", "BOOK", "PPIND")
+colCost<-c("R_B_COST", "IN_STATE", "OUT_STAT", "PPIND")
+colNew<-c("NEW10", "AVRCOMB", "PPIND")
+colStud<-c("SF_RATIO", "PH_D", "GRADUAT", "PPIND")
+col_I_comp<-col_I_sn[colNames]
+```
+
+```{r}
+col_I_mixed<-col_I_comp|>mutate(ADD_FEE=log(ADD_FEE))|>rename(`log-ADD_FEE`=ADD_FEE)
+head(col_I_mixed)
+```
+2. Задаете зависимые и 'независимые' переменные (регрессоры), не забываете обратить внимание на выбор способа обработки пропущенных наблюдений, функция lm.
+3. Интерпретируете результаты регрессии, включая результат lm.beta (в частности, о разнице между b и beta, о значимости и пр.).
+4. Далее есть три проблемы, из-за которых результаты регрессии могут быть неправильными – линейная модель регрессии не соответствует данным, в данных могут быть сильно зависимые «независимые» переменные и также могут быть outliers. Если данные были предварительно хорошо подготовлены, то проблемы с outliers там менее вероятны. Поэтому сначала можно заняться проблемой зависимости. В общем случае, нет строгой рекомендации, в каком порядке нужно решать перечисленные проблемы.
+5. Сначала объясняете, как строятся доверительные интервалы и двумерные доверительные области. На примере пары признаков строите двумерный доверительный интервал для пары значащих коэффициентов регрессии, интерпретируете: (1) оба признака влияют на результат согласно оценкам коэффициентов регрессии перед ними: или (2) признаки вместе сильно влияют, но не различить, какой из них больше; или (3) непонятно, или оба признака слабо влияют, или оба влияют сильно.
+6. На примере с двумя «независимыми» признаками пишете формулы и показываете, как корреляция между признаками влияет на качество оценок регрессии.
+7. Пусть вы нас убедили, что коррелированность «независимых» признаков – это плохо. Поэтому нужно избавляться от лишних, избыточных, признаков. Сделаем это вручную на основе таблицы Redundancy. Там «независимые переменные» сравниваются по двум критериям - независимость от других «независимых» признаков и зависимость от зависимой переменной. Объясняете, что означают столбцы, что делать, если эти критерии дают противоречивые рекомендации, решаете, какой признак лучше убрать первым.
+8. Убираете вручную на основе Redundancy несколько признаков и смотрите, что меняется (R, adjusted R, значимость регрессии, значимость коэффициентов регрессии, независимость «независимых» переменных, AIC).
+9. Далее переходите к автоматической пошаговой регрессии по AIC. По результатам определяете, сколько признаков оставить. Сравниваете результаты Forward и Backward вариантов.
+10. Строите обычную регрессию по выбранному числу признаков. Сначала смотрите на нормальность остатков (зачем нужно на это смотреть?), затем смотрите на график Predicted vs Residuals. Как по нему понять, адекватна ли линейная регрессия? Как будет выглядеть график, если на самом деле была квадратичная зависимость (в случае одной независимой переменной)? Как может повлиять на этот график выбор Pairwise deletion для пропущенных наблюдений?
+11. Далее переходите к поиску outliers. Сначала смотрите на скаттерплот Residuls vs Deleted Residuals. Нужно объяснить, что этот такое, что откладывается по осям, как там найти outliers.
+12. Затем смотрите на разные меры, например, outliers по Куку и по Махаланобису (в пространстве регрессоров). Объясняете, что это такое, по отношению к чему это outliers. Умеете приводить пример, где, в случае одной независимой переменной, находится outliers по Куку, но не по Махаланобису, и наоборот.
+13. Итог: результат линейной регрессии, для которой проверена адекватность модели, значимость, отсутствие outliers, проинтерпретированы коэффициенты регрессии. Спрогнозируйте что-нибудь по построенной регрессионной модели, посмотрите на доверительные и предсказательные интервалы.
+
+```{r}
+unique_info <- function(column) {
+  column<-na.omit(column)
+  list(ratio=length(unique(column)) / length(column), unique=length(unique(column)), total=length(column), moda = max(table(column)))
+}
+
+ratios <- sapply(col_I_comp, unique_info)
+ratios
+```
+### Количественные признаки {.tabset .tabset-fade .tabset-pills}
+#### Непрерывные признаки 
+
+1. ADD_FEE
+1. R_B_COST
+1. IN_STATE
+1. OUT_STATE
+1. AVRCOMB
+1. SF_RATIO
+1. GRADUAT
+
+#### Дискретные признаки
+
+1. BOOK (непрерывный, но дискретный из-за моды. Может быть округление)
+1. PH_D (считаем из-за плохой точности и округления данных)
+1. NEW10 (по ratio и moda, низкая точность)
+
+### Качественные признаки
+
+* PPIND - private/public.
+
+## Построить matrix plot (pairs plot), его долго разглядывать с точки зрения outliers, неоднородностей, вида распределений, вида зависимостей (линейные/нелинейные) и пр.
+
+
+### Первое построение pairs plot. Общие наблюдения.
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_I_comp, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+Public: Хи-квадрат: не отвергаем AVRCOMB, SF_RATIO, PH_D, GRADUAT, R_B_COST, OUT_STAT,
+
+Private: Хи-квадрат: не отвергаем log-ADD_FEE, R_B_COST, NEW10, AVRCOMB, SF_RATIO, GRADUAT
+
+```{r}
+ggpairs(col_I_mixed, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+```{r}
+col_split_mixed<-split(col_I_mixed, col_I_mixed$PPIND)
+names(col_split_mixed)<-c("private", "public")
+col_split_mixed<-lapply(col_split_mixed, function(x){
+  dplyr::select(x, -PPIND)
+})
+colMixed<-names(col_I_mixed)
+colMixed<-colMixed[-length(colMixed)]
+col_split_mixed$private|>rmarkdown::paged_table()
+```

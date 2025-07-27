@@ -1,0 +1,204 @@
+---
+title: "collegeFirst"
+author: "Yakovlev D.M."
+date: "2024-11-08"
+output: html_document
+---
+
+# Ђнализ датасета
+
+```{r}
+library(tidyverse)
+library(GGally)
+library(ggplot2)
+```
+
+### 0. РџСЂРµРґРІР°СЂРёС‚РµР»СЊРЅС‹Р№ Р°РЅР°Р»РёР· РґР°РЅРЅС‹С…
+```{r}
+library(readxl)
+col_I_sn<-read_excel("stat2021_sm\\us_col.std\\I_shortname.xls")
+col_I<-read_excel("stat2021_sm\\us_col.std\\I.xls")
+col_I
+```
+
+```{r}
+summary(college_I)
+```
+
+```{r}
+names(college_I)
+```
+
+```{r}
+col_I_sn$NEW10
+```
+РљРѕР»РёС‡РµСЃС‚РІРµРЅРЅС‹Рµ РїСЂРёР·РЅР°РєРё:
+
+* AVRMATH Average Math SAT score                     
+* AVRVERB Average Verbal SAT score                   
+* AVRCOMB Average Combined SAT score
+* AVR_ACT Average ACT score                     
+* MATH_1 First quartile - Math SAT                    
+* MATH_3 Third quartile - Math SAT                   
+* VERB_1 First quartile - Verbal SAT
+* VERB_3 Third quartile - Verbal SAT
+* ACT_1 First quartile - ACT                          
+* ACT_3 Third quartile - ACT              
+* APP_REC Number of applications received             
+* APP_ACC Number of applicants accepted             
+* NEW_STUD Number of new students enrolled   
+* FULLTIME Number of fulltime undergraduates          
+* PARTTIME Number of parttime undergraduates
+* IN_STATE In-state tuition                        
+* OUT_STAT Out-of-state tuition                       
+* R_B_COST Room and board costs
+* ROOM Room costs                                    
+* BOARD Board costs                              
+* ADD_FEE Additional fees                            
+* BOOK Estimated book costs                 
+* PERSONAL Estimated personal spending
+* PH_D Pct. of faculty with Ph.D.'s          
+* TERM_D Pct. of faculty with terminal degree         
+* SAL_FULL Average salary - full professor          
+* SAL_AC Average salary - associate professor         
+* SAL_AS Average salary - assistant professor         
+* SAL_ALL Average salary - all ranks       
+* COMP_FUL Average compensation - full professor   
+* COMP_AC Average compensation - associate professor  
+* COMP_AS Average compensation - assistant professor  
+* COMP_ALL Average compensation - all ranks           
+* NUM_FULL Number of full professor
+* NUM_AC Number of associate professor                
+* NUM_AS Number of assistant professor                
+* NUM_INS Number of instructors                
+* NUM_ALL Number of faculty - all ranks   
+* INSTRUCT Instructional expenditure per student
+* GRADUAT Graduation rate
+* SF_RATIO Student/faculty ratio
+* DONATE Pct.alumni who donate
+* NEW10 Pct. new students from top 10% of H.S. class - % студентов из топ 10% своей старшей школы
+* NEW25 Pct. new students from top 25% of H.S. class - % студентов мз топ 25% своей старшей школы
+(‹ибо написать - всЮ остальное)
+
+ЏорЯдковые признаки:
+
+* FICE - Federal ID Number
+
+Љачественные признаки:
+
+* ...1 - Ќазвание университета 
+* PPIND Public/private indicator (public=1, private=2)
+* STATE State (postal code)
+* TYPE - I
+
+```{r}
+head(col_I_sn)
+summary(col_I_sn)
+```
+
+(Љомментарий убрать:) ‚ данных есть пропуски. ‹ибо заполнЯем их (если знаем, как), либо оставлЯем как есть.
+
+```{r}
+dim(col_I_sn)
+```
+
+```{r}
+col_I_sn$TYPE
+```
+TYPE состоит из одних и тех же значений, поэтому его можно убрать
+
+```{r}
+col_I_sn<-col_I_sn|>select(-TYPE)
+```
+
+```{r}
+names(col_I_sn)
+```
+
+Љолледжи делЯтсЯ на государственные (public) и частные (private). ђазделим датасет на две части.
+
+```{r}
+col_prv<-col_I_sn|>filter(PPIND==2)
+head(col_prv)
+```
+
+```{r}
+col_pub<-col_I_sn|>filter(PPIND==1)
+head(col_pub)
+```
+
+```{r}
+names_col<-names(col_I_sn)
+names_col
+avr_col<-names_col[grep("AVR", names_col)]
+avr_col
+act_col<-names_col[grep("ACT", names_col)]
+num_col<-names_col[grep("NUM", names_col)]
+sal_col<-names_col[grep("SAL", names_col)]
+comp_col<-names_col[grep("COMP", names_col)]
+new_col<-names_col[grep("NEW", names_col)]
+math_col<-names_col[grep("MATH", names_col)]
+verb_col<-names_col[grep("VERB", names_col)]
+app_col<-names_col[grep("APP", names_col)]
+time_col<-names_col[grep("TIME", names_col)]
+cat_col<-c("PPIND", "FICE", "STATE")
+stat_col<-c("IN_STATE", "OUT_STAT")
+misc_col<-c("R_B_COST", "ROOM", "BOARD", "ADD_FEE", "BOOK", "PERSONAL", "INSTRUCT")
+```
+
+### Private
+ђассмотрим частные колледжи.
+```{r}
+ggpairs(col_prv[c(sal_col)], aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(col_prv[c(comp_col)], aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(col_prv[c(num_col)], aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(col_prv[c(act_col)], aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(col_prv[c(avr_col)], aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(col_prv[c(stat_col, misc_col)], aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+```{r}
+ggpairs(col_prv[c(app_col, time_col)], aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(log(col_prv[c(app_col, time_col)]), aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+sm<-lm(OUT_STAT~IN_STATE+ADD_FEE+0, col_I_sn)
+summary(sm)
+```
+### Public
+овалвалпжфлщцтмтчмюищуацхщплше
+### 1. ‚иды распределений и сравнение распределений
+```{r}
+library(ggpubr)
+```
+
+### Private
+```{r}
+
+```

@@ -1,0 +1,71 @@
+---
+title: "vnekr"
+author: "Yakovlev D.M."
+date: "2025-03-07"
+output: html_document
+---
+
+```{r}
+library(Rssa)
+library(ggplot2)
+library(Cairo)
+```
+
+```{r}
+corner <- function(df) {
+  c(as.numeric(df[, 1]), as.numeric(df[nrow(df), 2:ncol(df)]))
+}
+
+diag_averaging <- function(matr) {
+  for (i in 0:(nrow(matr) + ncol(matr) - 2)) {
+    matr[row(matr) + col(matr) - 2 == i] <- mean(matr[row(matr) + col(matr) - 2 == i])
+  }
+  matr
+}
+
+self.dot <- function(matrix, d) {
+  ret <- matrix(0, nrow = nrow(matrix), ncol = nrow(matrix))
+  for (i in d) {
+    col_i <- matrix[, i]
+    ret <- ret + col_i %*% t(col_i)
+  }
+  ret
+}
+
+calc.p_q <- function(H, d) {
+  ssa.obj <- ssa(H)
+  # ssa.rec <- reconstruct(ssa.obj, groups = d)
+  # 
+  # eig <- ssa.obj$sigma
+  U <- ssa.obj$U[, 1:d]
+  V <- calc.v(ssa.obj, 1:d)[, 1:d]
+
+  P <- U %*% t(U)
+  Q <- V %*% t(V)
+
+  list(P = P, Q = Q)
+}
+
+calc.pe_eq <- function(pq, E) {
+  P <- pq$P
+  Q <- pq$Q
+  E <- hankel(E)
+  P %*% E + E %*% Q
+}
+
+calc.pe_eq_peq <- function(pq, E) {
+  P <- pq$P
+  Q <- pq$Q
+  E <- hankel(E)
+  P %*% E + E %*% Q - P %*% E %*% Q
+}
+
+calc.pe_eq.pe_eq_peq <- function(pq, E) {
+  P <- pq$P
+  Q <- pq$Q
+  E <- hankel(E)
+  PE_EQ <- P %*% E + E %*% Q
+  PE_EQ_PEQ <- PE_EQ - P %*% E %*% Q
+  list(PE_EQ = PE_EQ, PE_EQ_PEQ = PE_EQ_PEQ)
+}
+```

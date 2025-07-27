@@ -1,0 +1,266 @@
+---
+title: "collegeOneRedo"
+author: "Yakovlev D.M."
+date: "2024-12-01"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    toc_depth: 3
+    number_sections: true
+    theme: lumen
+---
+
+# Предварительный анализ данных 
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(GGally)
+library(ggplot2)
+library(psych)
+library(ggpubr)
+library(patchwork)
+library(kableExtra)
+library(skimr)
+```
+
+```{r}
+library(readxl)
+col_I_sn<-read_excel("stat2021_sm\\us_col.std\\I_shortname.xls")
+col_I<-read_excel("stat2021_sm\\us_col.std\\I.xls")
+```
+
+```{r}
+head(col_I_sn)|>rmarkdown::paged_table()
+summary(col_I_sn)
+```
+
+```{r}
+col_I_sn$PPIND=ifelse(col_I_sn$PPIND==1, "public", "private")
+```
+
+NA review
+```{r}
+col_I_sn_noNA<-col_I_sn|>na.omit()
+paste("col_I_sn dim: ", paste(dim(col_I_sn),collapse=", "))
+paste("col_I_sn_noNA dim: ", paste(dim(col_I_sn_noNA), collapse=", "))
+```
+```{r}
+naCol<-colSums(is.na(col_I_sn))|>sort(decreasing=TRUE)
+naCol
+table(naCol)
+```
+
+log dataset
+```{r message=FALSE, warning=FALSE}
+q_cols<-sapply(col_I_sn, is.numeric)
+q_cols[c("PPIND", "FICE")]<-FALSE
+q_cols<-names(q_cols)[q_cols==TRUE]
+
+col_I_sn_log<-col_I_sn|>
+  mutate(across(q_cols, ~log(.x)))|>
+  rename_with(~paste0("log-", .x), q_cols)
+
+head(col_I_sn_log)|>rmarkdown::paged_table()
+```
+
+Выделим основные признаки, по которым будет проходить дальнейший анализ данных
+
+Количественные признаки:
+
+* AVRMATH Average Math SAT score                     
+* AVRVERB Average Verbal SAT score                   
+* AVRCOMB Average Combined SAT score
+* AVR_ACT Average ACT score                     
+* MATH_1 First quartile - Math SAT                    
+* MATH_3 Third quartile - Math SAT                   
+* VERB_1 First quartile - Verbal SAT
+* VERB_3 Third quartile - Verbal SAT
+* ACT_1 First quartile - ACT                          
+* ACT_3 Third quartile - ACT              
+* APP_REC Number of applications received             
+* APP_ACC Number of applicants accepted             
+* NEW_STUD Number of new students enrolled   
+* FULLTIME Number of fulltime undergraduates          
+* PARTTIME Number of parttime undergraduates
+* IN_STATE In-state tuition                        
+* OUT_STAT Out-of-state tuition                       
+* R_B_COST Room and board costs
+* ROOM Room costs                                    
+* BOARD Board costs                              
+* ADD_FEE Additional fees                            
+* BOOK Estimated book costs                 
+* PERSONAL Estimated personal spending
+* PH_D Pct. of faculty with Ph.D.'s          
+* TERM_D Pct. of faculty with terminal degree         
+* SAL_FULL Average salary - full professor          
+* SAL_AC Average salary - associate professor         
+* SAL_AS Average salary - assistant professor         
+* SAL_ALL Average salary - all ranks       
+* COMP_FUL Average compensation - full professor   
+* COMP_AC Average compensation - associate professor  
+* COMP_AS Average compensation - assistant professor  
+* COMP_ALL Average compensation - all ranks           
+* NUM_FULL Number of full professor
+* NUM_AC Number of associate professor                
+* NUM_AS Number of assistant professor                
+* NUM_INS Number of instructors                
+* NUM_ALL Number of faculty - all ranks   
+* INSTRUCT Instructional expenditure per student
+* GRADUAT Graduation rate
+* SF_RATIO Student/faculty ratio
+* DONATE Pct.alumni who donate
+* NEW10 Pct. new students from top 10% of H.S. class - % студентов из топ 10% своей старшей школы
+* NEW25 Pct. new students from top 25% of H.S. class - % студентов из топ 25% своей старшей школы
+
+Качественные признаки:
+
+* FICE - Federal ID Number
+* ...1 - Название университета 
+* PPIND Public/private indicator (public=1, private=2)
+* STATE State (postal code)
+* TYPE - I (можно удалить)
+
+Всего 49 признаков. Отберём из условий задачи и по смыслу
+
+1. PPIND 
+2. ADD_FEE - дополнительные выплаты
+3. BOOK - плата за бронирование
+4. NEW10 (зависимая переменная, также NEW25)
+
+NEW10 зависит от AVRMATH, MATH_1, MATH_3, AVRVERB, VERB_1, VERB_3, AVR_ACT, ACT_1, ACT_3 и AVRCOMB. Признаков много, так что выберем самый обобщающий - AVRCOMB 
+
+5. AVRCOMB
+6. SF_RATIO
+7. PH_D
+8. GRADUAT
+6-8 из предположения, что они взаимосвязаны
+9. R_B_COST
+10. IN_STATE
+11. OUT_STAT
+9-11 - зависимость стоимости проживания
+
+Setup
+```{r}
+colNames<-c("ADD_FEE", "BOOK", "R_B_COST","IN_STATE","OUT_STAT","NEW10","AVRCOMB","SF_RATIO","PH_D","GRADUAT","PPIND")
+colFin<-c("ADD_FEE", "BOOK", "PPIND")
+colCost<-c("R_B_COST", "IN_STATE", "OUT_STAT", "PPIND")
+colNew<-c("NEW10", "AVRCOMB", "PPIND")
+colStud<-c("SF_RATIO", "PH_D", "GRADUAT", "PPIND")
+col_I_comp<-col_I_sn[colNames]
+col_I_comp_log<-col_I_sn_log[c(paste0("log-", colNames)[-length(colNames)], "PPIND")]
+head(col_I_comp_log)|>rmarkdown::paged_table()
+```
+
+Наблюдение: поскольку IN_STATE и OUT_STAT имеют линейную зависимость для частных вузов, а для общественных - нет, то можно предположить, что частные вузы не имеют разделения по стоимости обучения, а общественные имеют.
+
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_I_comp, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+Видим, что NEW10 зависит от PH_D, GRADUAT, AVRCOMB, отдельно для private зависит от OUT_STAT, IN_STATE, для public - от ADD_FEE, BOOK, R_B_COST
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_I_comp_log, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+Можно наблюдать явное разделение на две группы для R_B_COST, IN_STATE, OUT_STAT, NEW10. Понятно, что R_B_COST, IN_STATE, OUT_STAT и остальные признаки, связанные с финансами, зависят от того, в частном или общественном вузе проходит обучение. Вообще, университеты с низким показателем GRADUAT могут быть преимущественно ONLINE формата обучения.
+
+
+Определим потенциальные выбросы 
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_I_comp[colFin], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+На основном ggpairs можно заметить, что California и Massachusetts University имеют наибольший (с отрывом) ADD_FEE. Учитывая ВВП Калифорнии, это вероятно, для Массачусеттс не понятно, но на их сайте значения схожие. Оставим их.
+```{r}
+col_I_sn|>filter(BOOK>=900 | BOOK <= 350)
+col_I_sn|>filter(ADD_FEE>3000)
+```
+
+```{r}
+ggpairs(col_I_comp[colNew], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+Здесь тоже выброс осуществляет California University вместе с North Carolina University. Оставляем.
+```{r}
+col_I_sn|>filter(AVRCOMB<=1200 & NEW10>=75)
+```
+
+```{r}
+ggpairs(col_I_comp[colStud], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+Можно заметить, что PH_D более дискретизирован (по вертикальным прямым на скаттерплоте) для частных вузов, чем для общественных.
+
+```{r}
+col_I_sn|>filter(PH_D<=70)
+```
+```{r}
+ggpairs(col_I_comp[colCost], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+
+```{r}
+col_I_sn|>filter(OUT_STAT>=14000 & PPIND=="public")
+col_I_sn|>filter(OUT_STAT<=10500 & PPIND=="private")
+```
+
+У Brigham Young University очень низкий показатель OUT-STAT. Сам университет располагается в штате Utah, где ВВП невысокий. Оставляем.
+
+Замечаем, что процент выпускников в частных вузах больше, чем в общественных, а также, что NEW10 больше - в частные школы поступает больше из 10% лучших школы. Обратим внимание на SF_RATIO - в общественных вузах больше студентов на преподавателя, чем в частных вузах, что может сказываться на качестве образования. Число PH_D примерно одинаковое.
+
+Обратим внимание на линейную зависимость между IN_STATE и OUT_STAT. Для частных вузов стоимость линейно зависима, так как затраты на обучение производятся без государственных субсидий, что характерно для общественных вузов.
+
+10. Descriptive analysis
+```{r}
+results <- describeBy(col_I_comp, group=col_I_comp$PPIND)
+
+df_results <- map_dfr(results, ~as.data.frame(.x), .id = "group")
+
+kable(df_results, "html") %>%
+  kable_styling(full_width = FALSE) %>%
+  scroll_box(width = "100%", height = "400px")
+```
+
+### Выводы:
+
+##### Выбросы:
+
+- AVRCOMB/NEW10: California University и North Carolina University. Оставляем (данные корректны).
+```{r}
+col_I_sn|>filter(AVRCOMB<=1200 & NEW10>=75)
+```
+
+- PH_D: более дискретизирован (по вертикальным прямым на скаттерплоте) для частных вузов, чем для общественных. 
+```{r}
+col_I_sn|>filter(PH_D<=70)
+```
+
+- OUT_STAT: У Brigham Young University очень низкий показатель OUT-STAT. Сам университет располагается в штате Utah, где ВВП невысокий.
+Для private низкое ценообразование можно обосновать низким GRADUAT и NEW10
+```{r}
+col_I_sn|>filter((OUT_STAT>=14000 & PPIND=="public") | (OUT_STAT<=10500 & PPIND=="private"))
+```
+
+- ADD_FEE/BOOK: можно заметить, что California и Massachusetts University имеют наибольший (с отрывом) ADD_FEE. Учитывая ВВП Калифорнии, это вероятно, для Массачусеттс не понятно, но на их сайте значения схожие. 
+```{r}
+col_I_sn|>filter(BOOK>=900 | BOOK <= 350)
+col_I_sn|>filter(ADD_FEE>=3000)
+```
+
+##### Фиктивный признак IN_STATE. 
+По смыслу зависит от параметров (гос.субсидии), которых нет в данных, поэтому его сравнение с другими признаками не будет информативным.

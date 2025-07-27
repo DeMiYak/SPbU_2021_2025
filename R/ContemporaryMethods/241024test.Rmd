@@ -1,0 +1,59 @@
+---
+title: "241024test"
+author: "Yakovlev D.M."
+date: "2024-10-24"
+output: html_document
+---
+
+### 4.1-1 Кворум избирателей
+```{r}
+N<-1002
+Np<-701
+p0<-0.5
+Nq<-N-Np
+z<-((Nq+0.5)-N/2)/(sqrt(N)/2)
+z
+p_value<-1-pnorm(z)
+p_value
+# Проверка гипотезы
+test_result <- prop.test(Np, N, p = p0, alternative = "greater")
+
+# Вывод результатов
+print(test_result)
+```
+
+#### 4.1-3. Мужчины и женщины
+```{r}
+male<-c(18,43,32,27,15,45,21,22)
+female<-c(16,38,35,29,15,46,25,28)
+alpha<-0.10
+length(male[male>female])
+length(male[male<=female])
+wilcox.test(male, female)
+```
+#### 4.1-5 Читают ли замужние?
+```{r}
+mar<-c(6,8,7,4,9,12,13,7,10,18,15)
+lone<-c(2,3,5,11,3,5,11,12,16,4,0,1)
+alpha<-0.10
+wilcox.test(mar, lone, alternative="two.sided")
+# p_value = 0.05219 < alpha = 0.10
+```
+#### 4.2-1 Родители и подростки
+```{r}
+teen<-c(4,6,2,8,1,7,3,5)
+parent<-c(1,7,5,4,3,8,2,6)
+alpha<-0.05
+
+cor.test(teen, parent, alternative="two.sided", method="spearman")
+cor.test(teen, parent, alternative="two.sided", method="kendall")
+```
+
+
+#### 4.2-3 Кто смотрит телевизор?
+```{r}
+age<-c(18,24,36,40,58)
+hours<-c(3.9, 2.6, 2, 2.3, 1.2)
+n<-5
+cor.test(age, hours, alternative="two.sided", method="spearman")
+```

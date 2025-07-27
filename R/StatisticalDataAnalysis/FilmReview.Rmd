@@ -1,0 +1,322 @@
+---
+title: "FilmReview"
+author: "Yakovlev D.M."
+date: "2024-09-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("readxl")
+```
+
+## 2. Считывание и просмотр
+
+```{r}
+library("tidyverse")
+panel.hist <- function(x, ...)
+{
+    usr <- par("usr")
+    par(usr = c(usr[1:2], 0, 1.5) )
+    h <- hist(x, plot = FALSE)
+    breaks <- h$breaks; nB <- length(breaks)
+    y <- h$counts; y <- y/max(y)
+    rect(breaks[-nB], 0, breaks[-1], y, col = "cyan", ...)
+}
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
+{
+    par(usr = c(0, 1, 0, 1))
+    r <- abs(cor(x, y))
+    txt <- format(c(r, 0.123456789), digits = digits)[1]
+    txt <- paste0(prefix, txt)
+    if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+    text(0.5, 0.5, txt, cex = cex.cor * r)
+}
+```
+
+```{r}
+df<-read_excel("my101descr/MY101.xls")
+head(df)
+```
+# Создание справочника имён
+
+```{r}
+name_ref <- read_excel("my101descr/iqrate_description.xlsx", col_names = FALSE)
+
+name_ref <- str_split_fixed(name_ref$...2, " ", 2)|>
+  as.data.frame()|>setNames(c("id", "names"))|>rmarkdown::paged_table()
+name_ref$id[140:nrow(name_ref)]<-c(140:nrow(name_ref))
+name_ref$names[c(139,140,142)] <- c("Возраст", "STAT_1", "STAT_2")
+name_ref
+```
+
+```{r}
+colnames(df) <- name_ref$id
+df
+name_ref
+```
+
+```{r}
+df_names <- df|>setNames(name_ref$names)
+df_names$Пол[df_names$Пол==1] <- "Муж"
+df_names$Пол[df_names$Пол==2] <- "Жен"
+df_names$Пол[is.na(df_names$Пол)] <- "Неизв"
+df_names
+```
+
+```{r}
+name_ref
+```
+
+# 0. Общая сводка по таблице
+
+```{r}
+df_names
+name_ref
+```
+
+```{r}
+nrow(df_names)
+ncol(df_names)
+```
+Отсюда, 3500 участников и 202 признака.
+
+Теперь вопрос, какая часть таблицы содержит NA?
+
+```{r}
+df_names|>apply(2, function(x) sum(is.na(x)))|>sum()/nrow(df_names)/ncol(df_names)
+```
+При первом рассмотрении выясняется, что некоторые столбцы группируются по тестам и другим опросам, поэтому вместо одного NA получаем несколько. 
+
+```{r}
+library("ggplot2")
+```
+
+# 1. Что-то с возрастом
+```{r}
+summary(df_names$Возраст)
+ggplot(df_names, aes(x = Возраст))+
+  geom_histogram(binwidth = 1, fill = "grey", color = "black", alpha = 0.8) +
+  labs(title = "Распределение возраста", x = "Возраст", y = "Частота")
+```
+Рассмотрим предрасположенность к фильмам в зависимости от даты выхода.
+Поступим таким образом. Возьмём несколько фильмов с разной датой выхода,
+разобъём людей на возрастные группы и проверим, как оценки фильмов коррелируют
+с возрастом
+
+Перед этим посмотрим, какие возраста имеются.
+```{r}
+df_names|>select(c(139))|>group_by(Возраст)|>summarize(ВозЧисло=n())
+```
+
+От 12 до 60.
+Сформируем три возрастные группы: Поколение Z (12-27), Миллениалы (28-43),
+Поколение X (44-60).
+```{r}
+df_age<-df_names|>filter(!is.na(Возраст))|>mutate(Поколение=case_when(Возраст<=27~"Gen Z", Возраст>=28&Возраст<=43~"Millennials", Возраст>=44~"Gen X"), .after=Возраст)
+df_age
+```
+Невероятные приключения итальянцев в России (1974, Gen X),
+Телохранитель (1992, Millennial),
+Армагеддон (1998, Gen Z)
+
+```{r}
+name_ref
+```
+
+```{r}
+library("GGally")
+ggpairs(df_age, columns = c(1, 140), aes(color = Поколение, alpha = 0.5),
+        upper = list(continuous = wrap("cor", size = 2.5)))
+ggpairs(df_age, columns = c(2, 140), aes(color = Поколение, alpha = 0.5),
+        upper = list(continuous = wrap("cor", size = 2.5)))
+ggpairs(df_age, columns = c(50, 140), aes(color = Поколение, alpha = 0.5),
+        upper = list(continuous = wrap("cor", size = 2.5)))
+```
+
+```{r}
+ggpairs(df_age, columns = c(5, 140), aes(color = Поколение, alpha = 0.5),
+        upper = list(continuous = wrap("cor", size = 2.5)))
+ggpairs(df_age, columns = c(8, 140), aes(color = Поколение, alpha = 0.5),
+        upper = list(continuous = wrap("cor", size = 2.5)))
+ggcorr(df_age[, c(1, 2, 5, 8, 50)])
+```
+В целом, они совпадают, из чего кажется, что дата выхода фильма, его оценка почти не коррелируют с возрастом.
+
+
+# 2. Что-то с IQ
+```{r}
+summary(df_names$IQ)
+```
+
+Что интересного можно проанализировать на основе IQ?
+Например, уровень образования и дохода
+```{r}
+boxplot(df_names$IQ~df_names$Обpазование, xlab="Образование", ylab="IQ")
+boxplot(df_names$IQ~df_names$`Уpовень доходов`, xlab="Уровень доходов", ylab="IQ")
+boxplot(df_names$IQ~df_names$Пол, xlab="Пол", ylab="IQ")
+```
+Не понятно, какие категории у образования. С доходами тоже самое.
+
+Ещё интересно, влияет ли IQ на оценки фильмов. Для этого разобъём IQ по группам и для
+каждого индивида посчитаем среднюю оценку фильмов и построим box with whiskers
+```{r}
+table(df_names$IQ)
+df_IQ<-df_names|>mutate(IQ_group=case_when(IQ<=120~"90-120", IQ>120&IQ<=140~"121-140", IQ>140~"141-180"), mean_movie_score=rowMeans(df_names[,1:101], na.rm=TRUE), .after=IQ)
+df_IQ|>select(IQ, IQ_group, mean_movie_score)
+boxplot(df_IQ$mean_movie_score~df_IQ$IQ_group)
+```
+Результаты схожи. За исключением аутсайдеров, IQ мало влияет на среднюю оценку (в таких группах).
+
+Попробуем то же самое, но для конкретных фильмов.
+```{r}
+ggpairs(df_IQ, columns = c(124, 10), aes(color = IQ_group, alpha = 0.5), diag=list(continuous="barDiag"), lower = list(continuous="box_no_facet"))
+ggpairs(df_IQ, columns = c(124, 30), aes(color = IQ_group, alpha = 0.5), diag=list(continuous="barDiag"), lower = list(continuous="box_no_facet"))
+ggpairs(df_IQ, columns = c(124, 50), aes(color = IQ_group, alpha = 0.5), diag=list(continuous="barDiag"), lower = list(continuous="box_no_facet"))
+ggcorr(df_names[, c(10, 30, 50, 124)])
+```
+Можно заметить, что для фильма "Гений" люди с IQ "90-120" оценили в среднем фильм лучше, чем другие группы.
+
+```{r}
+name_ref
+```
+
+# 3. Что-то с полом
+Изначально в таблице были 1, 2 и NA. Они были заменены на 
+1 - Мужчины, 2 - Женщины, NA - Неизвестно
+
+```{r}
+table(df_names$Пол)
+```
+Посмотрим на возраст.
+
+```{r}
+ggpairs(df_names, columns = c(139,138), aes(color = Пол, alpha = 0.5), diag=list(continuous="barDiag"), lower = list(continuous="box_no_facet"))
+```
+Посмотрим, влияет ли пол протагониста на оценки.
+Сравним на примере нескольких фильмов:
+4. Пятый элемент (муж, 1997)
+36. В бой идут одни старики (муж, 1973)
+44. Интердевочка (жен, 1989)
+51. А зори здесь тихие (жен, 1972)
+```{r}
+name_ref
+```
+
+
+```{r}
+ggpairs(df_names, columns = c(4,138), aes(color = Пол, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_names, columns = c(36,138), aes(color = Пол, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_names, columns = c(44,138), aes(color = Пол, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_names, columns = c(51,138), aes(color = Пол, alpha = 0.5), diag=list(continuous="barDiag"))
+ggcorr(df_names[,c(4,36, 44, 51, 138)])
+```
+У "А зори здесь тихие" и "Интердевочки" есть различие в оценках: женщины оценивают их лучше, чем мужчины (по медиане). Фильмы, где протагонист - мужчина, имеют почти одинаковую медиану.
+
+# 4. Что-то с оценкой фильмов
+Можно ли что-то сказать о человеке по тому, как он оценивает фильмы?
+Посмотрим на последние признаки ("Нога-ведущая", "Рука-ведущая" и так далее)
+```{r}
+name_ref
+```
+```{r}
+summary(df_names$`Рука-переплетение пальцев рук - ведущая`)
+table(df_names$`Рука-переплетение пальцев рук - ведущая`)
+```
+
+```{r}
+df_misc<-df_names|>mutate(`Рука-переплетение пальцев рук - ведущая` = as.character(`Рука-переплетение пальцев рук - ведущая`))
+ggpairs(df_misc, columns = c(30,193), aes(color = `Рука-переплетение пальцев рук - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_misc, columns = c(31,193), aes(color = `Рука-переплетение пальцев рук - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_misc, columns = c(32,193), aes(color = `Рука-переплетение пальцев рук - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_misc, columns = c(33,193), aes(color = `Рука-переплетение пальцев рук - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"))
+ggcorr(df_names[,c(30:33, 193)])
+```
+
+```{r}
+summary(df_names$`Рука-имитация аплодисментов - ведущая`)
+table(df_names$`Рука-имитация аплодисментов - ведущая`)
+```
+
+```{r}
+df_misc<-df_misc|>mutate(`Рука-имитация аплодисментов - ведущая` = as.character(`Рука-имитация аплодисментов - ведущая`))
+ggpairs(df_misc, columns = c(30,194), aes(color = `Рука-имитация аплодисментов - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_misc, columns = c(31,194), aes(color = `Рука-имитация аплодисментов - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_misc, columns = c(32,194), aes(color = `Рука-имитация аплодисментов - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_misc, columns = c(33,194), aes(color = `Рука-имитация аплодисментов - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"), upper=list(continuous="box_no_facet"))
+ggcorr(df_names[, c(30:33, 194)])
+```
+
+```{r}
+df_misc<-df_misc|>mutate(`Рука-скрещивание рук на груди - ведущая`=as.character(`Рука-скрещивание рук на груди - ведущая`))
+ggpairs(df_misc, columns = c(30,195), aes(color = `Рука-скрещивание рук на груди - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_misc, columns = c(31,195), aes(color = `Рука-скрещивание рук на груди - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_misc, columns = c(32,195), aes(color = `Рука-скрещивание рук на груди - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"))
+ggpairs(df_misc, columns = c(33,195), aes(color = `Рука-скрещивание рук на груди - ведущая`, alpha = 0.5), diag=list(continuous="barDiag"), upper=list(continuous="box_no_facet"))
+```
+
+
+
+# №5 Miscellaneous (Немного обо всём)
+
+```{r}
+ggcorr(df_names[,1:25])
+ggcorr(df_names[,25:50])
+ggcorr(df_names[,50:75])
+ggcorr(df_names[,75:101])
+```
+
+```{r}
+name_ref
+ggcorr(df_names[,102:130])
+ggcorr(df_names[,130:155])
+ggcorr(df_names[,155:180])
+ggcorr(df_names[,180:202])
+ggcorr(df_names[,c(1:10,195:202)])
+```
+Посмотрим на связь между оценками и тестами Кэттелла
+
+```{r}
+name_ref
+```
+
+```{r}
+ggcorr(df_names[,c(6,108:123)])
+```
+
+```{r}
+df_names
+df_norm <- df_names|>scale
+```
+
+```{r}
+df_films <- df_names[1:101]
+film_means = sapply(df_films, mean, na.rm=T)
+film_vars = sapply(df_films, var, na.rm=T)
+
+replace_with_norm <- function(x, m, v) {
+  x[is.na(x)] = rnorm(sum(is.na(x)), m, sqrt(v))
+  return(x)
+}
+
+df_films_filled = data.frame(mapply(replace_with_norm, df_films, film_means, film_vars))
+```
+
+```{r}
+names(df_films)
+```
+# 3,11
+
+```{r}
+df_scaled2 = as.data.frame(t(scale(t(df_films_filled))))
+ggplot(df_scaled2, aes(x=df_scaled2[,3], y = df_scaled2[,11])) + geom_point()
+```
+
+```{r}
+df_names[,3]
+df_names[,11]
+plot(df_names$`J/P (тест Кейpси)`, df_names$`T/F (тест Кейpси)`)
+```

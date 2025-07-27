@@ -1,0 +1,160 @@
+---
+title: "CarAnalysis"
+author: "Yakovlev D.M."
+date: "2024-10-20"
+output: html_document
+---
+
+```{r}
+library("readxl")
+library("tidyverse")
+library("ggplot2")
+```
+
+#### Предварительный анализ
+```{r}
+df<-read_excel("CARDATA.xls")
+dim(df)
+summary(df)
+table(df$MAKE)
+table(df$MODEL)
+```
+
+```{r}
+names(df)
+df
+```
+
+Для каждого признака будем использовать:
+1. Критерии нормальности
+1.1. Критерий Шапиро-Уилка (Shapiro-Wilk) и normal probability plot
+1.2. Критерий Лиллиефорса (Lilliefors)
+1.3. Критерий Андерсона-Дарлинга (Anderson-Darling)
+1.4. PP-plot (визуально)
+2. Критерий логнормальности
+2.1. Критерий хи-квадрат
+2.2. PP-plot (визуально)
+
+##### HORSEPOW
+```{r}
+HORSEPOW <- df$HORSEPOW[!is.na(df$HORSEPOW)]
+library("ggpubr")
+ggqqplot(HORSEPOW)
+shapiro.test(HORSEPOW)
+library("nortest")
+lillie.test(HORSEPOW)
+ad.test(HORSEPOW)
+log_norm.test<-function(quan_len, data){
+  log_data<-log(data)
+  # breaks <- seq(min(log_data), max(log_data), length.out = 11)
+  breaks<-quantile(log_data, probs=seq(0, 1, length.out=quan_len+1))
+  classes <- cut(log_data, breaks, include.lowest = TRUE, labels = FALSE)
+  
+  mean_log <- mean(log_data)
+  sd_log <- sd(log_data)
+  expected_probs <- pnorm(breaks[-1], mean = mean_log, sd = sd_log) - 
+                    pnorm(breaks[-length(breaks)], mean = mean_log, sd = sd_log)
+  expected_frequencies <- expected_probs * length(log_data)
+  
+  observed_frequencies <- table(classes)
+  
+  chi_squared <- sum((observed_frequencies - expected_frequencies)^2 / expected_frequencies)
+  
+  p_value <- pchisq(chi_squared, df = quan_len, lower.tail = FALSE)
+  
+  cat(paste0(
+    "Data: ", names(data),
+    "\nxi = ", round(chi_squared, 8),
+    "\np_value = ", round(p_value,8), "\n\n"
+  ))
+  list("p_value" = p_value, "chisq" = chi_squared, "name" = names(data))
+}
+quan_len<-10
+log_norm.test(quan_len, HORSEPOW)
+```
+
+```{r}
+library("fitdistrplus")
+plotdist(HORSEPOW, distr="lnorm",para=list(meanlog=mean(log(HORSEPOW)), sdlog=sd(log(HORSEPOW))), type="s",demp = TRUE)
+plotdist(HORSEPOW, distr="norm",para=list(mean=mean(HORSEPOW), sd=sd(HORSEPOW)), type="s",demp = TRUE)
+```
+
+##### MPG
+```{r}
+MPG<-df$MPG[!is.na(df$MPG)]
+ggqqplot(MPG)
+shapiro.test(MPG)
+lillie.test(MPG)
+ad.test(MPG)
+quan_len<-10
+log_norm.test(quan_len, MPG)
+```
+
+```{r}
+plotdist(MPG, distr="lnorm",para=list(meanlog=mean(log(MPG)), sdlog=sd(log(MPG))), type="s",demp = TRUE)
+plotdist(MPG, distr="norm",para=list(mean=mean(MPG), sd=sd(MPG)), type="s",demp = TRUE)
+```
+
+##### DISPLACE
+```{r}
+DISPLACE<-df$DISPLACE[!is.na(df$DISPLACE)]
+ggqqplot(DISPLACE)
+shapiro.test(DISPLACE)
+lillie.test(DISPLACE)
+ad.test(DISPLACE)
+quan_len<-10
+log_norm.test(quan_len, DISPLACE)
+```
+
+```{r}
+plotdist(DISPLACE, distr="lnorm",para=list(meanlog=mean(log(DISPLACE)), sdlog=sd(log(DISPLACE))), type="s",demp = TRUE)
+plotdist(DISPLACE, distr="norm",para=list(mean=mean(DISPLACE), sd=sd(DISPLACE)), type="s",demp = TRUE)
+```
+
+##### WEIGHT
+```{r}
+WEIGHT<-df$WEIGHT[!is.na(df$WEIGHT)]
+ggqqplot(WEIGHT)
+shapiro.test(WEIGHT)
+lillie.test(WEIGHT)
+ad.test(WEIGHT)
+quan_len<-10
+log_norm.test(quan_len, WEIGHT)
+```
+
+```{r}
+plotdist(WEIGHT, distr="lnorm",para=list(meanlog=mean(log(WEIGHT)), sdlog=sd(log(WEIGHT))), type="s",demp = TRUE)
+plotdist(WEIGHT, distr="norm",para=list(mean=mean(WEIGHT), sd=sd(WEIGHT)), type="s",demp = TRUE)
+```
+
+##### ACCEL
+```{r}
+ACCEL<-df$ACCEL[!is.na(df$ACCEL)]
+ggqqplot(ACCEL)
+shapiro.test(ACCEL)
+lillie.test(ACCEL)
+ad.test(ACCEL)
+quan_len<-6
+log_norm.test(quan_len, ACCEL)
+```
+
+```{r}
+plotdist(ACCEL, distr="lnorm",para=list(meanlog=mean(log(ACCEL)), sdlog=sd(log(ACCEL))), type="s",demp = TRUE)
+plotdist(ACCEL, distr="norm",para=list(mean=mean(ACCEL), sd=sd(ACCEL)), type="s",demp = TRUE)
+```
+
+##### PRICE
+```{r}
+PRICE<-df$PRICE[!is.na(df$PRICE)]
+ggqqplot(PRICE)
+shapiro.test(PRICE)
+lillie.test(PRICE)
+ad.test(PRICE)
+quan_len<-10
+log_norm.test(quan_len, PRICE)
+```
+
+```{r}
+plotdist(PRICE, distr="lnorm",para=list(meanlog=mean(log(PRICE)), sdlog=sd(log(PRICE))), type="s",demp = TRUE)
+plotdist(PRICE, distr="norm",para=list(mean=mean(PRICE), sd=sd(PRICE)), type="s",demp = TRUE)
+```

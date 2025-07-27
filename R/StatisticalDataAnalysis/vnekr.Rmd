@@ -1,0 +1,256 @@
+---
+title: "vnekr"
+author: "Yakovlev D.M."
+date: "2025-01-03"
+output: html_document
+---
+```{r}
+library(Rssa)
+library(ggplot2)
+library(Cairo)
+```
+
+# Функции из условия (оставляем их как есть)
+```{r}
+corner <- function(df) {
+  c(as.numeric(df[, 1]), as.numeric(df[nrow(df), 2:ncol(df)]))
+}
+
+diag_averaging <- function(matr) {
+  for (i in 0:(nrow(matr) + ncol(matr) - 2)) {
+    matr[row(matr) + col(matr) - 2 == i] <- mean(matr[row(matr) + col(matr) - 2 == i])
+  }
+  matr
+}
+
+self.dot <- function(matrix, d) {
+  ret <- matrix(0, nrow = nrow(matrix), ncol = nrow(matrix))
+  for (i in d) {
+    col_i <- matrix[, i]
+    ret <- ret + col_i %*% t(col_i)
+  }
+  ret
+}
+
+calc.p_q <- function(H, d, L) {
+  ssa.obj <- ssa(H, L=L)
+  # ssa.rec <- reconstruct(ssa.obj, groups = d)
+  # 
+  # eig <- ssa.obj$sigma
+  U <- ssa.obj$U[, 1:d]
+  V <- calc.v(ssa.obj, 1:d)[, 1:d]
+
+  P <- U %*% t(U)
+  Q <- V %*% t(V)
+
+  list(P = P, Q = Q)
+}
+
+calc.pe_eq <- function(pq, E, L) {
+  P <- pq$P
+  Q <- pq$Q
+  E <- hankel(E, L)
+  P %*% E + E %*% Q
+}
+
+calc.pe_eq_peq <- function(pq, E, L) {
+  P <- pq$P
+  Q <- pq$Q
+  E <- hankel(E, L)
+  P %*% E + E %*% Q - P %*% E %*% Q
+}
+
+calc.pe_eq.pe_eq_peq <- function(pq, E, L) {
+  P <- pq$P
+  Q <- pq$Q
+  E <- hankel(E, L)
+  PE_EQ <- P %*% E + E %*% Q
+  PE_EQ_PEQ <- PE_EQ - P %*% E %*% Q
+  list(PE_EQ = PE_EQ, PE_EQ_PEQ = PE_EQ_PEQ)
+}
+```
+# -------------------  Генерация сигналов и помех  ------------------------
+```{r}
+generate_signals_and_noises <- function(n_values) {
+  signals <- list(
+    const = rep(1, max(n_values)),
+    sin = 2 * cos(pi * (1:max(n_values)) + pi / 4),
+    exp = 1.2 ^ (1:max(n_values))
+  )
+
+  noises <- list(
+    outlier = {
+      noise <- rep(0, max(n_values))
+      noise[50] <- 1
+       noise
+    },
+    sin = cos(2 * pi * 0.1 * (1:max(n_values)) + pi / 3),
+    exp = 0.8 ^ (1:max(n_values))
+  )
+  
+  list(signals = signals, noises = noises)
+}
+```
+# -------------------  Вычисление ошибки SSA  ------------------------
+```{r}
+calculate_ssa_error <- function(H, E, L, d = 1, delta = 1) {
+  H_perturbed <- H + delta*E
+  ssa_obj <- ssa(H_perturbed, L=L, kind = "1d-ssa")
+  Hr <- reconstruct(ssa_obj, groups = list(1:d))$F1
+  max(abs(Hr - H))
+}
+```
+# ------------------- Вычисление ошибки pe + eq - peq ------------------------
+```{r}
+calculate_pe_eq_peq_error <- function(H, E, L, d = 1, delta = 1) {
+    pq <- calc.p_q(H, d, L)
+    res <- calc.pe_eq_peq(pq, E, L)
+    Hr_matrix <- diag_averaging(res)
+    Hr <- corner(Hr_matrix)
+    max(abs(Hr))
+}
+```
+# ------------------- Вычисление ошибки pe + eq ------------------------
+```{r}
+calculate_pe_eq_error <- function(H, E, L, d = 1, delta = 1) {
+    
+    pq <- calc.p_q(H, d, L)
+    res <- calc.pe_eq(pq, E)
+    Hr_matrix <- diag_averaging(res)
+    Hr <- corner(Hr_matrix)
+    Hr <- Hr[1:length(H)]
+    max(abs(Hr))
+}
+```
+# Функция для построения и сохранения графика
+```{r}
+save_plot_to_pdf <- function(results_df, signal_name, noise_name, available_colors) {
+    
+    plot_obj <- ggplot(results_df, aes(x = n, y = error_value, color = error_type)) +
+        geom_line() +
+        geom_point() +
+        labs(
+                    x = "n",
+                    y = "Ошибка восстановления",
+                    color = "Методы"
+                )
+    
+    # Сохранение в pdf с использованием Cairo
+    CairoPDF(file = paste("plot_", signal_name, "_", noise_name, ".pdf", sep=""), width = 8, height = 6)
+    print(plot_obj)
+    dev.off()
+}
+```
+
+# ------------------- Функция нахождения ранга конечного ряда ------------------------
+```{r}
+# Функция, возвращающая конечный ранг ряда в случае его существования
+TimeSeriesFiniteRank <- function(timeSeries){
+  
+  N <- length(timeSeries)     # Длина ряда
+  
+  rnkCurr <- 0                # Ранг
+  rnkList <- c()
+  
+  upperBound <- (N + N%%2)/2  # Верхняя граница проверки (до половины длины ряда)
+  
+  for(L in 2:upperBound){
+    rnkStep <- qr(hankel(timeSeries, L))$rank 
+    
+    rnkList = c(rnkList, rnkStep)
+    
+    if(rnkStep >= rnkCurr) rnkCurr <- rnkStep
+    else {
+      print("Found a bad rank sequence: ")
+      return(0)
+    }
+  }
+  return(rnkCurr)
+}
+```
+# -------------------  Основная логика программы  ------------------------
+# Запуск программы
+
+```{r}
+# Генератор линейной последовательности a*n + b
+linear_generator <- function(a, b) {
+  function(start, end) {
+    if(start > end) stop("Start must be <= end")
+    return(a * start:end + b)
+  }
+}
+
+# Генератор гармоники cos(2πn omega + phi)
+harmonic_generator <- function(omega, phi) {
+  # Проверка параметров
+  if (omega <= 0 || omega >= 0.5) stop("Omega must be in (0, 0.5)")
+  if (phi <= 0 || phi >= pi) stop("Phi must be in (0, pi)")
+  
+  function(start, end) {
+    if(start > end) stop("Start must be <= end")
+    return(cos(2 * pi * start:end * omega + phi))
+  }
+}
+
+# Функция для получения N значений из генератора
+
+start<-50
+end<-300
+# Пример использования
+# Создаем генераторы
+linear_gen <- linear_generator(a = 2, b = 3)
+harmonic_gen <- harmonic_generator(omega = 0.25, phi = pi/4)
+
+# Генерируем значения
+linear_values <- linear_gen(start, end)
+harmonic_values <- harmonic_gen(start, end)
+```
+
+```{r}
+compare_graph <- function(start_value=50, end_value =300, signal_generator, noise_generator, delta = 1, d = 1) {
+            
+  N<-start_value:end_value
+  h<-signal_generator(1, end_value)
+  e<-noise_generator(1, end_value)
+  h_e<-h+delta*e
+  
+  ssa_error <- sapply(N, function(n) calculate_ssa_error(h[1:n], e[1:n], n%/%3, d, delta))
+  pe_eq_peq_error <- sapply(N, function(n) calculate_pe_eq_peq_error(h[1:n], e[1:n], n%/%3, d))
+  pe_eq_error<-sapply(N, function(n) calculate_pe_eq_error(h[1:n], e[1:n], n%/%3, d))
+  
+  errors_df <- data.frame(
+  N = N,
+  ssa_error = ssa_error,
+  pe_eq_peq_error = pe_eq_peq_error,
+  pe_eq_error = pe_eq_error
+  )
+  
+  # Преобразуем в длинный формат
+  long_df <- pivot_longer(errors_df, 
+                          cols = -N, 
+                          names_to = "Error_Type", 
+                          values_to = "Value")
+  
+  # Строим график
+  ggplot(long_df, aes(x = N, y = Value, color = Error_Type)) +
+    geom_line(size = 1) +
+    geom_point(size = 2) +
+    scale_color_manual(values = c("ssa_error" = "#E69F00",
+                                  "pe_eq_peq_error" = "#56B4E9",
+                                  "pe_eq_error" = "#009E73")) +
+    labs(title = "Сравнение ошибок методов",
+         x = "Размер окна (N)",
+         y = "Значение ошибки",
+         color = "Тип ошибки") +
+    theme_minimal() +
+    theme(legend.position = "bottom")
+}
+```
+
+```{r}
+d<-2
+debug(compare_graph(signal_generator = linear_generator(1, 0), noise_generator = harmonic_generator(1/4, pi/8), delta=3, d = d))
+plot_lin_har<-compare_graph(signal_generator = linear_generator(1, 0), noise_generator = harmonic_generator(1/4, pi/8), delta=3, d = d)
+
+plot_lin_har
+```

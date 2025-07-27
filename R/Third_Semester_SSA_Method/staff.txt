@@ -1,0 +1,8 @@
+"name"	"salary"	"sex"	"height"	"weight"
+"5"	"Joe"	300	"male"	1.7	"44"
+"3"	"Oatcake"	400	"female"	1.9	"82"
+"1"	"Edgar"	500	"male"	1.75	"73"
+"6"	"Neil"	550	"male"	1.72	"55"
+"2"	"John"	600	"male"	1.8	"63"
+"4"	"Wilma"	650	"female"	1.65	"95"
+"7"	"Michael"	2000	"yes"	1.5	"101"

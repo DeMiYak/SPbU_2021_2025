@@ -1,0 +1,326 @@
+---
+title: "CollegeThree"
+author: "Yakovlev D.M."
+date: "2024-12-11"
+output: html_document
+---
+
+# Об анализе зависимостей
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(GGally)
+library(ggplot2)
+library(psych)
+library(ggpubr)
+library(patchwork)
+library(kableExtra)
+library(skimr)
+library(fitdistrplus)
+library(car)
+library(nortest)
+library(plotrix)
+library(gridExtra)
+library(ppcor)
+```
+
+Воспользуемся полученными в первой части задания результатами.
+
+```{r}
+library(readxl)
+col_I_sn<-read_excel("stat2021_sm\\us_col.std\\I_shortname.xls")
+col_I<-read_excel("stat2021_sm\\us_col.std\\I.xls")
+```
+
+```{r}
+col_I_sn$PPIND=ifelse(col_I_sn$PPIND==1, "public", "private")
+head(col_I_sn)|>rmarkdown::paged_table()
+colNames<-c("ADD_FEE", "BOOK", "R_B_COST","IN_STATE","OUT_STAT","NEW10","AVRCOMB","SF_RATIO","PH_D","GRADUAT","PPIND")
+col_I_comp<-col_I_sn[colNames]
+```
+Выделим основные признаки, по которым будет проходить дальнейший анализ данных
+
+Количественные признаки:
+
+* AVRMATH Average Math SAT score                     
+* AVRVERB Average Verbal SAT score                   
+* AVRCOMB Average Combined SAT score
+* AVR_ACT Average ACT score                     
+* MATH_1 First quartile - Math SAT                    
+* MATH_3 Third quartile - Math SAT                   
+* VERB_1 First quartile - Verbal SAT
+* VERB_3 Third quartile - Verbal SAT
+* ACT_1 First quartile - ACT                          
+* ACT_3 Third quartile - ACT              
+* APP_REC Number of applications received             
+* APP_ACC Number of applicants accepted             
+* NEW_STUD Number of new students enrolled   
+* FULLTIME Number of fulltime undergraduates          
+* PARTTIME Number of parttime undergraduates
+* IN_STATE In-state tuition                        
+* OUT_STAT Out-of-state tuition                       
+* R_B_COST Room and board costs
+* ROOM Room costs                                    
+* BOARD Board costs                              
+* ADD_FEE Additional fees                            
+* BOOK Estimated book costs                 
+* PERSONAL Estimated personal spending
+* PH_D Pct. of faculty with Ph.D.'s          
+* TERM_D Pct. of faculty with terminal degree         
+* SAL_FULL Average salary - full professor          
+* SAL_AC Average salary - associate professor         
+* SAL_AS Average salary - assistant professor         
+* SAL_ALL Average salary - all ranks       
+* COMP_FUL Average compensation - full professor   
+* COMP_AC Average compensation - associate professor  
+* COMP_AS Average compensation - assistant professor  
+* COMP_ALL Average compensation - all ranks           
+* NUM_FULL Number of full professor
+* NUM_AC Number of associate professor                
+* NUM_AS Number of assistant professor                
+* NUM_INS Number of instructors                
+* NUM_ALL Number of faculty - all ranks   
+* INSTRUCT Instructional expenditure per student
+* GRADUAT Graduation rate
+* SF_RATIO Student/faculty ratio
+* DONATE Pct.alumni who donate
+* NEW10 Pct. new students from top 10% of H.S. class - % студентов из топ 10% своей старшей школы
+* NEW25 Pct. new students from top 25% of H.S. class - % студентов из топ 25% своей старшей школы
+
+Качественные признаки:
+
+* FICE - Federal ID Number
+* ...1 - Название университета 
+* PPIND Public/private indicator (public=1, private=2)
+* STATE State (postal code)
+* TYPE - I (можно удалить)
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_I_comp, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+Что можно заметить: 
+
+* Сильная положительная зависимость GRADUAT от PH_D, AVRCOMP, NEW10, OUT_STAT, R_B_COST, сильная отрицательная от SF_RATIO;
+
+
+IN_STATE является искусственным параметром, так как зависит от субсидирования штатов (неявная зависимость)
+
+log dataset
+```{r}
+q_cols<-sapply(col_I_sn, is.numeric)
+q_cols[c("PPIND", "FICE")]<-FALSE
+q_cols<-names(q_cols)[q_cols==TRUE]
+
+col_I_sn_log<-col_I_sn|>
+  mutate(across(q_cols, ~log(.x)))|>
+  rename_with(~paste0("log-", .x), q_cols)
+
+```
+
+Выбранные признаки с разделением по группам
+```{r}
+colNames<-c("ADD_FEE", "BOOK", "R_B_COST","OUT_STAT","NEW10","AVRCOMB","SF_RATIO","PH_D","GRADUAT", "PPIND")
+colFin<-c("ADD_FEE", "BOOK", "PPIND")
+colCost<-c("R_B_COST", "OUT_STAT", "PPIND")
+colNew<-c("AVRCOMB", "PPIND")
+colStud<-c("SF_RATIO", "PH_D", "NEW10", "GRADUAT", "PPIND")
+col_I_comp<-col_I_sn[colNames]
+head(col_I_comp)|>rmarkdown::paged_table()
+```
+
+```{r}
+log_colNames<-c(paste0("log-", colNames)[-length(colNames)], "PPIND")
+log_colFin<-c(paste0("log-", colFin)[-length(colFin)], "PPIND")
+log_colCost<-c(paste0("log-", colCost)[-length(colCost)], "PPIND")
+log_colNew<-c(paste0("log-", colNew)[-length(colNew)], "PPIND")
+log_colStud<-c(paste0("log-", colStud)[-length(colStud)], "PPIND")
+col_I_comp_log<-col_I_sn_log[log_colNames]
+head(col_I_comp_log)|>rmarkdown::paged_table()
+```
+
+```{r}
+col_I_mixed<-col_I_comp|>mutate(ADD_FEE=col_I_comp_log$`log-ADD_FEE`)|>rename(`log-ADD_FEE`=ADD_FEE)
+head(col_I_mixed)|>rmarkdown::paged_table()
+summary(col_I_mixed)
+```
+
+```{r}
+colSums(is.na(col_I_mixed))
+```
+Анализ линейных зависимостей:
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_I_mixed, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+Здесь указываются коэффициенты корреляции Пирсона и их значимость (по числу `*` от менее значимых `` до самых значимых `***`). Можно заметить значимые коэффициенты корреляции, особенно в группе "public".
+
+```{r}
+col_split_mixed<-split(col_I_mixed, col_I_mixed$PPIND)
+names(col_split_mixed)<-c("private", "public")
+col_split_mixed<-lapply(col_split_mixed, function(x){
+  dplyr::select(x, -PPIND)
+})
+colMixed<-names(col_I_mixed)
+colMixed<-colMixed[-length(colMixed)]
+col_split_mixed$private|>rmarkdown::paged_table()
+col_split_mixed$public|>rmarkdown::paged_table()
+```
+Private: 
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_split_mixed$private, aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+Можно заметить, что NEW10/AVRCOMB разбивается на две части (поскольку AVRCOMB имеет много пропусков и сам AVRCOMB подразумевает разделение на подгруппы).
+```{r}
+col_I_sn[col_I_sn$PPIND=="private",]|>filter(NEW10<=50 & !is.na(AVRCOMB))|>rmarkdown::paged_table()
+col_I_sn[col_I_sn$PPIND=="private",]|>filter(NEW10>50 & !is.na(AVRCOMB))|>rmarkdown::paged_table()
+```
+
+Среди частных университетов только один "Delaware University" имеет расхождения между IN_STATE и OUT_STAT. Сейчас идёт такое ценообразование.
+University of Delaware's tuition is \$15,410 for in-state and \$37,930 for out-of-state.
+```{r}
+col_I_sn[col_I_sn$IN_STATE!=col_I_sn$OUT_STAT & col_I_sn$PPIND=="private",]
+```
+
+Public:
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_split_mixed$public, aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+Учитывая ограниченный объём данных, тем более после разделения по группам (например, наименьшая в private размера 29 без NA), следует воспользоваться pairwise. Более того, из-за признака AVRCOMB использование casewise неявно рассматривает корреляцию в другой подгруппе. Минусом pairwise является то, что из-за попарной проверки могут учитываться данные, пропущенные в других парах.
+
+```{r}
+compute_corr <- function(group_data) {
+  corr_pairwise_pearson <- cor(group_data, use = "pairwise.complete.obs", method = "pearson")
+  corr_pairwise_spearman <- cor(group_data, use = "pairwise.complete.obs", method = "spearman")
+  return(list(pairwise_pearson = corr_pairwise_pearson, pairwise_spearman = corr_pairwise_spearman))
+}
+
+make_corr_plots <- function(corr_list, group) {
+  p1 <- ggcorrplot(corr_list$pairwise_pearson,
+                   lab = TRUE,
+                   lab_size = 1.9,
+                   colors = c("blue", "white", "red"),
+                   title = paste("Pairwise Cor Pearson Matrix for Group", group),
+                   ggtheme = theme_minimal() +
+                     theme(plot.title = element_text(size = 6)) # Reduced title size
+  )
+  p2 <- ggcorrplot(corr_list$pairwise_spearman,
+                   lab = TRUE,
+                   lab_size = 1.9,
+                   colors = c("blue", "white", "red"),
+                   title = paste("Pairwise Cor Spearman Matrix for Group", group),
+                   ggtheme = theme_minimal() +
+                     theme(plot.title = element_text(size = 6)) # Reduced title size
+  )
+  grid.arrange(p1, p2, ncol = 2, widths = c(4, 4),  # Adjust widths here
+               padding = unit(1, "cm"))  # Add padding for extra space
+}
+```
+
+```{r}
+library(ggcorrplot)
+for (group in names(col_split_mixed)) {
+    group_data <- col_split_mixed[[group]]
+    cor_matrix <- compute_corr(group_data)
+    plot_pearson_spearman <- make_corr_plots(cor_matrix, group)
+    print(plot_pearson_spearman)
+}
+```
+
+В тех ячейках, где совпадают или близки коэффициенты корреляции Пирсона и Спирмена почти нет выбросов и у scatterplot эллиптическая структура, если Пирсон значительно больше Спирмена - есть заметные выбросы. Спирмен может быть больше Пирсона, если выбросы имеются, но их положение не очень значимо относительно других наблюдений.
+
+Замечаем блок GRADUAT, PH_D, SF_RATIO, AVRCOMB, NEW10, OUT_STAT в private. В public заметные, но менее выраженные зависимости. 
+
+Можно сказать, что в private (AVRCOMB - NEW10) AVRCOMB линейно зависит от NEW10 (% студентов, входящих в топ %10 старшей школы).
+
+Рассмотрим несколько примеров с частной корреляцией в private и в public
+
+Private:
+
+Корреляции между AVRCOMB, BOOK велика, хотя BOOK может входить в OUT_STAT (но они некоррелируют) также непонятна корреляция между R_B_COST и SF_RATIO (возможно OUT_STAT - скрытый фактор).
+
+Для R_B_COST и SF_RATIO выберем следующие скрытые факторы:
+
+* OUT_STAT - стоимость обучения связана с ценой проживания R_B_COST и качеством образования, что влияет на SF_RATIO.
+
+
+Поставим уровень значимости alpha = 0.05
+
+```{r}
+res<-pcor(col_split_mixed$private[,c("R_B_COST", "SF_RATIO", "OUT_STAT")])
+res$estimate["R_B_COST", "SF_RATIO"]
+res$p.value["R_B_COST", "SF_RATIO"]
+```
+
+estimate - получившаяся частная корреляция. Замечаем, что без OUT_STAT коэффициент корреляции Пирсона близок к 0, а p-value ~ 0.90. 
+
+* Для AVRCOMB/BOOK можно выделить OUT_STAT по тем же причинам, что и в предыдущем примере и NEW10, так как они влияют на AVRCOMB
+
+```{r}
+group_1<-c("AVRCOMB", "BOOK")
+res<-pcor(na.omit(col_split_mixed$private[,c(group_1, "NEW10")]))
+res
+```
+```{r}
+res_2<-pcor(na.omit(col_split_mixed$private[,c(group_1, "OUT_STAT", "NEW10")]))
+res_2
+```
+
+Получаем, что частная корреляция AVRCOMB/BOOK больше зависит от NEW10, чем от NEW10/OUT_STAT.
+
+Public:
+
+* Зависимость между GRADUAT и R_B_COST. Скрытые факторы: OUT_STAT и NEW10.
+
+```{r}
+group_2<-c("GRADUAT", "R_B_COST")
+res_1<-pcor(na.omit(col_split_mixed$public[,c(group_2, "OUT_STAT", "NEW10")]), method = "spearman")
+res_1
+```
+Коэффициент корреляции Спирмена понизился, p-value ~ 0.22. Не отвергаем влияния совокупности скрытых факторов OUT_STAT и NEW10.
+
+* Коэффициент корреляции Спирмена OUT_STAT и PH_D равен 0.24, хотя визуально кажется, что они коррелируют сильнее. Скрытыми факторами могут быть NEW10, так как NEW10 отражает престижность вузов (NEW10 может зависеть от PH_D, поскольку лучшие студенты хотят найти лучших преподавателей), а OUT_STAT зависит от NEW10 и PH_D.
+
+```{r}
+group_3<-c("PH_D", "OUT_STAT")
+res_3<-pcor(na.omit(col_split_mixed$public[,c(group_3, "NEW10")]), method = "spearman")
+res_3
+```
+Не отвергаем влияние NEW10 на PH_D и OUT_STAT. Можно также рассмотреть частную корреляцию от SF_RATIO, так как это отражает (неявно) процент PH_D и стоимость OUT_STAT за счёт студентов и профессоров.
+```{r}
+res_4<-pcor(na.omit(col_split_mixed$public[,c(group_3, "SF_RATIO")]), method = "spearman")
+res_4
+```
+Отвергаем влияние SF_RATIO как скрытого фактора. Не отвергаем, что PH_D скрытый фактор относительно SF_RATIO/OUT_STAT.
+
+
+### Выводы:
+
+* Pairwise или Casewise? Выбран pairwise, поскольку casewise убирает большую часть данных и выделяет новую подгруппу.
+
+* Матрицы корреляций public и private: отличаются. В public заметно больше коррелирующих факторов, что вероятно, связано с скрытыми факторами. В случае private явно выделяется группа признаков GRADUAT, PH_D, SF_RATIO, AVRCOMB, NEW10 и OUT_STAT, R_B_COST. 
+
+* Частные корреляции:
+
+* public:
+
+- PH_D, OUT_STAT - скрытый фактор NEW10
+
+- GRADUAT,  R_B_COST - скрытые факторы OUT_STAT/NEW10
+
+* private:
+
+- R_B_COST, SF_RATIO - скрытый фактор OUT_STAT
+ 
+- AVRCOMB, BOOK - скрытый фактор NEW10

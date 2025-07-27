@@ -1,0 +1,137 @@
+tidyr---
+title: "Task1"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Выбор данных
+https://vincentarelbundock.github.io/Rdatasets/datasets.html - здесь есть множество разных датасетов с описанием. При этом можно предварительно посмотреть на количество наблюдений, количество признаков, сколько из них являются факторами и т.д.
+
+## 2. Считывание и просмотр
+
+```{r}
+df <- read.csv(file = "Angell.csv", header = TRUE, as.is = FALSE) #Скачиваем csv, сохраняем в папку, где лежит r markdown и считываем данные. 
+head(df) #Head() Показывает первые шесть строк данных.
+```
+
+## 3. Описание данных
+Рассматриваемые данные содержат различную информацию о 43 городах в Америке около 1950г.  
+
+moral - Moral integration - Composite of crime rate and welfare expenditures  
+
+hetero - Ethnic Heterogenity - From percentages of nonwhite and foreign-born white residents  
+
+mobility - Geographic Mobility - From percentages of residents moving into and out of the city  
+
+region - A factor with levels: E Northeast; MW Midwest; S Southeast; W West.   
+
+
+## 4. Типы признаков
+moral - количественный
+hetero - количественный
+mobility - количественный
+region - качественный
+
+```{r}
+library(dplyr)
+summarize(df, across(moral:region, function(x) max(table(x)))) #считает сколько раз встречается мода у каждого признака
+#df %>% summarize(across(moral:region, function(x) max(table(x)))) #считает сколько раз встречается мода у каждого признака
+```
+
+Из таблицы выше можем заключить, что hetero - абсолютно непрерывный признак. Кроме того, можем считать, что moral и mobility ближе к непрерывным признакам.
+
+## 5. Порядковые признаки
+Здесь необходимо проверить соответствие текстовых меток порядкового признака (если такие использованы) их естественному порядку.   
+В данном датасете таких признаков нет.
+
+## 6. Matrix plot, outliers, etc.
+```{r}
+
+panel.hist <- function(x, ...) #функция рисующая гистограмму, предлагаемая в help'е функции pairs
+{
+    usr <- par("usr"); on.exit(par(usr))
+    par(usr = c(usr[1:2], 0, 1.5) )
+    h <- hist(x, plot = FALSE)
+    breaks <- h$breaks; nB <- length(breaks)
+    y <- h$counts; y <- y/max(y)
+    rect(breaks[-nB], 0, breaks[-1], y, col = "cyan", ...)
+}
+
+pairs(df[,2:4], diag.panel = panel.hist)
+
+```
+Для категоризованной картинки используйте функцию ggpairs 
+
+## 7. Симметричность распределений.
+Из матрикс плота видно, что распределение hetero - сильно несимметричное с хвостом вправо, поэтому прологарифмируем его и построим заново матрикс плот.
+
+```{r}
+dfl <- transform(df, hetero=log(hetero))
+
+pairs(df[,2:4], diag.panel = panel.hist)
+```
+
+
+## 8. Аутлаеры
+В данном случае на одном скаттерплоте (hetero & moral) видна линейная зависимость, не имеющая аутлаеров относительно нее. На скаттерплоте (mobility & hetero) отсутствует зависимость и, соответственно, аутлаеры. На (moral & mobility) также линейная зависимость, но вместо аутлаеров наблюдается скорее неоднородность.
+
+## 10. Матрикс плот и аутлаеры для отдельной группы.
+```{r}
+pairs(df[df$region == "S",2:4], diag.panel = panel.hist)
+```
+
+```{r}
+dflo <- dfl #сохраняем датасет
+dflo[38,] <- NA #удаляем аутлаер относительно линейной зависимости между hetero и mobility
+pairs(df[df$region == "S",2:4], diag.panel = panel.hist)
+```
+
+## 11. Descriptive statistics
+```{r}
+summary(df)
+summary(dfl)
+library(moments)
+summarize(dfl, across(moral:mobility, list(kurtosis = kurtosis, skewness = skewness)))
+
+```
+
+
+## 2.1 Выбор категоризующей переменной
+
+В качестве категоризующего признака возьмем region. Сравнивать будем центральные штаты и юго-восточный регион, как имеющие наибольшее количество наблюдений (14 и 13, соответственно).
+
+## 2.2 Boxplot
+
+```{r}
+dfcomp <- dflo %>% filter(region == "S" | region == "MW") #Выбираем из дата фрейма только наблюдения из юго-восточного и центрального регионов. Filter - вытаскивает подвыборку дата фрейма. %>% - передает dflo как первый параметр функции, идущей после этого знака.
+dfcomp$region <- droplevels(dfcomp$region) #Изменяет параметр-фактор, отвечающий за принадлежность городу региона, оставляя только присутствующие регионы (в нашем случае юго-восточный и центральный)
+library(lattice)
+bwplot(moral ~ region, data = dfcomp, col = c("forestgreen", "gold"), main = "Moral Integration", xlab = "Region") #строим боксплоты моральной интеграции по региону. moral ~ region - моральная интеграция как главный параметр, ~ region - разбивает боксплоты на группы в зависимости от региона. data - передаем наш дата фрейм. col - раскрашивает боксплоты в зависимости от группы. main - название над картинкой. xlab - подпись оси х.
+
+#Далее, аналогичные картинки относительно двух других признаков.
+
+bwplot(hetero ~ region, data = dfcomp, col = c("forestgreen", "gold"), main = "Ethnic Heterogenity", xlab = "Region")
+
+bwplot(mobility ~ region, data = dfcomp, col = c("forestgreen", "gold"), main = "Geographic Mobility", xlab = "Region")
+
+#boxplot(mobility ~ region, dfcomp, col = c("forestgreen", "gold"), main = "Geographic Mobility, mean and median", xlab = "Region")
+rb<- boxplot(mobility ~ region, dfcomp, col = c("forestgreen", "gold"), main = "Geographic Mobility, mean and median", xlab = "Region")
+#title("Comparing boxplot()s and non-robust mean +/- SD")
+mn.t <- tapply(dfcomp$mobility, dfcomp$region, mean)
+sd.t <- tapply(dfcomp$mobility, dfcomp$region,sd)
+xi <- 0.3 + seq(rb$n)
+points(xi, mn.t, col = "red", pch = 18)
+arrows(xi, mn.t - sd.t, xi, mn.t + sd.t,
+       code = 3, col = "red", angle = 75, length = .1)
+
+#две гистограммы рядом
+library(ggplot2)
+ggplot(dfcomp, aes(x=mobility, fill=region)) +
+  geom_histogram( color='#e9ecef', alpha=0.6, position='identity')
+
+```

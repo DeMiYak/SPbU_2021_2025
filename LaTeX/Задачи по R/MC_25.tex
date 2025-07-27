@@ -1,0 +1,116 @@
+\documentclass{article}
+
+\usepackage[a4paper,
+mag=1000, includefoot,
+left=3cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[english, main=russian]{babel}
+\ifpdf\usepackage{epstopdf}\fi
+
+\usepackage{amsmath,amssymb,amsthm,amscd,amsfonts}
+\usepackage{mathdots}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{bbm}
+
+\newcommand\norm[1]{\left\|#1\right\|}
+\DeclareMathOperator\R{\mathbb{R}}
+\DeclareMathOperator\N{\mathbb{N}}
+\DeclareMathOperator\rank{\textrm{rank}\,}
+
+
+\title{Вычисление интегралов методом Монте-Карло\\
+Решение задачи 25}
+\author{\emph{Яковлев Д.М.}\\\textsc{st095998@student.spbu.ru}}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	\section{Решение}
+
+	Рассматривается многомерный интеграл из \cite{ankor} под номером 25
+	\begin{equation}\label{eq: main}
+		\dfrac{2}{\sqrt{\pi}}\iint\limits_{\substack{x>0\\0<t<cx}}x^{-p-1}e^{-t^2}~dx~dt.
+	\end{equation}
+
+	Последовательно будем решать несколько задач:
+	\begin{enumerate}
+		\item Убедиться, что интеграл сходится;
+		\item Построить доверительный интервал по ЦПТ и для траекторий винеровского процесса;
+	\end{enumerate}
+	\subsection{}
+	
+		Обозначив интеграл \eqref{eq: main} как $J(c, p)$, найдём
+		\begin{align*}
+			J(c, p)=\dfrac{2}{\sqrt{\pi}}\left[~~\iint\limits_{\substack{x>0\\0<t<cx}}x^{-p-1}e^{-t^2}~dx~dt\overset{\text{т. Фубини}}{=}\int_{0}^\infty e^{-t^2}\left(\int_{t/c}^\infty x^{-p-1}~dx\right)~dt\overset{p > 0}{=}\int_0^\infty e^{-t^2}\dfrac{1}{p}\left(\dfrac{t}{c}\right)^{-p}~dt\right].
+		\end{align*}
+		Вынесем множитель $\dfrac{2c^p}{\sqrt{\pi}p}$ и рассмотрим сходимость интегрального выражения
+		\begin{equation*}
+			\int_0^\infty e^{-t^2}t^{-p}dt.
+		\end{equation*}
+		Заметим, что при $p\geqslant 1$ в правой окрестности $t=0$ (например, $[0,\varepsilon),~\varepsilon>0$):
+		\begin{equation*}
+			e^{-t^2}\rightarrow1,\int_0^\varepsilon e^{-t^2}t^{-p}~dt\rightarrow\int_0^\varepsilon t^{-p}dt = \infty,
+		\end{equation*}
+		Откуда получаем, что $0<p<1$. В таком случае
+		\begin{align*}
+			\int_0^\infty e^{-t^2}t^{-p}~dt=\left[t^2 = u,~t=u^{1/2},~dt=\dfrac{1}{2u^{1/2}}du\right]=\dfrac{1}{2}\int_0^\infty e^{-u}u^{\frac{-p-1}{2}}~du=\dfrac{1}{2}\Gamma\left(\dfrac{1-p}{2}\right).
+		\end{align*}
+		Тем самым, интегральное выражение
+		\begin{equation*}
+			J(c, p)=\dfrac{c^p}{\sqrt{\pi}p}\Gamma\left(\dfrac{1-p}{2}\right),~c>0,~0<p<1.
+		\end{equation*}
+	\subsection{}
+	
+%	Упростим $J(c, p)$:
+%	\begin{equation*}
+%		\dfrac{\sqrt{\pi}}{2}J(c, p)=\iint\limits_{\substack{x>0\\0<t<cx}}x^{-p-1}e^{-t^2}~dx~dt=\left[t = u/\sqrt{2},~dt=du/\sqrt{2}\right]=\dfrac{1}{\sqrt{2}}\iint\limits_{\substack{x>0\\0<u<cx\sqrt{2}}}x^{-p-1}e^{-u^2/2}~dx~du
+%	\end{equation*}
+
+	Подберём распределение $\mathcal{P}$. Для удобства вычислений, распределение $\mathcal{P}$ можно представить в виде двух независимых случайных величин. Пусть $\xi, \eta$ --- независимые случайные величины такие, что 
+	\begin{align*}
+		&\xi=|\varepsilon|,~\varepsilon~\sim N\left(0, \dfrac{1}{2}\right),~p_\xi(t)=\dfrac{2}{\sqrt{\pi}}e^{-t^2},~0<t,\\
+		&\eta:~p_\eta(x)=C\begin{cases}
+			0,&x\leqslant0\\
+			e^{-x},&0<x\leqslant1\\
+			x^{-p-1},&1<x
+		\end{cases}.
+	\end{align*}
+	
+	Определим нормирующий коэффициент $C$, вычислив интеграл от $p_\eta(x)$:
+	\begin{align*}
+		C\left[\int_{\R} d\mathcal{P}_\eta{dx}=\int_0^1e^{-x}~dx+\int_1^\infty x^{-p-1}~dx=(1-e^{-1}) + \dfrac{1}{p}\right]=1\Rightarrow C = \dfrac{1}{1-e^{-1}+\dfrac{1}{p}}.
+	\end{align*}
+	
+	Само распределение $\mathcal{P}_\eta$ представляется как смесь распределений
+	\begin{align*}
+		&p_\eta(x)=q_1p_1(x)+q_2p_2(x),\\
+		&q_1=C(1-e^{-1}),~p_1(x)= \mathbbm{1}_{(0,1]}(x)\dfrac{e^{-x}}{1-e^{-1}},~q_2=\dfrac{C}{p},~p_2(x)=\mathbbm{1}_{(1,+\infty)}(x)px^{-p-1},~q_1+q_2=1.
+	\end{align*}
+	
+	Теперь определим обратные функции для полученных функций распределения
+	\begin{align*}
+		&p_1(x)\sim F_1(x)=\begin{cases}
+			0,&x\leqslant0\\
+			\dfrac{1-e^{-x}}{1-e^{-1}},&0<x\leqslant 1\\
+			1,&1<x
+		\end{cases}\Leftrightarrow x = -\log[1-(1-e^{-1})\alpha],~\alpha\in(0,1).\\
+		&p_2(x)\sim F_2(x)=\begin{cases}
+			0,&x\leqslant1\\
+			1-x^{-p},&1<x<\infty
+		\end{cases}\Leftrightarrow x = \sqrt[-p]{1-\alpha},~\alpha\in(0,1).
+	\end{align*}
+	 По теореме Радона-Никодима, существует
+	\begin{equation*}
+		m(\xi, \eta)=\dfrac{1}{C}\begin{cases}
+			x^{-p-1}e^x,&0<x\leqslant1,~0<t<cx\\
+			1,&1<x,~0<t<cx\\
+			0,&\text{иначе}
+		\end{cases}
+	\end{equation*} 
+	\bibliographystyle{ugost2008}
+	\bibliography{MC}
+\end{document}

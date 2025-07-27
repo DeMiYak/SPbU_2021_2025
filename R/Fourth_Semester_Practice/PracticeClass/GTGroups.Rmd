@@ -1,0 +1,66 @@
+---
+title: "GTGroups"
+author: "Yakovlev D.M."
+date: "2024-01-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("tidyverse")
+library("ggplot2")
+library("gganimate")
+library("rworldmap")
+library("leaflet")
+GT <- read.csv("globalterrorism.csv")
+```
+
+dateIssues.step Наблюдение 1: Не все даты соответствуют описанию из Codebook’а. Так eventid состоит из 12 цифр. Первые 8 — год (4 цифры), месяц (2 цифры)и день (2 цифры); последние 4 — порядковый номер для даты. При этом существуют несоответствия между датами и eventid и есть нулевой месяц и нулевой день (?) В целях экономии сил и времени будет пользоваться исходными данными.
+
+Ошибочное наблюдение: в Codebook указано, что 0 - неопределённая дата
+```{r}
+GT <- GT|>
+  mutate(year = as.integer(str_sub(eventid, start=1, end=4)),
+         month = as.integer(str_sub(eventid, start=5, end=6)),
+         day = as.integer(str_sub(eventid, start=7,end=8)),
+         .after=eventid)
+```
+
+```{r}
+GT <- GT|>
+  mutate(date=as.Date(with(GT, paste(year, month, day, sep="-")), "%Y-%m-%d"),
+         .after=day)|>
+  mutate(idate=as.Date(with(GT, paste(iyear, imonth, iday, sep="-")), "%Y-%m-%d"),
+         .after=iday)
+```
+
+```{r}
+dateValidator <- if_else(GT$date == GT$idate, T, F, NA)
+length(dateValidator)
+length(dateValidator[dateValidator == T])
+length(dateValidator[dateValidator == F])
+length(dateValidator[is.na(dateValidator)])
+```
+
+Конец наблюдения 1.
+
+Наблюдения 2: Даты
+
+```{r}
+GTO <- GT|>
+  select(!c(year, month, day, date))
+```
+
+```{r}
+GTO1970 <- GTO|>filter(iyear==1970)
+map <- leaflet(GTO1970)|>
+  addTiles()|>
+  addCircleMarkers(popup=GTO1970$summary, label=GTO1970$summary)
+```
+
+```{r}
+map
+```

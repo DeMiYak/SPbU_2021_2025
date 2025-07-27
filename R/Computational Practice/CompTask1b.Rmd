@@ -1,0 +1,20 @@
+---
+title: "CompTask1b"
+author: "Yakovlev D.M."
+date: "2024-03-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Реализация случайного распределения (атмосферных шумов) в кубе 1х1х1
+```{r}
+library("rgl")
+library("random")
+maxNum = 10^8
+randvec <- randomNumbers(n = 3000, min = 0, max = maxNum, col = 3)/maxNum 
+plot3d(randvec)
+
+```

@@ -1,0 +1,159 @@
+\documentclass[fleqn]{article}
+\usepackage[a4paper,
+mag=1000, includefoot,
+left=2.5cm, right=1cm, top=2cm, bottom=2cm,
+headsep=0.7cm, footskip=1cm]{geometry}
+\usepackage{mathtext}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{relsize}
+\linespread{1.2}
+
+\usepackage[most]{tcolorbox}
+
+\usepackage{amsmath,amssymb,amsthm,amscd,amsfonts}
+\usepackage{cmap}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={Overleaf Example},
+	pdfpagemode=FullScreen,
+}
+
+\usepackage{euscript}
+\usepackage{mathdots}
+\usepackage{graphicx}
+\usepackage[russian]{cleveref}
+\usepackage{epstopdf}
+
+\newcommand\norm[1]{\left\|#1\right\|}
+\renewcommand\b[1]{\mathbf{#1}}
+\newcommand\R{\mathbb{R}}
+\newcommand\rank{\textrm{rank}\,}
+
+\newtheorem{theorem2.3}{Теорема 2.3.\\Если $\delta_0 > 0$ и $\dfrac{\norm{\b{B}(\delta)}}{\mu_{min}} < \dfrac{1}{4}$ для всех $\delta \in (-\delta_0, \delta_0)$, то $\norm{\b{P}_0^\bot(\delta) - \b{P}_0^\bot} \leqslant 4C\dfrac{\norm{\b{S}_0\b{B}(\delta)\b{P}_0}}{1 - 4\norm{\b{B}(\delta)}/\mu_{min}}$.\\}
+
+\newtheorem{lemma6.1}{Лемма 6.1.\\ Если $0<\beta<\dfrac{1}{4}$, $k \geqslant 0$, то 
+	$\sum^\infty_{p=k}{2p \choose p}\beta^p \leqslant C\dfrac{(4\beta)^k}{1-4\beta},\,C = e^{1/6}/\sqrt{\pi}\approx0.667$.\\}
+
+\newtheorem{corollary}{Следствие:\\}
+\newtheorem{theorem}{\textbf{Теорема} }
+
+\title{Отчёт по учебной практике 3 (Научно-исследовательская работа) по теме ``Задачи анализа временных рядов, теория метода «Анализ сингулярного спектра» SSA''\\(курс 3)}
+\author{Выполнил:\\ Яковлев Денис Михайлович\\ Группа 21.Б04-мм \and Научный руководитель:\\ К.ф-м.н., доцент\\ Некруткин Владимир Викторович\\ Кафедра статистического моделирования}
+\begin{document}
+	\maketitle
+	\newpage
+	\section{Введение}
+	Целью этой научно-исследовательской работы является решение прикладных задача анализа временных рядов с применением теоретических знаний о методе SSA (Singular Spectrum Analysis), или "Анализ сингулярного спектра". В ходе учебной практики будут изучены теоретическая часть метода SSA и её применение.
+	\section{Теоретические задачи}
+		Для начала введём несколько объектов:
+	\begin{itemize}
+		\item \textbf{H}, \textbf{E} --- вещественнозначные ненулевые матрицы $\R^K \rightarrow \R^L$. Матрицу \textbf{H} будем называть ``сигнальная матрицей'' , а \textbf{E} --- ``шумовая матрицей''. В условиях поставленной задачи рассматривается возмущённая матрица $\textbf{H}(\delta)$ и ``сигнальное подпространство'', образованное столбцами матрицы \textbf{H};
+		\item  $\textbf{A} = \textbf{HH}^T$ --- самосопряжённый неотрицательно определённый оператор \textbf{A}: $\R^L \rightarrow \R^L$;
+		\item $d = \rank\textbf{H} < \min(L, K)$ - ранг матрицы \textbf{H};
+		\item $\Sigma$ --- набор собственных значений $\{\mu_n\}_{n=1}^L$ оператора \textbf{A}. Из свойств оператора \textbf{A}, $\Sigma \subset [0, +\infty)$;
+		\item $\mu_{min} = \min\{\mu\in\Sigma\, |\, \mu > 0\}$;
+		\item $\textbf{I}$ --- тождественный оператор $\R^L \rightarrow \R^L$;
+		\item $\textbf{P}_0$ --- ортогональный проектор на собственное подпространство $\mathbb{U}_0$, соответствующее нулевым собственным значениям \textbf{A};
+		\item $\textbf{P}^\bot_0 = \textbf{I} - \textbf{P}_0$ --- ортогональный проектор на $\mathbb{U}_0^\bot$, соответствующее ненулевым собственным значениям. 
+	\end{itemize}
+	Теперь введём матрицу с возмущением $\textbf{H}(\delta) = \textbf{H} + \delta\textbf{E}$. Тогда возмущение оператора $\textbf{A}$:
+	\begin{equation*}
+		\textbf{A}(\delta) = \textbf{H}(\delta)\textbf{H}(\delta)^T = \textbf{H}\textbf{H}^T + \delta(\textbf{H}\textbf{E}^T + \textbf{E}\textbf{H}^T) + \delta^2\textbf{E}\textbf{E}^T
+	\end{equation*}
+	Положим $\textbf{A}^{(1)} = \textbf{H}\textbf{E}^T + \textbf{E}\textbf{H}^T$, $\textbf{A}^{(2)} = \textbf{E}\textbf{E}^T$, $\textbf{B}(\delta) = \delta\textbf{A}^{(1)} + \delta^2\textbf{A}^{(2)}$. Заметим, что $\textbf{A}^{(1)}$ и $\textbf{A}^{(2)}$ --- самосопряжённые операторы, а $\textbf{A}(\delta)$ --- неотрицательный полуопределённый оператор для любых $\delta\in\R$.\\
+	Цель поставленных теоретических задач --- сравнить возмущённый проектор $\textbf{P}^\bot_0(\delta)$ с невозмущённым проектором $\textbf{P}^\bot_0$.\\ 
+	Определим $\textbf{S}_0$ --- матрица, псевдообратная к $\textbf{H}\textbf{H}^T$. Положим $\textbf{S}_0^{(0)} = -\textbf{P}_0$ и $\textbf{S}_0^{(k)}=\textbf{S}_0^k$ для $k\geqslant1$. Введём $\textbf{W}_p(\delta)$:
+	\begin{equation*}
+		\textbf{W}_p(\delta) = (-1)^p\sum\limits_{l_1+\dots+l_{p+1}=p,\,l_j\geqslant0}\textbf{W}_p(l_1,\dots,l_{p+1}),
+	\end{equation*}
+	\begin{equation*}
+		\textbf{W}_p(l_1,\dots,l_{p+1}) = \textbf{S}_0^{(l_1)}\textbf{B}(\delta)\textbf{S}_0^{(l_2)}\dots\textbf{S}_0^{(l_p)}\textbf{B}(\delta)\textbf{S}_0^{(l_{p+1})}.
+	\end{equation*}
+	Введём $\textbf{V}_0^{(n)}$:
+	\begin{equation*}
+		\textbf{V}_0^{(n)}=\sum\limits_{p=[n/2]}^n(-1)^p\sum_{\substack{
+				s_1+\dots+s_p=n,\,s_i=1,2\\
+				l_1+\dots+l_{p+1}=p,\,l_j\geqslant0}}
+		\textbf{V}_0^{(n)}(\textbf{s},\textbf{l}),
+	\end{equation*}
+	$\textbf{s} = (s_1,\dots,s_p),\,\textbf{l}=(l_1,\dots,l_{p+1})$, и 
+	\begin{equation*}
+		\textbf{V}_0^{(n)}(\textbf{s}, \textbf{l})=\textbf{S}_0^{(l_1)}\textbf{A}^{(s_1)}\textbf{S}_0^{(l_2)}\dots\textbf{A}^{(s_p)}\textbf{S}_0^{(l_{p+1})}.
+	\end{equation*}
+	Теперь можно ввести теорему из \cite{nekrutkin2010perturbation}:
+	\vspace*{\baselineskip}\\
+	\textbf{Теорема 2.1}\\
+		\emph{Пусть} $\delta_0>0$ \emph{и} 
+		\begin{equation}\label{eq:2.1}
+			\norm{\textbf{B}(\delta)}<\mu_{min}/2
+		\end{equation}
+		\emph{для всех }$\delta\in(-\delta_0,\delta_0)$. \emph{Тогда для возмущённого проектора} $\textbf{P}_0^\bot(\delta)$ \emph{верно представление}:
+		\begin{equation}\label{eq:2.2}
+			\textbf{P}_0^\bot(\delta)=\textbf{P}_0^\bot + \sum_{p=1}^\infty\textbf{W}_p(\delta),
+		\end{equation}
+		а также
+		\begin{equation}\label{eq:2.4}
+			\textbf{P}_0^\bot(\delta) = \textbf{P}_0^\bot + \sum_{n=1}^\infty\delta^n\textbf{V}_0^{(n)}.
+		\end{equation}
+		\textbf{Замечание:} \eqref{eq:2.2} и \eqref{eq:2.4} сходятся в спектральной норме.\\
+		Введём
+ 		\begin{equation}
+			B(\delta) = |\delta|\norm{\textbf{A}^{(1)}}+\delta^2\norm{\textbf{A}^{(2)}}.
+		\end{equation}
+		Если $\delta_0>0$ и $B(\delta_0)=\mu_{min}/2$, то тогда неравенство \eqref{eq:2.1} верно для любых $\delta$ таких, что $|\delta|<\delta_0$.
+	\subsection{Теоретическая задача №1}
+	\emph{Оценить выражение сверху }$\forall n\in\mathbb{N}:\,\norm{\b{P}_0^\bot(\delta) - \b{P}_0^\bot - \mathlarger{\sum}\limits^n_{p=1}\b{W}_p(\delta)}$.\\
+	Воспользуемся вспомогательными теоремами и леммами из \cite{nekrutkin2010perturbation} для решения теоретической задачи №1.
+	\vspace*{\baselineskip}
+	\\\textbf{Теорема 2.3.}\\\textbf{Если} $\delta_0 > 0$ \textbf{и} $\dfrac{\norm{\b{B}(\delta)}}{\mu_{min}} < \dfrac{1}{4}$ \textbf{для всех} $\delta \in (-\delta_0, \delta_0)$, \textbf{то} $\norm{\b{P}_0^\bot(\delta) - \b{P}_0^\bot} \leqslant 4C\dfrac{\norm{\b{S}_0\b{B}(\delta)\b{P}_0}}{1 - 4\norm{\b{B}(\delta)}/\mu_{min}},\,C = e^{1/6}/\sqrt{\pi}\approx0.667$.
+
+	\textbf{Лемма 6.1.}\\ \textbf{Если} $0<\beta<\dfrac{1}{4}$, $k \geqslant 0$, то 
+	$\sum^\infty_{p=k}{2p \choose p}\beta^p \leqslant C\dfrac{(4\beta)^k}{1-4\beta},\,C = e^{1/6}/\sqrt{\pi}$.\\
+	Сначала оценим выражение в случае, когда $n=2$:
+	\begin{align}\notag
+		&\norm{\b{P}_0^\bot - \b{P}_0^\bot - \b{W}_1(\delta) - \b{W}_2(\delta)} = \norm{\sum^\infty_{p=3}\b{W}_p(\delta)}\leqslant\\\label{eq:m_1}
+		&C\sum^\infty_{p=3}\norm{\b{S}_0\b{B}(\delta)\b{P}_0}\left(\dfrac{\norm{\b{B}(\delta)}}{\mu_{min}}\right)^{p-1}4^p\leqslant C\sum^\infty_{p=3}\left(\dfrac{4\norm{\b{B}(\delta)}}{\mu_{min}}\right)^p = C\left(\dfrac{4\norm{\b{B}(\delta)}}{\mu_{min}}\right)^3\dfrac{1}{1-4\norm{\b{B}(\delta)}/\mu_{min}}.
+	\end{align}
+	Аналогично, можно выделить следующее:
+	\begin{corollary}
+	\begin{equation}\label{eq:m_2}
+		\norm{\b{P}_0^\bot - \b{P}_0^\bot - \sum\limits^n_{p=1}\b{W}_p(\delta)} \leqslant C\left(\dfrac{4\norm{\b{B}(\delta)}}{\mu_{min}}\right)^{n+1}\dfrac{1}{1-4\norm{\b{B}(\delta)}/\mu_{min}}.
+	\end{equation}
+	\end{corollary}
+	
+	Сравним полученный в \eqref{eq:m_1} результат с результатом теоремы 2.5:
+	\vspace*{\baselineskip}\\
+	\textbf{Теорема 2.5.} Пусть $\delta_0>0,\,B(\delta_0)=\mu_{min}/4$ и $|\delta| < \delta_0$. Введём
+	\begin{equation}
+		\textbf{L}_1(\delta)=\sum_{\mu>0}\dfrac{\textbf{P}_\mu\textbf{B}(\delta)\textbf{P}_0}{\mu}\left(\textbf{I}-\delta^2\textbf{A}_0^{(2)}/\mu\right)^{-1}
+	\end{equation}
+	и $\textbf{L}(\delta) = \textbf{L}_1(\delta)+\textbf{L}_1^T(\delta)$. Тогда
+	\begin{equation}\label{eq:2.24}
+		\norm{\b{P}_0^\bot(\delta) - \b{P}_0^\bot - \textbf{L}(\delta)} \leqslant 16C\dfrac{\norm{\textbf{S}_0\textbf{B}(\delta)}\norm{\textbf{S}_0\textbf{B}(\delta)\textbf{P}_0}}{1-4\norm{\textbf{B}(\delta)}/\mu_{min}},
+	\end{equation}
+	где $C = e^{(1/6)}/\sqrt{\pi}$.
+	Положим $\norm{\textbf{S}_0\textbf{B}(\delta)}\approx\varepsilon$. Так как
+	\begin{equation*}
+		\norm{\textbf{S}_0\textbf{B}(\delta)\textbf{P}_0}\leqslant\norm{\textbf{S}_0\textbf{B}(\delta)},
+	\end{equation*}
+	то правая часть \eqref{eq:2.24} будет пропорциональна $\varepsilon^2$, в то время как правая часть \eqref{eq:m_1} будет пропорциональна $\varepsilon$, если $\norm{\textbf{B}(\delta)}/\mu_{min}$ не мала и $\textbf{S}_0\textbf{B}(\delta)$ достаточно мала. В таком случае оператор $\textbf{L}(\delta)$ можно считать основным показателем разности $\textbf{P}_0^\bot(\delta)-\textbf{P}_0^\bot$.\\
+	В общем виде, поскольку:
+	\begin{equation*}
+		\norm{\b{P}_0^\bot - \b{P}_0^\bot - \sum\limits^n_{p=1}\b{W}_p(\delta)} \leqslant C\left(\dfrac{4\norm{\b{B}(\delta)}}{\mu_{min}}\right)^n\dfrac{\norm{\textbf{S}_0\textbf{B}(\delta)}}{1-4\norm{\b{B}(\delta)}/\mu_{min}},
+	\end{equation*}
+	то в случае
+	\begin{equation*}
+		\norm{\textbf{S}_0\textbf{B}(\delta)}\approx\varepsilon\leqslant4^{n-1}\left(\dfrac{\norm{\b{B}(\delta)}}{\mu_{min}}\right)^n
+	\end{equation*}
+	правая часть \eqref{eq:2.24} будет давать будет точнее оценивать $\textbf{P}_0^\bot(\delta)-\textbf{P}_0^\bot$, чем \eqref{eq:m_2}.
+	\bibliographystyle{ugost2008}
+	\bibliography{SPR5}
+\end{document}

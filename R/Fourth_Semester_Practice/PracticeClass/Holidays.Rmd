@@ -1,0 +1,302 @@
+---
+title: "Practice28112023"
+author: "Yakovlev D.M."
+date: "2023-11-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("tidyverse")
+library("rworldmap")
+library("ggridges")
+
+country_names <- list.files("archive-11")
+country_names <- sapply(country_names, function(x) paste0("archive-11/",x))
+
+jam <- data.frame()
+for(x in country_names){
+  x <- read.csv(x)
+  jam <- rbind(jam, x)
+}
+
+parse_holidays <- function(x){
+  x <- gsub("'", "", x)
+  x <- gsub("\\[", "", x)
+  x <- gsub("\\]", "", x)
+  return (x)
+}
+
+jam <- mutate(jam, Date = as.Date(Date), Type = sapply(Type, parse_holidays))
+jam <- separate_rows(jam, Type, sep = ", ")
+```
+
+```{r}
+mapDevice("x11")
+```
+
+```{r}
+jamNew <- group_by(jam, Country.Name)|>
+  summarize(Total.Holidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="Total.Holidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jamNew)
+barplot(jamNew$Total.Holidays, names.arg = jamNew$Country.Name)
+```
+
+```{r}
+jamNew <- group_by(jam, Date)|>
+  summarize(Total.Holidays = n())
+
+rmarkdown::paged_table(jamNew)
+
+ggplot(jamNew) + aes(x = Date, y = Total.Holidays) + geom_point() + geom_line()
+```
+
+```{r}
+jamNew <- filter(jam, Type != "Season", Type != "Clock change/Daylight Saving Time")|>
+  group_by(Country.Name)|>
+  summarize(NoSeasonHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="NoSeasonHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jam |> filter(Type != "Season", Type != "Clock change/Daylight Saving Time"))
+barplot(jamNew$NoSeasonHolidays, names.arg = jamNew$Country.Name)
+
+```
+
+
+# Seasonless examination
+
+```{r}
+jam <- jam |> group_by(Country.Name)
+
+```
+
+```{r}
+jamNew <- filter(jam,  Type == "National holiday")|>
+  summarize(NationalHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="NationalHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jam |> filter(Type == "National holiday"))
+barplot(jamNew$NationalHolidays, names.arg = jamNew$Country.Name)
+```
+
+```{r}
+jamNew <- filter(jam, Type == "Observance")|>
+  summarize(ObservanceHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="ObservanceHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jam |> filter(Type == "Observance"))
+barplot(jamNew$ObservanceHolidays, names.arg = jamNew$Country.Name)
+```
+
+```{r}
+jamNew <- filter(jam, Type == "Orthodox")|>
+  summarize(OrthodoxHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="OrthodoxHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jam |> filter(Type == "Orthodox"))
+barplot(jamNew$OrthodoxHolidays, names.arg = jamNew$Country.Name)
+```
+
+```{r}
+jamNew <- filter(jam, Type == "Muslim")|>
+  summarize(MuslimHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="MuslimHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jam |> filter(Type == "Muslim"))
+barplot(jamNew$MuslimHolidays, names.arg = jamNew$Country.Name)
+```
+```{r}
+jamNew <- filter(jam, Type == "Hebrew")|>
+    summarize(HebrewHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="HebrewHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jam |> filter(Type == "Hebrew"))
+barplot(jamNew$HebrewHolidays, names.arg = jamNew$Country.Name)
+```
+```{r}
+jamNew <- filter(jam, Type == "Hinduism")|>
+    summarize(HinduHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="HinduHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jam |> filter(Type == "Hinduism"))
+barplot(jamNew$HinduHolidays, names.arg = jamNew$Country.Name)
+```
+
+```{r}
+jamNew <- filter(jam, Type == "Christian")|>
+    summarize(ChristianHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="ChristianHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jam |> filter(Type == "Christian"))
+barplot(jamNew$ChristianHolidays, names.arg = jamNew$Country.Name)
+```
+
+```{r}
+jamNew <- filter(jam, Type == "Weekend")|>
+    summarize(WeekendHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="WeekendHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jam |> filter(Type == "Weekend"))
+barplot(jamNew$WeekendHolidays, names.arg = jamNew$Country.Name)
+```
+
+```{r}
+jamNew <- filter(jam, Type == "De facto holiday")|>
+    summarize(DeFactoHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="DeFactoHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jam |> filter(Type == "De facto holiday"))
+barplot(jamNew$DeFactoHolidays, names.arg = jamNew$Country.Name)
+```
+```{r}
+jamNew <- filter(jam, Type == "Sporting event")|>
+    summarize(SportHolidays = n())
+rmarkdown::paged_table(jam |> filter(Type == "Sporting event"))
+barplot(jamNew$SportHolidays, names.arg = jamNew$Country.Name)
+```
+
+```{r}
+jamStat <- jam |>
+  select(Type)|> group_by(Type)|>
+  summarize()|>pull(Type)
+```
+```{r}
+jamStat
+```
+
+```{r}
+jamNew <- filter(jam, Type == "Flag day")|>
+rmarkdown::paged_table(jamNew)
+```
+
+```{r}
+jamNew <- filter(jam, Type == "Optional holiday")|>
+  summarize(OptionalHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="OptionalHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jamNew)
+```
+
+```{r}
+jamNew <- filter(jam, Type == "Half-day holiday")|>
+    summarize(HalfdayHolidays = n())
+spdf<-joinCountryData2Map(jamNew, joinCode = "NAME", nameJoinColumn = "Country.Name")
+mapCountryData(spdf, nameColumnToPlot="HalfdayHolidays", catMethod = "fixedWidth",
+               missingCountryCol = gray(.8), colourPalette = "topo", mapRegion = "world")
+rmarkdown::paged_table(jamNew)
+```
+
+```{r}
+jamNew <- jam|>
+  group_by(Name)|>
+  summarize(Holiday.number = n())
+
+barplot(jamNew$Holiday.number, names.arg = jamNew$Name)
+rmarkdown::paged_table(jamNew|>as.data.frame()|>arrange(desc(Holiday.number)))
+```
+
+```{r}
+ggplot(jam, aes(x = Date, y = Type, fill = Type))+
+  geom_density_ridges(alpha = 0.5, show.legend = FALSE)
+```
+
+```{r}
+jamStat
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[1]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[2]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[3]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[4]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[5]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[6]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[7]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[8]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[9]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[10]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[11]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[12]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[13]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[14]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[15]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[16]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[17]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[18]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[19]))
+```
+
+```{r}
+rmarkdown::paged_table(jam |> filter(Type == jamStat[20]))
+```

@@ -1,0 +1,50 @@
+\documentclass{article}
+
+\usepackage[a4paper,
+mag=1000, includefoot,
+left=3cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[english, main=russian]{babel}
+\ifpdf\usepackage{epstopdf}\fi
+
+\usepackage{amsmath,amssymb,amsthm,amscd,amsfonts}
+\usepackage{mathdots}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{bbm}
+\usepackage{hyperref}
+
+\newcommand\norm[1]{\left\|#1\right\|}
+\DeclareMathOperator\R{\mathbb{R}}
+\DeclareMathOperator\N{\mathbb{N}}
+\DeclareMathOperator\rank{\textrm{rank}\,}
+
+
+\title{Моделирование. Markov Chain Monte-Carlo. Метод Метрополиса-Хастингса. \\
+	Решение задачи 10}
+\author{\emph{Яковлев Д.М.}\\\textsc{st095998@student.spbu.ru}}
+\date{\today}
+
+
+\begin{document}
+	\maketitle
+	\nocite{RomGu,ankorMLE}
+	\section{Условия задачи}
+	Исходная работа Хастингса в 1970 г. была посвящена моделированию стандартного нормально
+	го распределения с использованием в качестве пробного распределения случайного блуждания
+	с отдельными шагами, полученными из равномерного распределения на отрезке $(-\delta, \delta),~ \delta>0$.
+	\begin{itemize}
+		\item Исследуйте свойства алгоритма Метрополиса-Гастингса и получаемой цепи при разных
+		значениях $\delta$ (например, $\delta = 0.1,1,10$ или другие). Какое значение будем оптимальным
+		с точки зрения автокорреляции цепи? 
+		\item Промоделируйте выборку из $N(0,1)$ с использованием других распределений для приращений: Коши и Лапласа (с параметром $\lambda = 1$). Сравните свойства получаемой марковской
+		цепи. 
+		\item Для трех выше обозначенных примеров случайного блуждания (с равномерными приращениями на интервале, из распределений Коши и Лапласа) исследуйте возможность получения вероятности перехода в следующее состояние цепи близкой к 0.25 за счет правильного
+		подбора параметров. 
+	\end{itemize}
+	\bibliographystyle{ugost2008}
+	\bibliography{MCMC}
+\end{document}

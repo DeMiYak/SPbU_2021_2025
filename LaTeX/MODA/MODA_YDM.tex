@@ -1,0 +1,252 @@
+\documentclass[specialist, subf, href, 12pt]{article}
+
+\usepackage[a4paper,
+mag=1000, includefoot,
+left=3cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[english, main=russian]{babel}
+\ifpdf\usepackage{epstopdf}\fi
+
+\usepackage{bm}
+\usepackage{amsmath,amssymb,amsthm,amscd,amsfonts}
+\usepackage{mathdots}
+\usepackage{graphicx}
+\usepackage{mathtools}
+
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{breakurl}
+\usepackage{enumitem}
+
+\newcommand{\defeq}{\mathrel{\mathop:}=}
+\newcommand\norm[1]{\left\|#1\right\|}
+\DeclareMathOperator\R{\mathbb{R}}
+\DeclareMathOperator\N{\mathbb{N}}
+\DeclareMathOperator\rank{\textrm{rank}\,}
+\DeclareMathOperator\tr{\textrm{tr}\,}
+\DeclareMathOperator\Tr{\textrm{Tr}\,}
+\DeclareMathOperator\rnk{\textrm{rnk}\,}
+% Использовать полужирное начертание для векторов
+\let\vec=\mathbf
+
+\newtheorem{corollary}{Следствие}
+\newtheorem{theorem}{Теорема}
+\newtheorem{remark}{Замечание}
+\newtheorem{lemma}{Лемма}
+\newtheorem{sentence}{Предложение}
+\newtheorem{definition}{Определение}
+\newenvironment{formulation}{\paragraph{Формулировка.}}{\hfill}
+\newenvironment{statement}{\paragraph{Постановка.}}{\hfill}
+\newenvironment{solution}{\paragraph{Решение.}}{\hfill\\\hfill\qed}
+% Нумерация подсекций в оглавлении
+\setcounter{secnumdepth}{3}
+\setcounter{MaxMatrixCols}{12}
+% Включать подсекции в оглавление
+\setcounter{tocdepth}{3}
+
+\title{\bf МОДА. Задание 1.}
+\author{Яковлев~Д.\,М.\\\scshape E-mail: st095998<at>student.spbu.ru\vspace*{1cm}\\Мелас~В.\,Б.\\\scshape E-mail: vbmelas<at>yandex.ru}
+\date{\today}
+\begin{document}
+	\maketitle
+	\tableofcontents
+	\section{Теоретический вопрос}
+	\begin{statement}
+			Рассмотрим регрессионную модель:
+		\begin{align*}
+			&y_i=f(x_i)^\mathrm{T}\theta + \varepsilon_i,\quad i=1,2,\dots,n.\\
+			&f(x)=(f_1(x),f_2(x),\dots,f_m(x))^\mathrm{T},\quad\theta=(\theta_1, \theta_2,\dots,\theta_m)^\mathrm{T}
+		\end{align*}
+		со стандартными предположениями об ошибках $\varepsilon_i$ ($\mathbf{E}\varepsilon_i=0,\mathbf{E}\varepsilon_i^2=\sigma^2,\mathbf{E}\varepsilon_i\varepsilon_j=0$) и $x_1=-1,x_2=1$. Перепишем систему \eqref{eq:regr} в матричном виде
+		\begin{equation*}
+			\bm{Y} = \bm{X}\theta+\varepsilon,
+		\end{equation*} 
+		где
+		\begin{equation*}
+			\bm{Y}=\begin{pmatrix}
+				y_1\\
+				y_2\\
+				\vdots\\
+				y_n
+			\end{pmatrix},\quad\bm{X}=\begin{pmatrix}
+				f_1(x_1)&f_2(x_1)&\vdots&f_m(x_1)\\
+				f_1(x_2)&f_2(x_2)&\vdots&f_m(x_2)\\
+				\vdots&\vdots&\vdots&\vdots\\
+				f_1(x_n)&f_2(x_n)&\vdots&f_m(x_n)
+			\end{pmatrix},\quad\varepsilon=\begin{pmatrix}
+				\varepsilon_1\\
+				\varepsilon_2\\
+				\vdots\\
+				\varepsilon_n
+			\end{pmatrix}.
+		\end{equation*} 
+	\end{statement}
+	\begin{theorem}[Гаусса-Маркова в случае матриц полного ранга]
+		Если матрица $\bm{X}^\mathrm{T}\bm{X}$ --- невырожденная, то оценка по методу наименьших квадратов
+		\begin{equation}
+			\widehat{\theta}=(\bm{X}^\mathrm{T}\bm{X})^{-1}\bm{X}^\mathrm{T}\bm{Y}\label{eq: est}
+		\end{equation}
+		является наилучшей оценкой в классе линейных несмещённых оценок, или
+		\begin{equation*}
+			\forall z\in\R^m,\forall\widetilde{\theta}:\mathbf{E}\widetilde{\theta}=\theta,~\mathbf{D}z^\mathrm{T}(\widehat{\theta}-\theta)\leqslant\mathbf{D}z^\mathrm{T}(\widetilde{\theta}-\theta).
+		\end{equation*}  
+		Кроме того, ковариационная матрица оценки имеет вид:
+		\begin{equation*}
+			\mathbf{D}\widehat{\theta}=\sigma^2(\bm{X}^\mathrm{T}\bm{X})^{-1}.
+		\end{equation*}
+	\end{theorem}
+	\begin{proof}[Краткое доказательство]
+		Опишем схему доказательства:
+		\begin{enumerate}
+			\item Показываем, что оценка по МНК $\widehat{\theta}$ принадлежит классу линейных несмещённых оценок. Линейность
+			\begin{equation*}
+				\widehat{\theta}=\bm{S}\bm{Y}
+			\end{equation*} 
+			следует из представления оценки, а несмещённость проверяется прямой подстановкой в $\mathbf{E}\widehat{\theta}$ 
+			\item Определяем общий вид линейных несмещённых оценок $\widetilde{\theta}=\bm{AY}$. Необходимым и достаточным условием несмещённости $\widetilde{\theta}$ является 
+			\begin{equation*}
+				\bm{AX}=\bm{I}.
+			\end{equation*}
+			\item Определяем вид ковариационной матрицы линейной несмещённой оценки $\widetilde{\theta}=\bm{AY}$, пользуясь свойствами линейной несмещённой оценки и прямой подстановкой:
+			\begin{equation*}
+				\mathbf{D}\widetilde{\theta}=\sigma^2\bm{AA}^\mathrm{T}.
+			\end{equation*}
+			\item Положим $\bm{S}=(\bm{X}^\mathrm{T}\bm{X})^{-1}\bm{X}^\mathrm{T}$ и покажем, что \begin{equation*}
+				\mathbf{D}\widehat{\theta}\leqslant\mathbf{D}\widetilde{\theta}
+			\end{equation*}
+			для любой линейной несмещённой оценки $\widetilde{\theta}=\bm{AY}$. Так как неравенство рассматривается для матриц в смысле положительной определённости, пользуемся тем, что 
+			\begin{equation*}
+				\bm{0}\leqslant\bm{LL}^\mathrm{T}
+			\end{equation*}
+			для произвольной матрицы $\bm{L}$ и подставляем $\bm{L}=\bm{A}-\bm{S}$.
+		\end{enumerate}
+	\end{proof}
+	\section{Задача}
+	\begin{statement}
+		Пусть $f(x)=(1,x,x^2)^\mathrm{T}$, модель $f(x)^\mathrm{T}\theta$, $\theta=(\theta_1, \theta_2, \theta_3)^\mathrm{T}$. Построить несмещённую оценку для $\theta_2$ непосредственно на основе определения по результатам измерений в точках $-1$ (результат $y_1$), 1 (результат $y_2$).
+	\end{statement}
+	\begin{solution}
+		\subsection{Матричный подход}
+		Рассмотрим регрессионную модель:
+		\begin{equation}
+			y_i=f(x_i)^\mathrm{T}\theta + \varepsilon_i=x_i^2\theta_3 + x_i\theta_2 + \theta_1 + \varepsilon_i,\quad i=1,2,\label{eq:regr}
+		\end{equation}
+		со стандартными предположениями об ошибках $\varepsilon_i$ и $x_1=-1,x_2=1$. Перепишем систему \eqref{eq:regr} в матричном виде
+		\begin{equation*}
+			\bm{Y} = \bm{X}\theta+\varepsilon,
+		\end{equation*} 
+		где
+		\begin{equation*}
+			\bm{Y}=\begin{pmatrix}
+				y_1\\
+				y_2
+			\end{pmatrix},\quad\bm{X}=\begin{pmatrix}
+			1&x_1&x_1^2\\
+			1&x_2&x_2^2
+			\end{pmatrix},\quad\varepsilon=\begin{pmatrix}
+			\varepsilon_1\\
+			\varepsilon_2
+			\end{pmatrix}.
+		\end{equation*}
+		Составим параметрическую функцию такую, что
+		\begin{equation*}
+			\tau = \bm{T}\theta = \theta_2\rightarrow\bm{T}=(0\quad1\quad0).
+		\end{equation*}
+		Вычисление матриц $\bm{X},\bm{X}^\mathrm{T}\bm{Y}, \bm{X}^\mathrm{T}\bm{X},(\bm{X}^\mathrm{T}\bm{X})^-$:
+		\begin{align*}
+			&\bm{X}=\begin{pmatrix}
+				1&-1&1\\
+				1&1&1
+			\end{pmatrix},\quad	\bm{X}^\mathrm{T}\bm{Y}\begin{pmatrix}
+				y_1+y_2\\
+				y_2-y_1\\
+				y_1+y_2
+			\end{pmatrix},\\
+			&\bm{X}^\mathrm{T}\bm{X}=\begin{pmatrix}
+				2&0&2\\
+				0&2&0\\
+				2&0&2
+			\end{pmatrix}.
+		\end{align*}
+		Для матрицы $(\bm{X}^\mathrm{T}\bm{X})^-$
+		\begin{align*}
+			&\bm{X}^\mathrm{T}\bm{X}(\bm{X}^\mathrm{T}\bm{X})^-\bm{X}^\mathrm{T}\bm{X}=\begin{pmatrix}
+				2&0&2\\
+				0&2&0\\
+				2&0&2
+			\end{pmatrix}\begin{pmatrix}
+			x_{11}&x_{12}&x_{13}\\
+			x_{21}&x_{22}&x_{23}\\
+			x_{31}&x_{32}&x_{33}
+			\end{pmatrix}\begin{pmatrix}
+			2&0&2\\
+			0&2&0\\
+			2&0&2
+			\end{pmatrix}\\
+			&=4\begin{pmatrix}
+				1&0&1\\
+				0&1&0\\
+				1&0&1
+			\end{pmatrix}
+			\begin{pmatrix}
+				x_{11}+x_{13}&x_{12}&x_{11}+x_{13}\\
+				x_{21}+x_{23}&x_{22}&x_{21}+x_{23}\\
+				x_{31}+x_{33}&x_{32}&x_{31}+x_{33}
+			\end{pmatrix}\\
+			&=4\begin{pmatrix}
+				x_{11}+x_{13}+x_{31}+x_{33}&x_{12}+x_{32}&x_{11}+x_{13}+x_{31}+x_{33}\\
+				x_{21}+x_{23}&x_{22}&x_{21}+x_{23}\\
+				x_{11}+x_{13}+x_{31}+x_{33}&x_{12}+x_{32}&x_{11}+x_{13}+x_{31}+x_{33}	
+			\end{pmatrix}\\
+			&=\begin{pmatrix}
+				2&0&2\\
+				0&2&0\\
+				2&0&2
+			\end{pmatrix}=\bm{X}^\mathrm{T}\bm{X}.
+		\end{align*}
+		Отсюда перепишем систему
+		\begin{equation*}
+			\begin{cases}
+				x_{11}+x_{13}+x_{31}+x_{33}=\dfrac{1}{2}\\
+				x_{12}+x_{32}=0\\
+				x_{21}+x_{23}=0\\
+				x_{22}=\dfrac{1}{2}
+			\end{cases}
+		\end{equation*}
+		Тогда в качестве обобщённо-обратной матрицы можно использовать
+		\begin{equation*}
+			(\bm{X}^\mathrm{T}\bm{X})^-=\begin{pmatrix}
+				1/8&0&1/8\\
+				0&1/2&0\\
+				1/8&0&1/8
+			\end{pmatrix}.
+		\end{equation*}
+		По теореме Гаусса-Маркова в случае матриц неполного ранга, вычислим несмещённую оценку $\widehat{\theta_2}$:
+		\begin{equation*}
+			\widehat{\theta_2}=\bm{T}(\bm{X}^\mathrm{T}\bm{X})^-\bm{X}^\mathrm{T}\bm{Y}=(y_2-y_1)/2.
+		\end{equation*}
+		\subsection{Метод наименьших квадратов}
+		Рассмотрим задачу минимизации
+		\begin{equation*}
+			\min_{\theta\in\R^3}\sum_{i=1}^2(y_i-(x_i^2\theta_3 + x_i\theta_2 + \theta_1))^2.
+		\end{equation*}
+		Для оценки параметра $\theta_2$ найдём точку экстремума суммы квадратов как функции $g(\theta)$:
+		\begin{align*}
+			&\dfrac{\partial g(\theta)}{\partial\theta_1} = -2\sum_{i=1}^2(y_i-(x_i^2\theta_3 + x_i\theta_2 + \theta_1))=0\\
+			&\dfrac{\partial g(\theta)}{\partial\theta_2} = -2\sum_{i=1}^2x_i(y_i-(x_i^2\theta_3 + x_i\theta_2 + \theta_1))=0\\
+			&\dfrac{\partial g(\theta)}{\partial\theta_3} = -2\sum_{i=1}^2x_i^2(y_i-(x_i^2\theta_3 + x_i\theta_2 + \theta_1))=0
+		\end{align*} 
+		В ходе решения этой системы линейных получим оценки $\widehat{\theta}$ и оценку $\widehat{\theta_2}$. Подставив $x_i$ и сократив коэффициент перед суммой, заметим, что $\dfrac{\partial g(\theta)}{\partial\theta_1}$ и $\dfrac{\partial g(\theta)}{\partial\theta_3}$ совпадают, поэтому останется система
+		\begin{align*}
+			\begin{cases}
+				y_1+y_2=2(\theta_3 + \theta_1)\\
+				y_2-y_1=2\theta_2
+			\end{cases}
+		\end{align*}
+		Отсюда получаем
+		\begin{equation*}
+			\widehat{\theta_2} = (y_2-y_1)/2.
+		\end{equation*}
+	\end{solution}
+\end{document}

@@ -1,0 +1,101 @@
+7\documentclass{article}
+
+\usepackage[a4paper,
+mag=1000, includefoot,
+left=3cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[english, main=russian]{babel}
+\ifpdf\usepackage{epstopdf}\fi
+
+\usepackage{amsmath,amssymb,amsthm,amscd,amsfonts}
+\usepackage{mathdots}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{bbm}
+\usepackage{hyperref}
+
+\newcommand\norm[1]{\left\|#1\right\|}
+\DeclareMathOperator\R{\mathbb{R}}
+\DeclareMathOperator\N{\mathbb{N}}
+\DeclareMathOperator\rank{\textrm{rank}\,}
+
+
+\title{Моделирование случайных величин\\
+	Решение задачи 14}
+\author{\emph{Яковлев Д.М.}\\\textsc{st095998@student.spbu.ru}}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	\section{Решение}
+	\nocite{ankor,RomGu}
+	
+	Ставится задача реализации метода адаптивного отбора с использованием производной логарифма плотности для распределения Бирнбаума-Саундерса с плотностью
+	\begin{equation*}
+		p(x)=\dfrac{\sqrt{x}+\sqrt{\dfrac{1}{x}}}{2\gamma x}\varphi\left(\dfrac{\sqrt{x}-\sqrt{\dfrac{1}{x}}}{\gamma}\right),~x>0,~\gamma>0,
+	\end{equation*}
+	где $\varphi(x)$ --- плотность стандартного нормального распределения.
+	
+	Поскольку в задаче указано использование производной логарифма, вычислим его
+	\begin{equation*}
+		\log(p(x))=-\dfrac{\left(\sqrt{x}-\sqrt{\dfrac{1}{x}}\right)^2}{2\gamma^2}+\log\left(\sqrt{x}+\sqrt{\dfrac{1}{x}}\right) - \log(2\gamma x) - \log\sqrt{2\pi} = I_1(x) + I_2(x) + I_3(x) + C.
+	\end{equation*}
+		
+	Вычислим производные (см. тетрадка)
+	\begin{equation*}
+		I_1'(x)=-\left(\dfrac{(x-1)^2}{2\gamma^2 x}\right)'=-\dfrac{x^2-1}{2\gamma^2x^2},\quad I_2'(x)=\log\left(\sqrt{x}+\sqrt{\dfrac{1}{x}}\right)'=\dfrac{x-1}{2x(x+1)},\quad I_3'(x)=-\log(2\gamma x)'=-\dfrac{1}{x}.
+	\end{equation*}
+	
+	Сложим их и получим
+	\begin{equation*}
+		\log(p(x))'= -\dfrac{1}{2x}\left(\dfrac{x^2-1}{\gamma^2 x}-\dfrac{x-1}{x+1}+2\right).
+	\end{equation*}
+	
+	Также стоит отметить, что
+	\begin{equation*}
+		\log(p(1))'=-1,~\forall\gamma>0
+	\end{equation*}
+
+	Покажем, что $\log(p(x))$ --- выпукла вверх. Тогда $\log(p(x))''<0~\forall x$.
+	\begin{align*}
+		&\log(p(x))''=\dfrac{1}{2x^2}\left(\dfrac{x^2-1}{\gamma^2 x}-\dfrac{x-1}{x+1}+2\right)-\dfrac{1}{2x}\left(\dfrac{x^2+1}{\gamma^2x^2}-\dfrac{2}{(x+1)^2}\right)\\
+		&=-\dfrac{1}{\gamma^2x^3}+\dfrac{1}{x(x+1)^2}-\dfrac{x-1}{2x^2(x+1)}+\dfrac{1}{x^2}=-\dfrac{1}{\gamma^2x^3}+\dfrac{x^2+6x+3}{2x^2(x+1)^2}.
+	\end{align*}
+	
+	Из построения $\log(p(x))$ можно заметить, что
+	\begin{align*}
+		&\log(p(x))\xrightarrow{x\rightarrow+\infty}-\dfrac{x}{2\gamma^2},\quad\log(p(x))\xrightarrow{x\rightarrow 0}-\dfrac{1}{2\gamma^2x}\\
+		&		\log(p(x))'\xrightarrow{x\rightarrow+\infty}-\dfrac{1}{2\gamma^2},\quad\log(p(x))'\xrightarrow{x\rightarrow0}\dfrac{1}{2\gamma^2x^2}.
+	\end{align*}	
+	
+	Поскольку $\log(p(x))$ не везде выпукла вверх, то желательно узнать точку перегиба и уже из неё ``выпустить'' асимптотическую кривую. Поскольку $\gamma>0$ произвольна, то для построения адаптивного метода отбора желательно строить мажоранту и миноранту с использованием $\gamma$. 
+	
+	(Обговорено с Никитой Константиновичем): поскольку $\log(p(x))$ не выпукла вверх во всех её точках, предлагается для последней точки ``выпускать'' асимптотическую кривую $-\dfrac{1}{2\gamma^2}$. Также достаточно рассмотреть адаптивный метод отбора для фиксированного $\gamma$. Поскольку для произвольного $\gamma$ задача слишком трудоёмка, рассмотрим задачу для $\gamma=1$. Введём следующие условия построения функции-мажоранты $g_M(x)$:
+	\begin{itemize}
+		\item Число точек фиксировано (равно трём);
+		\item Последняя точка получается пересечением прямой производной, проведённой из предпоследней точки, и графика.
+	\end{itemize}
+	
+	Тогда остаётся определить остаётся определить точки экстремума и перегиба у $\log(p(x))$, хотя бы приблизительно, и в них расставить две точки произвольным образом. Определим первую точку, находящуюся за точкой экстремума
+	\begin{align*}
+		&x_1:~\log(p(x))'\approx\dfrac{1}{2\gamma^2x^2}=\dfrac{1}{2}\rightarrow x=\gamma\rightarrow x_1=\min(\gamma, 0.1).
+	\end{align*}
+	
+	Определим вторую точку, находящуюся между точкой экстремума и точкой перегиба
+	\begin{align*}
+				&x_2:~\log(p(x))'= -\dfrac{1}{2x}\left(\dfrac{x^2-1}{\gamma^2 x}-\dfrac{x-1}{x+1}+2\right)<0\rightarrow\dfrac{x^2-1}{\gamma^2 x}+\dfrac{x+3}{x+1}>0\\
+				&\rightarrow\gamma^2>\dfrac{(1-x^2)(x+1)}{x(x+3)}\\
+				&\log(p(x))''=-\dfrac{1}{\gamma^2x^3}+\dfrac{x^2+6x+3}{2x^2(x+1)^2}<0\rightarrow\gamma^2<\dfrac{2(x+1)^2}{x^3+6x^2+x}
+	\end{align*}
+	\section{14.03.2025}
+	Рассмотрим на примере $\gamma=1$, поскольку область выпуклости вверх сильно "сжимается" к окрестности $x=0$. Возьмём точки $x_1=0.2, x_2=1$. Пусть $\log(p(x))=h(x)$, а 3-ья точка:
+	\begin{align*}
+		x_3:~x_3\in\{h(x_2)+(x-x_2)h'(x_2)\}\cap\{h(x)\}\Rightarrow x_3=\dfrac{h(x_3)-h(x_2)}{h'(x_2)} + x_2 = x_2 + h(x_2) - h(x_3)
+	\end{align*}
+	А, впрочем, можно не читать. Всё указано в коде R.
+	\bibliographystyle{ugost2008}
+	\bibliography{Modelling}
+\end{document}

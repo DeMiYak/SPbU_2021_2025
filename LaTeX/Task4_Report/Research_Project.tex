@@ -1,0 +1,434 @@
+\documentclass[notheorems, handout]{beamer}
+
+\usetheme[numbers,totalnumbers,compress, nologo]{Statmod}
+\usefonttheme[onlymath]{serif}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[numbered]
+\setbeamertemplate{caption}[numbered]
+
+\mode<handout> {
+	\usepackage{pgfpages}
+	\setbeameroption{show notes}
+	\pgfpagesuselayout{2 on 1}[a4paper, border shrink=5mm]
+	\setbeamercolor{note page}{bg=white}
+	\setbeamercolor{note title}{bg=gray!10}
+	\setbeamercolor{note date}{fg=gray!10}
+}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{tikz}
+\usepackage{ragged2e}
+
+\newtheorem{corollary}{Следствие}
+\newtheorem{theorem}{Теорема}
+\newtheorem{remark}{Замечание}
+\newtheorem{lemma}{Лемма}
+\newtheorem{sentence}{Предложение}
+\newtheorem{definition}{Определение}
+\newtheorem{formulation}{Формулировка}
+\newtheorem{statement}{Постановка}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\rank}{\mathrm{rank}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+
+
+\title[Задачи анализа временных рядов]{Задачи анализа временных рядов, теория метода «Анализ Сингулярного Спектра» SSA (Семестр 6)}
+
+\author{Яковлев Денис Михайлович, гр.21.Б04-мм}
+
+\institute[Санкт-Петербургский Государственный Университет]{%
+	\small
+	Санкт-Петербургский государственный университет\\
+	Прикладная математика и информатика\\
+	Вычислительная стохастика и статистические модели\\
+	\vspace{1.25cm}
+	3 курс (бак.) <<Производственная практика (научно-исследовательская работа)>>}
+
+\date[Зачет]{Санкт-Петербург, 2024}
+
+\subject{Talks}
+
+\begin{document}
+	
+	\begin{frame}[plain]
+		\titlepage
+		
+		\note{Научный руководитель  к.ф.-м.н., доцент Некруткин В.В.,\\
+			кафедра статистического моделирования}
+	\end{frame}
+	
+	
+	%\section{Короткая тема}
+	%\subsection{Общие слова}
+	
+	\setbeameroption{show notes}
+	
+	\begin{frame}{Введение}
+		\begin{itemize}
+			\item Цель работы --- решение теоретических и прикладных задач анализа временных рядов с применением метода SSA. 
+			\item Используемый метод --- SSA (Singular Spectrum Analysis), или <<Анализ Сингулярного Спектра>> (сокращенно, АСС).
+			\item Задача --- исследование поведения ошибок восстановления ряда в асимптотическом случае.
+		\end{itemize}
+%		Задача --- оценка ошибок восстановления ряда.
+%		Тут какое-то введение.
+%		Что за задача решается, какое метод используется, какая цель работы.
+		
+		\note{
+			Целью этой  работы является решение теоретических и прикладных задач по анализу временных рядов с применением знаний о методе SSA (Singular Spectrum Analysis), или <<Анализ Сингулярного Спектра>> (сокращенно, АСС). Ознакомиться с методом АСС можно в \cite{GNZh01}, а в  \cite{Nekrutkin10} описывается теоретическая часть метода АСС. Общая задача состоит в том, чтобы оценить ошибки восстановления ряда. (исправить комментарий, не ясно, что значит ошибка восстановления. Слишком рано написал).
+		}
+	\end{frame}
+%	\begin{frame}{Введение}
+%		
+%	\end{frame}
+%	
+%		\note{Кратко напомним о методе SSA}
+	\begin{frame}{Обозначения}
+		\begin{definition}[Сигнал]
+			Вещественный сигнал $\mathrm{H} = (h_0, h_1, \dots, h_n, \dots)$, управляется линейной рекуррентной формулой  (ЛРФ) порядка~$d$
+			\begin{gather*}
+				h_n = \sum\limits_{k=1}^d a_kh_{n-k},\; n\geqslant d,\; a_d>0.
+			\end{gather*} 
+			$\mathrm{H}_N=(h_0,h_1,\dots,h_N)$.
+		\end{definition} 
+		\begin{definition}[Помеха]
+			Помеха --- $\mathrm{E}_N=(e_0,\ldots, e_N)$.
+%			Помеха --- $\mathrm{E}=(e_0,\ldots, e_n,\ldots)$.
+		\end{definition}
+		\note{
+			Введём необходимые для постановки задачи определения и известные результаты. Начнём с определений. Рассматривается вещественный \emph{сигнал} $\mathrm{H}$, причем предполагается, что ряд управляется линейной
+			рекуррентной формулой  (ЛРФ) порядка~$d$
+			с $a_d>0$, которая является минимальной в том смысле, что  не существует ЛРФ меньшего порядка, управляющей рядом $\mathrm{H}$. Так как нас интересует использование метода SSA, будем рассматривать отрезки длины N.
+			Кроме того, вводится \emph{помеха} $\mathrm{E}$, тоже некоторый вещественный сигнал.
+		}
+	\end{frame}
+	\begin{frame}{Обозначения}
+		\begin{definition}[Траекторная матрица]
+			Пусть $1\leqslant L < N$ --- длина окна, $K=N-L+1$. Тогда \emph{траекторной матрицей} вещественного сигнала $\mathrm{H}_N = (h_0, h_1, \dots, h_N)$ называется матрица $\mathbf{H}$ размера $L\times K$ вида:
+			\begin{equation*}
+				\begin{pmatrix}
+					h_0&h_1&h_2&\dots&h_{K-1}\\
+					h_1&h_2&h_3&\dots&h_K\\
+					h_2&h_3&h_4&\dots&h_{K+1}\\
+					\vdots&\vdots&\vdots&\ddots&\vdots\\
+					h_{L-1}&h_L&h_{L+1}&\dots&h_{N-1}
+				\end{pmatrix}
+			\end{equation*}
+		\end{definition}
+		\begin{remark}[Размеры матриц]
+			Считаем, что все рассматриваемые матрицы размера $L\times K$, если не оговорено иначе.	
+		\end{remark}
+		\note{
+			Пользуясь методом SSA, введём траекторные матрицы для сигнала и помехи.
+			Хотя траекторные матрицы не используются в явном виде при решении поставленных задач, само определение должно помочь в понимании последующих определений и результатов.
+%			Предполагается, что наблюдается ряд $\tilde{H}_N=\mathrm{H}_N+\delta
+%			\mathrm{E}_N$, где  $\mathrm{H}_N$ и $\mathrm{E}_N$ --- согласованные отрезки длины $N$ сигнала и помехи, а
+%			$\delta$ является формальным параметром возмущения. Иначе говоря,
+		}
+	\end{frame}
+	\begin{frame}{Обозначения}
+		\begin{remark}[Ранг матрицы]
+			$d = \rank\mathbf{H} < \min(L, K)$ - ранг траекторной матрицы $\mathbf{H}$, образованной от сигнала $\mathrm{H}$, управляемого ЛРФ порядка $d$.
+		\end{remark}
+		\begin{definition}[Матрица возмущённого сигнала]
+			Пусть $\delta\in\R$ --- формальный параметр возмущения, $\mathbf{E}$ --- траекторная матрица $\mathrm{E}_N$, $\mathbf{H}$ --- $\mathrm{H}_N$ соответственно.  Тогда $\mathbf{H}(\delta) = \mathbf{H} + \delta\mathbf{E}$ --- матрица возмущённого сигнала.
+		\end{definition}
+		\begin{remark}
+			$\mathbf{H}(0) = \mathbf{H}$.
+		\end{remark}
+		\note{
+			В отношении введённой траекторной матрицы также необходимо уточнить её ранг, который напрямую связан с порядком линейной рекуррентной формулы d. Теперь рассмотрим формальное определение сигнала с помехой. Пусть формальный параметр возмущения дельта вещественный, $\mathbf{Е}$ --- траекторная матрица помехи, а $\mathbf{H}$ --- траекторная матрица сигнала. Тогда $\mathbf{H}(\delta) = \mathbf{H} + \delta\mathbf{E}$ --- сигнал с параметризуемой помехой.  
+		}
+	\end{frame}
+%	\begin{frame}{Обозначения}
+%		\begin{definition}[Матрица сигнала с параметризуемой помехой]
+%			Пусть $\delta\in\R$ --- формальный параметр возмущения, $\mathbf{E}$ --- траекторная матрица $\mathrm{E}_N$, $\mathbf{H}$ --- $\mathrm{H}_N$ соответственно.  Тогда $\mathbf{H}(\delta) = \mathbf{H} + \delta\mathbf{E}$ --- матрица сигнала с параметризуемой помехой.
+%		\end{definition}
+%		\begin{remark}
+%			$\mathbf{H}(0) = \mathbf{H}$.
+%		\end{remark}
+%		\note{
+%			Теперь рассмотрим формальное определение сигнала с помехой. Пусть формальный параметр возмущения дельта вещественный, Е --- траекторная матрица помехи, а H --- траекторная матрица сигнала. Тогда $\mathbf{H}(\delta) = \mathbf{H} + \delta\mathbf{E}$ --- сигнал с параметризуемой помехой. 
+%		}
+%	\end{frame}
+	\begin{frame}{Обозначения}
+		\begin{definition}[Возмущённая матрица для сингулярного разложения]
+			\begin{equation*}
+				\mathbf{A}(\delta) = \mathbf{H}(\delta)\mathbf{H}(\delta)^\mathrm{T} = \mathbf{HH}^\mathrm{T} + \delta(\mathbf{HE}^\mathrm{T} + \mathbf{EH}^\mathrm{T}) + \delta^2\mathbf{EE}^\mathrm{T},
+			\end{equation*}
+			$\mathbf{A}(\delta)$ --- возмущённая матрица размера $L\times L$.
+		\end{definition}
+		\begin{definition}[Наименьшее и наибольшее ненулевые собственные числа]
+			Пусть $\{\mu_n\}_{n=1}^L$ --- собственные числа $\mathbf{A}(\delta)$. Тогда $\mu_{\min}, \mu_{\max}$ --- наименьшее и наибольшее ненулевые собственные числа.
+		\end{definition}
+		\note{
+			Как известно из метода SSA, для отделение сигнала от помехи рассматриваем указанную матрицу. Кроме того, из свойств матрицы $\mathbf{A}(\delta)$ следует, что все её собственные числа неотрицательны (автору --- из неотрицательности) и вещественны (автору --- из симметричности).
+		}
+	\end{frame}
+	\begin{frame}{Обозначения}
+		\begin{definition}[Собственные подпространства матрицы $\mathbf{A}(\delta)$]
+			Пусть $\{U_n\}_{n=1}^L$ --- собственные вектора размера $L\times 1$ матрицы $\mathbf{A}(\delta)$. Тогда $\mathbb{U}_0$ --- собственное подпространство, соответствующее \emph{нулевым} собственным числам, а $\mathbb{U}_0^\bot$ --- соответствует \emph{ненулевым} собственным числам.
+		\end{definition}
+		\begin{definition}[Ортогональные проекторы собственных подпространств]
+			Пусть $\mathbf{I}$ --- единичная матрица размера $L\times L$. Тогда $\mathbf{P}_0(\delta)$ --- ортогональный проектор на $\mathbb{U}_0$, а $\mathbf{P}_0^\bot(\delta) = \mathbf{I} - \mathbf{P}_0(\delta)$ --- ортогональный проектор на $\mathbb{U}_0^\bot$. $\mathbf{P}_0(\delta),\,\mathbf{P}_0^\bot(\delta)$ --- матрицы размера $L\times L$.
+		\end{definition}
+		\begin{remark}
+			$\mathbf{P}_0^\bot(0) = \mathbf{P}_0^\bot,\;\mathbf{P}_0(0)=\mathbf{P}_0,\;\mathbf{P}_0^\bot(\delta)\mathbf{H}(\delta)=\mathbf{H}(\delta)$.
+		\end{remark}
+		\note{
+			Продолжая разговор про матрицу $\mathbf{A}(\delta)$, заметим, что её собственные вектора (левые сингулярные векторы) можно разбить на два подпространства: собственное подпространство \emph{ненулевых} и \emph{нулевых} собственных чисел. Более того, для введения и объяснения результатов нам понадобится понятие ортогональных проекторов. Дельта --- параметр возмущения матрицы $\mathbf{A}(\delta)$. 
+			\\
+			Заметим, что, в связи с таким разбиением проекторов, матрица $\mathbf{H}(\delta) = \mathbf{I}\mathbf{H}(\delta) = (\mathbf{P}_0^\bot(\delta) + \mathbf{P}_0(\delta))\mathbf{H}(\delta) = \mathbf{P}_0^\bot(\delta)\mathbf{H}(\delta)$, что следует из сингулярного разложения матрицы $\mathbf{A}(\delta)$.
+			(В замечание добавить объяснение для ортогональных проекторов).
+		}
+	\end{frame}
+	\begin{frame}{Обозначения}
+		\begin{remark}[Про матричные нормы]
+			Полагаем $\norm{\cdot}$ --- спектральная норма. В иных случаях явно указываем норму. 
+			\\Например, максимальная норма $\norm{\cdot}_{\max}$.
+		\end{remark}
+		\begin{definition}[Псевдообратная матрица]
+			Пусть $\mathbf{S}_0$ --- матрица размера $L\times L$, псевдообратная к $\mathbf{HH}^\mathrm{T}$. Положим $\mathbf{S}_0^{(0)} = -\mathbf{P}_0$ и $\mathbf{S}_0^{(k)}=\mathbf{S}_0^k$ для $k\geqslant1$, $\norm{\mathbf{S}_0^{(k)}}=1/\mu_{min}^k$.
+		\end{definition}
+		\begin{definition}[Возмущение матрицы $\mathbf{A}(\delta)$]
+%			Положим $\A(\delta) = \H(\delta)\H(\delta)^\mathrm{T} = \H\H^\mathrm{T} + \delta(\H\E^\mathrm{T} + \E\H^\mathrm{T}) + \delta^2\E\E^\mathrm{T}$
+			Зависящую от $\delta$ часть матрицы $\mathbf{A}(\delta)$ будем обозначать $\mathbf{B}(\delta)$. 
+			\\
+			Тогда $\mathbf{B}(\delta) = \delta(\mathbf{HE}^\mathrm{T}+\mathbf{EH}^\mathrm{T})+\delta^2\mathbf{EE}^\mathrm{T}$.
+		\end{definition}
+		\note{
+			В случае, если не указано иное, воспринимаем норму как спектральную. Определим $\mathbf{S}_0$ --- псевдообратную матрицу к $\mathbf{HH}^\mathrm{T}$. Положим $\mathbf{S}_0^{(0)} = -\mathbf{P}_0$ и $\mathbf{S}_0^{(k)}=\mathbf{S}_0^k$ для $k\geqslant1$, $\norm{\mathbf{S}_0^{(k)}}=1/\mu_{min}^k$ (пояснение --- так как $\norm{\mathbf{S}_0^{(k)}} = \norm{(\mathbf{HH}^\mathrm{T})^{-k}}$). О применении возмущения матрицы $\mathbf{A}(\delta)$ уточним позже.
+		}
+	\end{frame}
+	\begin{frame}{Обозначения}
+		\begin{definition}[Ошибка восстановления]
+			Пусть $\widetilde{\mathrm{H}}_N(\delta)=(\widetilde{h}_0(\delta),\widetilde{h}_1(\delta),\dots,\widetilde{h}_N(\delta))$ --- восстановленный сигнал из $\mathrm{H}_N(\delta)=(h_0 + \delta e_0, h_1 + \delta e_1,\dots, h_N + \delta e_N)$, полученный методом SSA.
+			\\
+			Тогда $r_i(N)=\widetilde{h}_i(\delta)-h_i,\;0\leqslant i < N$ --- \emph{ошибка восстановления}.
+		\end{definition}
+		\begin{definition}[Оператор ганкелевизации]
+			$\mathcal{S}$ --- оператор диагонального усреднения (ганкелевизации).
+		\end{definition}
+		\begin{remark}[Оператор ганкелевизации для траекторной матрицы сигнала]
+			$\mathcal{S}\mathbf{H} = \mathbf{H}$ по построению.
+		\end{remark}
+		\note{
+			Замечание: \emph{возможно, стоит добавить текст про получение восстановленного сигнала, либо просто упомянуть метод SSA.}
+			Итак, перейдём к постановке общей задачи. Для этого введём ошибку восстановления, как разность между восстановленым сигналом и самим сигналом. Восстановленный сигнал получаем из сигнала с параметризуемой помехом методом SSA. Заметим, что по построению траекторной матрицы, она является ганкелевой. Поэтому использование оператора ганкелевизации её не изменит. 
+		}
+	\end{frame}
+	\begin{frame}{Обозначения и постановка общей задачи}
+		\begin{definition}[Разность матриц]
+			$\Delta_\delta(\mathbf{H})=\mathbf{P}_0^\bot(\delta)\mathbf{H}(\delta) - \mathbf{P}_0^\bot\mathbf{H}$ --- разность матриц возмущённого и невозмущённого сигналов.
+		\end{definition}
+		\begin{statement}
+%			Пусть $\widetilde{\mathrm{H}}_N$ --- восстановленный сигнал, а $\mathrm{H}_N$ --- сигнал длины N.
+			Пусть $\mathbf{N}$ --- некоторая матрица размера $L\times L$. 
+			Так как $\norm{\mathcal{S}\mathbf{A}}_{\max} \leqslant \norm{\mathbf{A}}_{\max}$ и $\norm{\mathbf{A}}_{\max}\leqslant\norm{\mathbf{A}}$ для любой конечномерной матрицы $\mathbf{A}$:
+			\begin{align}
+				&\max_{0\leqslant n < N}|r_i(N)| = \norm{\mathcal{S}\Delta_\delta(\mathbf{H})}_{\max}\leqslant\norm{\Delta_\delta(\mathbf{H})}_{\max}\nonumber
+				\\
+				&\leqslant \norm{(\mathbf{P}_0^\bot(\delta)- \mathbf{P}_0^\bot-\mathbf{N})\mathbf{H}(\delta)} + \norm{\mathbf{N}\, \mathbf{H}(\delta) + \delta \mathbf{P}_0^\perp\mathbf{E}}_{\max}.\label{eq:1}
+			\end{align}
+			\emph{Общая задача: подобрать такую $\mathbf{N}$, чтобы правая часть \eqref{eq:1} стремилась к нулю.}
+		\end{statement}
+%		Об ошибке восстановления и постановке общей задачи
+		\note{
+			Введём дополнительное обозначение для разности матриц возмущённого и невозмущённого сигналов перед постановкой общей задачи. (возможно подпись в виде общей задачи излишня). Общей задачей поставим следующее: подобрать такую матрицу $\mathbf{N}$, чтобы правая часть стремилась к нулю. Для чего это нужно? Дело в том, что первое слагаемое оценки не обязательно стремится к нулю, поэтому мы должны научиться подбирать подходящие матрицы $\mathbf{N}$, для которых правая часть стремилась бы к нулю.
+		}
+	\end{frame}
+	\begin{frame}{Формулировка и известные результаты}
+		\begin{formulation}[Оценка нормы]
+			\emph{Оценить выражение сверху }$\forall n\in\mathbb{N}:\,\norm{\mathbf{P}_0^\bot(\delta) - \mathbf{P}_0^\bot - \sum\limits^n_{p=1}\mathbf{W}_p(\delta)},\;\mathbf{W}_p(\delta)$ --- матрицы размера $L\times L$.
+		\end{formulation}
+		\begin{theorem}[Теорема 2.1]\label{th:2.1}\rm
+			\emph{Пусть} $\delta_0>0$ и
+			\begin{equation}\label{eq:2.1}
+				\norm{\mathbf{B}(\delta)}<\mu_{min}/2
+			\end{equation}
+			\emph{для всех} $\delta\in(-\delta_0,\delta_0)$. \emph{Тогда для возмущённого проектора} $\mathbf{P}_0^\bot(\delta)$ \emph{верно представление:}
+			\begin{equation}\label{eq:2.2}
+				\mathbf{P}_0^\bot(\delta)=\mathbf{P}_0^\bot + \sum_{p=1}^\infty\mathbf{W}_p(\delta).
+			\end{equation}
+		\end{theorem}%2.1
+%		Результаты теоретической задачи №1 (теоремы и леммы)
+		\note{
+			(Замечание: не забыть сослаться на источник для теоремы)
+			Для первой теоретической задачи зададим следующую формулировку, которую можно увидеть на слайде. В качестве матрицы $\mathbf{N}$ рассматриваются суммы матриц из $\mathbf{W}_p(\delta)$. Объясним матрицы $\mathbf{W}_p(\delta)$ на следующем результате. *Показывает на теорему*. Таким образом, матрицы $\mathbf{W}_p(\delta)$ представляют собой члены разложения бесконечного ряда возмущённого проектора. Хотя структура этих матриц важна для записи дальнейших результатов, опустим их формальное описание 
+			\\
+			(Ещё есть вариант на этом слайде оставить формулировку и добавить текст про "Зачем это нужно", а на следующих слайдах --- теоремы и леммы)
+		}
+	\end{frame}
+	\begin{frame}{Известные результаты}
+		Воспользуемся вспомогательными теоремами и леммами из \cite{Nekrutkin10}.
+		%\vspace*{\baselineskip}
+		\begin{theorem}[Теорема 2.3]
+			%\marginpar{(2.3)}
+			\label{th:2.3}
+			\rm \emph{Если} $\delta_0 > 0$ \emph{и} $\dfrac{\norm{\mathbf{B}(\delta)}}{\mu_{min}} < \dfrac{1}{4}$ \emph{для всех} $\delta \in (-\delta_0, \delta_0)$\emph{, то проектор} $\mathbf{P}^\bot_0(\delta)$ \emph{существует и} \begin{equation}\norm{\mathbf{P}_0^\bot(\delta) - \mathbf{P}_0^\bot} \leqslant 4C\dfrac{\norm{\mathbf{S}_0\mathbf{B}(\delta)\mathbf{P}_0}}{1 - 4\norm{\mathbf{B}(\delta)}/\mu_{min}}\label{eq:6},
+			\end{equation}
+			\emph{где} $\,C = e^{1/6}/\sqrt{\pi}\approx0.667$.
+		\end{theorem}%(2.3)
+		%\begin{theorem}[\emph{2.3}]\label{th:1}
+		%	
+		%\end{theorem}
+		
+		\begin{lemma}[Лемма 6.1]
+			%\marginpar{(6.1)}
+			\label{lem:6.1}
+			\rm \emph{Если} $0<\beta<{1}/{4}$, $k \geqslant 0$\emph{, то}
+			$\sum^\infty_{p=k}{2p \choose p}\beta^p \leqslant C\dfrac{(4\beta)^k}{1-4\beta},\,C = e^{1/6}/\sqrt{\pi}$.
+		\end{lemma}%6.1
+		\note{
+			Опишем результаты: теорема \ref{th:2.3} ставит ограничения для возможности оценки нормы разности возмущённого и невозмущённого проекторов, в то время как лемма \ref{lem:6.1} используется для доказательства как этой теоремы, так и полученного результата. 
+		}
+	\end{frame}
+	\begin{frame}{Полученные результаты}
+		\begin{corollary}
+			$\forall n\in\mathbb{N}$:
+			\begin{align}
+				&\norm{\mathbf{P}_0^\bot(\delta) - \mathbf{P}_0^\bot - \sum\limits^n_{p=1}\mathbf{W}_p(\delta)}\nonumber
+				\\
+				&\leqslant 4^{n+1}C\left(\dfrac{\norm{\mathbf{B}(\delta)}}{\mu_{min}}\right)^{n+1}\dfrac{1}{1-4\norm{\mathbf{B}(\delta)}/\mu_{min}},\label{eq:m_2}
+			\end{align}
+			где $C = e^{1/6}/\sqrt{\pi}$.
+		\end{corollary}
+%		Личный результат теоретической задачи №1 (Следствие 1)
+		\note{
+			Пользуясь известными результатами, получаем следующую оценку для произвольного натурального $n$.
+		}
+	\end{frame}
+	\begin{frame}{Постановка}
+		\begin{statement}[Линейный сигнал с гармониками]
+			Рассмотрим при $n=0,1,\dots,N-1$ линейный сигнал $h_n = \theta_1n+\theta_0$, где $\theta_1 \neq 0$, и помеху, которая является линейной комбинацией гармоник
+			\begin{equation*}
+				e_n = \sum^r_{l=1}\tau_l\cos(2\pi n\omega_l + \varphi_l),
+			\end{equation*} 
+			\emph{где} $\tau_l\neq0, \omega_l \neq \omega_p$ \emph{при} $l\neq p$ и $0 < \omega_l < 1/2$.
+			\\
+			Пусть $\mathbf{N} = \mathbf{W}_1$. Тогда при $N$ --- нечётном, $L=(N+1)/2=K$ верна теорема из \cite{ZNekrutkin} о том, что
+			\begin{equation*}
+				\max_{0\leqslant n<N}|r_n(N)|=O(N^{-1}).
+			\end{equation*}
+		\end{statement}
+%		Результаты теоретической задачи №2 (теоремы и леммы)
+		\note{
+			Теперь рассмотрим результаты теоретической задачи №2, для которой понадобится результат теоретической задачи №1. Рассматривается линейный сигнал с линейной комбинацией гармоник. Верна теорема о том, что когда матрица $\mathbf{N} = \mathbf{W}_1$, длина ряда $N$ --- нечётное и длина окна $L=K$, то есть, для квадратных траекторных матриц, максимальная ошибка восстановления ряда может быть оценена сверху некоторой константой, умноженной на $N^{-1}$. Возникает \emph{вопрос: можно ли расширить множество используемых траекторных матриц, не нарушая результат теоремы?} Для этого подберём другую матрицу $\mathbf{N}$.
+		}
+	\end{frame}
+		\begin{frame}{Формулировка и известные результаты}
+			\begin{formulation}
+				\emph{Обобщить результат \cite{ZNekrutkin} с $L=K$ до $L/N\to \alpha \in (0,1)$ c помощью выбора $\mathbf{N}=\mathbf{W}_1+\mathbf{W}_2$}.
+			\end{formulation}
+			Воспользуемся вспомогательными теоремами и леммами из \cite{ZNekrutkin}
+			\begin{lemma}[Лемма 1]\label{lem:2}
+				%	\marginpar{(2)}
+				При $N\rightarrow\infty$ имеет место соотношение $\|\mathbf{HE}^\mathrm{T}\|_{\max} = O(N)$.
+			\end{lemma}
+			\begin{lemma}[Лемма 2]
+				%\marginpar{3}
+				При $N\rightarrow\infty$ имеет место соотношение $\|\mathbf{P}_0^{\bot}\mathbf{E}\|_{\max} = O(N^{-1}).$
+			\end{lemma}
+			\begin{lemma}[Лемма 3]
+				При $N\rightarrow\infty$ имеет место соотношение $\|\mathbf{S}_0\mathbf{E}\|=O(N^{-4}).$
+%				\footnote{Здесь, в \cite{ZNekrutkin} накладывалось условие на квадратичность матрицы: $L = K$.}
+			\end{lemma}
+%		Результаты теоретической задачи №2 (теоремы и леммы)
+		\note{
+			Теперь сформулируем задачу и приведём известные результаты из \cite{ZNekrutkin}, которые понадобятся при оценке максимального модуля ошибки восстановления ряда
+		}
+	\end{frame}
+%	\begin{frame}{Известные результаты}
+%		Результаты теоретической задачи №2 (теоремы и леммы)
+%		\note{
+%			Введём необходимые для постановки задачи определения и известные результаты. Начнём с определений. 
+%		}
+%	\end{frame}
+	\begin{frame}{Полученные результаты}
+		При $\mathbf{N}=\mathbf{W}_1 + \mathbf{W}_2$ рассматривается неравенство
+		\begin{align*}
+			&\max_{0\leqslant i<N} |r_i(N)|\leqslant \norm{(\mathbf{P}_0^\bot(\delta)- \mathbf{P}_0^\bot-(\mathbf{W}_1+\mathbf{W}_2))\mathbf{H}(\delta)}
+			\\
+			&+\norm{ (\mathbf{W}_1+\mathbf{W}_2)\, \mathbf{H}(\delta) + \delta \mathbf{P}_0^\perp \mathbf{E}}_{\max}.
+		\end{align*}
+		\begin{sentence}
+			%	\marginpar{(1)}
+			%	\label{stn:1}
+			Пусть $L/N\rightarrow\alpha\in(0,1)$. Тогда для любого $\delta$
+			\begin{equation*}
+				\norm{\left(\mathbf{P}_0^\bot(\delta) - \mathbf{P}_0^\bot - \mathbf{W}_1(\delta) - \mathbf{W}_2(\delta)\right)\mathbf{H}(\delta)} = O(N^{-1}).
+			\end{equation*}
+		\end{sentence}
+		\begin{sentence}
+			%	\marginpar{(2)}
+			В условиях Предложения 1 $\norm{(\mathbf{W}_1(\delta)+\mathbf{W}_2(\delta))\mathbf{H}(\delta)}_{\max}=O(N^{-1})$
+		\end{sentence}
+		%		Личные результаты теоретической задачи №2 (полученный вывод из отчёта)
+		\note{
+			В качестве полученных результатов выделим Предложение 1 и Предложение 2, которые являются переформулировками предложений из \cite{ZNekrutkin} для рассматриваемого случая обобщения. В результате получим обобщение результата с $L=K$ до $L/N\rightarrow\alpha\in(0,1)$.
+		}
+	\end{frame}
+%	\begin{frame}{Обозначения и известные результаты}
+%		Обозначения, нужные понятия и нужные известные результаты.
+%		
+%		\note{
+%			Введём необходимые для постановки задачи определения и известные результаты. Начнём с определений. 
+%		}
+%	\end{frame}
+	\begin{frame}{Приложение. Результаты вычислительных экспериментов}
+		\begin{formulation}
+				\textit{На основе теоретического результата задачи №2 проиллюстрировать результат для ряда
+				\begin{equation*}
+					\widetilde{h}_n = n + 3\cos(2\pi n\omega + \varphi),
+				\end{equation*}
+				где $\omega = 1/4,\;\varphi = \pi/8,\;n=0,1,\dots,N-1,\;N=9\dots200$, длина окна $L=\lfloor N/3\rfloor$.}
+		\end{formulation}
+		Теперь проиллюстрируем результаты.
+%		Результат практической задачи №1
+		\note{
+			Для подтверждения результатов теоретической задачи №2 проведём вычислительный эксперимент. Рассмотрим следующий ряд при длине окна $L$ приблизительно равной длине ряда $N$, делённой на 3.
+		}
+	\end{frame}
+	\begin{frame}{Приложение. Результаты вычислительных экспериментов}
+		\begin{figure}[!h]
+			\includegraphics[width=0.95\textwidth]{Pictures/MERNoN.png}
+			\caption{Максимальные ошибки восстановления ряда в зависимости от длины ряда при $\widetilde{h}_n = n + 3\cos(\pi n/2 + \pi/8)$.}\label{pic:1}
+		\end{figure}
+		\note{
+			Прокомментируем результаты вычислительного эксперимента: по рисунку \ref{pic:1} убедимся, что максимальные по модулю ошибки восстановления ряда стремятся к нулю с ростом N.
+		}
+	\end{frame}
+	\begin{frame}{Приложение. Результаты вычислительных экспериментов}
+		\begin{figure}[!h]
+			\includegraphics[width=0.95\textwidth]{Pictures/MERN.png}
+			\caption{Максимальные ошибки восстановления ряда, умноженные на N, в зависимости от длины ряда N для $x_n = n + 3\cos(\pi n/2 + \pi/8)$.}\label{pic:2}
+		\end{figure}
+		\note{
+			Рисунок \ref{pic:2} демонстрирует, что после умножения ряда рисунка \ref{pic:1} на N максимальные по модулю ошибки восстановления ряда становятся ограниченными, что подтверждает результат обобщения Теоремы из \cite{ZNekrutkin}.
+		}
+	\end{frame}
+	
+	\begin{frame}{Заключение}
+		\begin{enumerate}
+			\item Поставлена общая теоретическая задача; 
+			\item Дана оценка $\|\mathbf{P}_0^\bot(\delta) - \mathbf{P}_0^\bot - \sum\limits^n_{p=1}\mathbf{W}_p(\delta)\|$; 
+			\item Обобщён случай асимптотической разделимости линейного сигнала с линейной комбинацией гармоник с $L=K$ до $L/N\rightarrow\alpha\in(0,1)$;
+			\item Проделан вычислительный эксперимент, подтверждающий результаты обобщения теоремы из \cite{ZNekrutkin}. 
+		\end{enumerate}
+		\note{
+			В ходе проделанных работ были изучены теоретические свойства метода SSA, поставлена общая теоретическая задача, дана оценка \textbf{нормы разностей ортогональных проекций с дубль-вэ для произвольного $n$}, обобщён случай асимптотической разделимости линейного сигнала с линейной комбинацией гармоник с $L=K$ до $L/N\rightarrow\alpha\in(0,1)$, а также проделан вычислительный эксперимент, подтверждающий результаты обобщения теоремы из \cite{ZNekrutkin}. 
+		}
+	\end{frame}
+	
+	\begin{frame}{Список литературы}
+		\bibliographystyle{ugost2008}
+		\bibliography{report_SSA}
+
+		\note{
+			На данном слайде представлен список основных источников, используемых в моей работе.
+			Спасибо за внимание. Я готов ответить на Ваши вопросы.
+		}
+	\end{frame}
+	
+\end{document}

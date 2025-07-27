@@ -1,0 +1,174 @@
+\documentclass[specialist,
+substylefile = spbu_report.rtx,
+subf,href,colorlinks=true, 12pt]{disser}
+
+\usepackage[a4paper,
+mag=1000, includefoot,
+left=3cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\ifpdf\usepackage{epstopdf}\fi
+
+\usepackage{bbm}
+\usepackage{amsmath,amssymb,amsthm,amscd,amsfonts}
+\usepackage{cmap}
+\usepackage{euscript}
+\usepackage{mathdots}
+\usepackage{graphicx}
+\usepackage[russian]{cleveref}
+
+% Нумерация подсекций в оглавлении
+\setcounter{secnumdepth}{3}
+
+% Включать подсекции в оглавление
+\setcounter{tocdepth}{3}
+
+\newcommand{\R}{\mathbb{R}}
+\begin{document}
+	
+	\thispagestyle{empty}
+	\tableofcontents
+	\newpage
+	\pagenumbering{arabic}
+	\section{Задача 1}
+	\subsection{Формулировка}
+	Пусть $\xi_1,\dots,\xi_n\in \mathrm{EXP}(1)$ и независимы. При каждом элементарном событии $\omega$ упорядочим числа $\xi_i(\omega)$ по возрастанию и получим новые случайные величины $0\leqslant\xi_{[1]}\leqslant\dots\leqslant\xi_{[i]}\leqslant\dots\leqslant\xi_{[n]}$.\\
+	Найти распределение вектора
+	\begin{equation*}
+		(\xi_{[1]},\xi_{[2]}-\xi_{[1]},\dots,\xi_{[i]}-\xi_{[i-1]},\dots,\xi_{[n]}-\xi_{[n-1]})^\mathsf{T}.
+	\end{equation*}
+	\subsection{Решение}
+	Поскольку $\xi_1,\dots,\xi_n\in \mathrm{EXP}(1)$, то $\xi_i\in [0,+\infty) ~\forall i=1,2,\dots,n$ и $\bar{\xi}\in [0,+\infty)^n=D$, где $\bar{\xi}=(\xi_1,\dots,\xi_n)$.\\
+	Представим $D = \cup_{i=1}^m D_i$, где $D_i$ - попарно непересекающиеся множества. В качестве $D_i$:
+	\begin{equation*}
+		D_i = \{0<\xi_{i_1}<\xi_{i_2}<\dots<\xi_{i_n}\},
+	\end{equation*}
+	где $\{i_1,i_2,\dots,i_n\}$ -- перестановка $\{1,2,3,\dots,n\}$. Тогда число таких множеств будет равняться $n!$, а множества $D$ и $\cup_{i=1}^{n!}D_i$ совпадают $\mathcal{P}_{\xi}$-почти всюду.\\
+	Рассмотрим измеримое отображение $\varphi:D\rightarrow\R^n$, для которой существуют $\varphi_i: \varphi(D_i)=\varphi_i(D_i)=G_i$. Исходя из условий, $\forall i~\varphi|_{D_i}=\varphi_i=A_i$, где $A_i$ -- матрица $n\times n$. Тогда, чтобы существовало $\psi_i = \varphi_i^{-1}$, необходимо и достаточно, чтобы $\exists A_i^{-1}$. Для этого достаточно проверить, что $\mathrm{det}A_i\neq0$. Впоследствие вычислений получилось, что $|\mathrm{det}A_i|=1~\forall i~\Rightarrow|\mathrm{det}A_i^{-1}|=1$.\\
+	Осталось выяснить область определения образа $\varphi_i(D_i) = G_i$. Покажем, что $\forall i~G_i=[0,+\infty)^n$. Пусть
+	\begin{equation*}
+		\bar{\eta}=(\eta_1,\eta_2,\dots,\eta_n) = \varphi(\bar{\xi}).
+	\end{equation*}
+	Так как
+	\begin{equation*}
+		\bar{\eta}=(\xi_{[1]},\xi_{[2]}-\xi_{[1]},\dots,\xi_{[i]}-\xi_{[i-1]},\dots,\xi_{[n]}-\xi_{[n-1]})^\mathsf{T}, 0\leqslant\xi_{[1]}\leqslant\dots\leqslant\xi_{[i]}\leqslant\dots\leqslant\xi_{[n]},
+	\end{equation*}
+	Тогда $\eta_1=\xi_{[1]}\geqslant0, \eta_2=\xi_{[2]}-\xi_{[1]}\geqslant0,\dots,\eta_n=\xi_{[n]}-\xi_{[n-1]}\geqslant0$. Более того, из этого следует, что $G_i=G_j \forall i,j$. 
+	\\Рассмотрим случай $n=2$ и ответим на следующие вопросы:
+	\begin{enumerate}
+		\item Какие распределения у $\eta_i,~i=1,2$;
+		\item Являются ли $\eta_1,~\eta_2$ независимыми.
+	\end{enumerate}
+	Тогда для областей и их отображений
+	\begin{align*}
+		D_1 = \{0 < \xi_1 < \xi_2\},~\varphi_1(\bar{\xi}) = (\xi_1, \xi_2 - \xi_1) = \bar{\eta};
+		\\D_2 = \{0 < \xi_2 < \xi_1\},~\varphi_2(\bar{\xi}) = (\xi_2, \xi_1 - \xi_2) = \bar{\eta},
+	\end{align*}
+	Соответствующие им обратные отображения: $\psi_1(\bar{\eta}) = (\eta_1, \eta_2 + \eta_1), \psi_2(\bar{\eta}) = (\eta_2 + \eta_1, \eta_1)$. Найдём распределения для $\eta_1,~\eta_2$. Знаем, что $\rho_{\bar{\eta}}(x_1, x_2) = \rho_{\bar{\xi}}(x_1, x_2 + x_1) + \rho_{\bar{\xi}}(x_2+x_1, x_1) = 2\exp\{-(2x_1 + x_2)\}\mathbbm{1}_{[0,+\infty)^2}(x_1,x_2)$
+	\begin{align*}
+		\rho_{\eta_1}(x_1) = \int_\R \rho_{\bar{\eta}}(x_1, x_2)~dx_2 = 2\int_0^{+\infty}\exp\{-(2x_1 + x_2)\}~dx_2 = 2\exp\{-2x_1\}\mathbbm{1}_{[0,+\infty)}(x_1).\\
+		\rho_{\eta_2}(x_2) = \int_\R \rho_{\bar{\eta}}(x_1, x_2)~dx_1 = 2\int_0^{+\infty}\exp\{-(2x_1 + x_2)\}~dx_1 = \exp\{-x_2\}\mathbbm{1}_{[0,+\infty)}(x_2).
+	\end{align*} 
+	Таким образом, $\eta_1$ и $\eta_2$ независимы. При этом $\eta_1\in\mathrm{EXP}(2),~\eta_2\in \mathrm{EXP}(1)$.
+	\\По аналогии, можно показать, что 
+	\begin{equation*}
+		\rho_{\eta_k}(x_k) = (n+1-k)\exp\{-(n+1-k)x_k\}\mathbbm{1}_{[0,+\infty}(x_k)~\forall k = 1, 2,\dots,n,~\eta_k\sim\mathrm{EXP}(n+1-k).
+	\end{equation*}
+	Отсюда выведем плотность распределения $\eta$:
+	\begin{equation*}
+		\rho_{\bar{\eta}}(x) = \left(\prod_{k=1}^n\rho_{\eta_k}(x_k)\right)\mathbbm{1}_{[0,+\infty)^n}(x)=n!\exp\{-(nx_1+(n-1)x_2+\dots+2x_{n-1}+x_n)\}\mathbbm{1}_{[0,+\infty)^n}(x).
+	\end{equation*}
+	%	где 
+	%	\begin{equation*}
+		%		\psi_i(y)=(y_{i_1},y_{i_2}+y_{i_1},y_{i_3}+y_{i_2} + y_{i_1},\dots,y_{i_n}+y_{i_{n-1}} + \dots + y_{i_1}),
+		%	\end{equation*}
+	%	$\{i_1,i_2,\dots,i_n\}$ -- перестановка $\{1,2,3,\dots,n\}$.
+	%	\\Заметим, что $\rho_\eta(y)$ --- симметричная функция. Из независимости $\xi_i$ для произвольной перестановки j:
+	%	\begin{equation*}
+		%		\rho_\xi(\psi_j(y)) = \exp\{-ny_{i_1} -(n-1)y_{i_2} + \dots - 2y_{i_{n-1}} - y_{i_n}\}.
+		%	\end{equation*}
+	%	Учитывая симметричность плотности распределения $\rho_\eta(y)$, (заметка: расписать суммирование и показать распределение $\eta_j$ и их зависимость)
+	%	Тогда плотность распределения $\eta$:
+	%	\begin{equation*}
+		%		\rho_\eta(y) = n!\exp\{-ny_1 -(n-1)y_2 + \dots - 2y_{n-1} - y_n\}\mathbbm{1}_{[0,+\infty)^n}(y).
+		%	\end{equation*}
+	\section{Задача 2}
+	\subsection{Формулировка}
+	Вектор $\bar{\xi}=(\xi_1,\xi_2)^\mathsf{T}$ имеет плотность распределения $p(x,y)=Ce^{-(x^2+y^2)}$. Найти такую матрицу $A(2,2)$, что у компонент вектора $\bar{\eta} = A\bar{\xi}$ будет коэффициент корреляции, равный $-1/2.$
+	\subsection{Решение}
+	Вспомним, как выражается коэффициент корреляции от двух случайных величин $\xi_1, \xi_2$:
+	\begin{equation*}
+		\rho(\xi_1,\xi_2)=\dfrac{\mathrm{cov}(\xi_1,\xi_2)}{\sqrt{D\xi_1}\sqrt{D\xi_2}},
+	\end{equation*}
+	где $\mathrm{cov}(\xi_1, \xi_2) = E(\xi_1 - E\xi_1)(\xi_2 - E\xi_2) = E\xi_1\xi_2 - E\xi_1E\xi_2$.\\
+	Решим задачу поэтапно:
+	\begin{enumerate}
+		\item Вычислим коэффициент $C$ у плотности распределения случайного вектора $\bar{\xi} = (\xi_1, \xi_2)$;\label{step1}
+		\item Выразим $\rho_{\bar{\eta}}(\bar{x})$ через преобразование $\bar{\eta} = A\bar{\xi}$;\label{step2}
+		\item Вычислим $\mathrm{cov}(\eta_1,\eta_2), D\eta_1, D\eta_2~\Leftrightarrow E\eta_1\eta_2, E\eta_1^2, E\eta_2^2, E\eta_1, E\eta_2$;\label{step3}
+		\item Решим $\rho(\eta_1, \eta_2) = -\dfrac{1}{2}$ относительно коэффициентов матрицы $A(2,2)$.\label{step4}
+	\end{enumerate}
+	(\textit{Замечание: в дальнейшем полагаем $\bar{\eta}=\eta, \bar{\xi}=\xi$}).\\
+	\ref{step1}.
+	\begin{equation*}
+		F_\xi(+\infty, +\infty) = \iint_{\R^2}Ce^{-(x_1^2 + x_2^2)}dx_1~dx_2=C\pi=1\rightarrow C = \pi^{-1}
+	\end{equation*}
+	Тогда $\rho_\xi(\bar{x})=\dfrac{1}{\pi}e^{-(\bar{x}, \bar{x})}$.
+	\\\ref{step2}. Пользуясь формулой преобразования случайных векторов, получим:
+	\begin{equation*}
+		\rho_\eta(\bar{x})=\dfrac{1}{|\det A|\pi}\rho_\xi(A^{-1}\bar{x}) = \dfrac{1}{|\det A|\pi}e^{-(A^{-1}\bar{x}, A^{-1}\bar{x})}.
+	\end{equation*}
+	В дальнейшем будем полагать $|A| = |\det A|$.
+	\\\ref{step3}. Вычислим матожидания в порядке $E\eta_1, E\eta_2, E\eta_1^2, E\eta_2^2, E\eta_1\eta_2$:
+	\begin{flalign*}
+		E\eta_1 &= \int_\R x_1\rho_{\eta_1}(x_1)dx_1 = \int_\R x_1\left(\int_\R \dfrac{1}{|A|\pi}\rho_\xi(A^{-1}\bar{x})dx_2\right)dx_1
+		\\&= [\bar{x}=A\bar{y}, \bar{y} = A^{-1}\bar{x}, dx_1dx_2=|A|dy_1dy_2]=\iint_{\R^2}(a_{11}y_1+a_{12}y_2)\dfrac{1}{|A|\pi}e^{-(y_1^2+y_2^2)}|A|~dy_1dy_2
+		\\&=\dfrac{a_{11}}{\pi}\left(\int_\R e^{-y_2^2}~dy_2\right)\left(\int_\R y_1e^{-y_1^2}~dy_1\right)+\dfrac{a_{12}}{\pi}\left(\int_\R e^{-y_1^2}~dy_1\right)\left(\int_\R y_2e^{-y_2^2}~dy_2\right) = 0;\\
+		E\eta_2 &= \dots = 0;\\
+		E\eta_1^2 &= \dfrac{1}{\pi}\iint_{\R^2}(a_{11}y_1 + a_{12}y_2)^2~e^{-(y_1^2 + y_2^2)}~dy_1dy_2 = \dfrac{a_{11}^2}{\pi}\left(\iint_{\R^2}y_1^2~e^{-(y_1^2+y_2^2)}~dy_1dy_2\right)
+		\\&+ \dfrac{2a_{11}a_{12}}{\pi}\left(\iint_{\R^2}y_1y_2~e^{-(y_1^2+y_2^2)}~dy_1dy_2\right) + \dfrac{a_{12}^2}{\pi}\left(\iint_{\R^2}y_2^2~e^{-(y_1^2+y_2^2)}~dy_1dy_2\right)
+		\\&= \dfrac{a_{11}^2}{\pi}\dfrac{\pi}{2} + 0 + \dfrac{a_{12}^2}{\pi}\dfrac{\pi}{2} = \dfrac{a_{11}^2+a_{12}^2}{2};
+		\\E\eta_2^2 &= \dots = \dfrac{a_{21}^2 + a_{22}^2}{2};
+		\\E\eta_1\eta_2 &=\dfrac{1}{\pi} \iint_{\R^2}(a_{11}y_1+a_{12}y_2)(a_{21}y_1+a_{22}y_2)~e^{-(y_1^2+y_2^2)}~dy_1dy_2
+		\\&= \dfrac{a_{11}a_{21}}{\pi}\left(\iint_{\R^2}y_1^2~e^{-(y_1^2+y_2^2)}~dy_1dy_2\right) + \dfrac{a_{11}a_{22} + a_{12}a_{21}}{\pi}\left(\iint_{\R^2}y_1y_2~e^{-(y_1^2+y_2^2)}~dy_1dy_2\right)
+		\\&+ \dfrac{a_{12}a_{22}}{\pi}\left(\iint_{\R^2}y_2^2~e^{-(y_1^2+y_2^2)}~dy_1dy_2\right) = \dfrac{a_{11}a_{21}}{\pi}\dfrac{\pi}{2} + 0 + \dfrac{a_{12}a_{22}}{\pi}\dfrac{\pi}{2} = \dfrac{a_{11}a_{21} + a_{12}a_{22}}{2}.
+	\end{flalign*}
+	Исходя из полученных значений, $\mathrm{cov}(\eta_1,\eta_2) = E\eta_1\eta_2, D\eta_1 = E\eta_1^2, D\eta_2 = E\eta_2^2$.
+	\\\ref{step4}. Найдём подходящие коэффициенты для того, чтобы $\rho(\eta_1, \eta_2) = -\dfrac{1}{2}$:
+	\begin{align*}
+		\rho(\eta_1,\eta_2)=\dfrac{\dfrac{a_{11}a_{21} + a_{12}a_{22}}{2}}{\sqrt{\dfrac{a_{11}^2+a_{12}^2}{2}}\sqrt{\dfrac{a_{21}^2 + a_{22}^2}{2}}} = \dfrac{a_{11}a_{21} + a_{12}a_{22}}{\sqrt{a_{11}^2 + a_{12}^2}\sqrt{a_{21}^2 + a_{22}^2}} = -\dfrac{1}{2}.
+	\end{align*}
+	Хочется рассмотреть такой случай:
+	\begin{equation}
+		\begin{cases}
+			a_{11}a_{21} + a_{12}a_{22} = -\dfrac{1}{2}\\
+			a_{11}^2 + a_{12}^2 = 1 \label{eq:1}\\
+			a_{21}^2 + a_{22}^2 = 1
+		\end{cases}
+	\end{equation}
+	Если в качестве матрицы $A$ взять, например:
+	\begin{equation*}
+		A = 
+		\begin{pmatrix}
+			\cos\varphi & \sin\varphi\\
+			\sin\varphi& \cos\varphi
+		\end{pmatrix},
+	\end{equation*}
+	то $|A| = \cos2\varphi$, что значит, что при $\varphi\in[0,2\pi):~|A| = 0 \leftrightarrow \varphi = \dfrac{\pi}{4}, \dfrac{3\pi}{4}, \dfrac{5\pi}{4}, \dfrac{7\pi}{4}$. При этом, если бы в качестве $A$ взяли матрицу поворотов, то $\rho(\eta_1, \eta_2) = 0$ при любом угле $\varphi$. Для матрицы $A$ при заданных $\varphi$ выполняются второе и третье равенства из \eqref{eq:1}, а для первого:
+	\begin{equation*}
+		a_{11}a_{21}+a_{12}a_{22} = \sin2\varphi = -\dfrac{1}{2}\rightarrow\varphi = \dfrac{7\pi}{12},\dfrac{11\pi}{12},\dfrac{19\pi}{12},\dfrac{23\pi}{12}.	
+	\end{equation*}
+	Таким образом нашли матрицу $A$ такую, что $\eta = A\xi, \rho(\eta_1, \eta_2) = -\dfrac{1}{2}$. Принимая во внимание то, что растяжение матрицы на произвольные ненулевые значения $\lambda_1,\lambda_2\in\R$ не изменит коэффициента корреляции, а точнее:
+	\begin{equation*}
+		\rho(\lambda_1\eta_1, \lambda_2\eta_2) = \rho(\lambda_1\eta_1, \eta_2) = \rho(\eta_1, \lambda_2\eta_2) = \rho(\eta_1, \eta_2).
+	\end{equation*}
+	Поэтому, в качестве одного из решений можно взять матрицу вида:
+	\begin{equation*}
+		\begin{pmatrix}
+			\lambda_1\cos\varphi & \lambda_1\sin\varphi\\
+			\lambda_2\sin\varphi& \lambda_2\cos\varphi
+		\end{pmatrix},
+		~\lambda_1,\lambda_2\in\R/\{0\}, \varphi\in[0, 2\pi).
+	\end{equation*}
+\end{document}

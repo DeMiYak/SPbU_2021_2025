@@ -1,0 +1,422 @@
+---
+title: "Yakovlev_VKR"
+author: "Yakovlev D.M."
+date: "2025-05-23"
+output: html_document
+---
+
+```{r setupFunctions, echo=TRUE}
+PI<-asin(1)
+# Создание экспоненциально-модулированного гармонического ряда
+CreateExponentialTimeSeries <- function(A, alpha, freq, angle, N){
+  # Создание временного индекса t = 0:(N-1)
+  t <- matrix(0:(N-1), nrow = 1)
+  
+  # Векторизованный расчет: A * exp(alpha * t) * cos(2 * PI * freq * t + angle)
+  result <- A * exp(alpha %*% t) * cos(2 * PI * (freq %*% t) + angle)
+  
+  return(colSums(result))
+}
+
+k<-1e2
+freq<-runif(k, min=0, max=1/2)
+angle<-runif(k, max=2*PI)
+alpha<-rep.int(0, k)
+A<-rnorm(k)
+N<-1e3
+
+# x <- cbind(x1 = 3, x2 = c(4:1, 2:5))
+# x
+# rowSums(x) 
+# colSums(x)
+
+# matr<-CreateExponentialTimeSeries(A, alpha, freq, angle, N)
+# matr
+system.time(x<-CreateExponentialTimeSeries(A, alpha, freq, angle, N))
+# x
+diag_averaging <- function(matr) {
+  for (i in 0:(nrow(matr) + ncol(matr) - 2)) {
+    matr[row(matr) + col(matr) - 2 == i] <- mean(matr[row(matr) + col(matr) - 2 == i])
+  }
+  matr
+}
+
+diag_averaging_v2 <- function(matr) {
+  rows <- nrow(matr)
+  cols <- ncol(matr)
+  result <- matr
+
+  for (diag_sum in 2:(rows + cols)) {
+    indices <- which(row(matr) + col(matr) == diag_sum)
+    if (length(indices) > 0) {
+      result[indices] <- mean(matr[indices])
+    }
+  }
+  return(result)
+}
+
+# Создание полиномиального ряда
+CreatePolynomialTimeSeries <- function(coefficientVector, N) {
+  # Проверка на корректность ввода вектора коэффициентов
+  if(!is.numeric(coefficientVector)) stop("Error: coefficientVector must be numeric")
+  
+  # Длина вектора коэффициентов
+  k <- length(coefficientVector)
+  
+  # Вектор времени t = 0:(N-1)
+  t <- 0:(N-1)
+  
+  # Создание матрицы степеней t^(j-1) для j=1:k
+  powers <- outer(t, 0:(k-1), "^")  # N x k матрица
+  
+  # Вычисление ряда: powers %*% coefficientVector
+  timeSeries <- powers %*% coefficientVector
+  
+  return(as.vector(timeSeries))
+}
+
+# coefs<-c(0, 1, 2, 3)
+# N<-100
+# CreatePolynomialTimeSeries(coefs, N)
+```
+
+```{r}
+calc.p_q <- function(H, L, d) {
+  ssa.obj <- ssa(H, L)
+  # ssa.rec <- reconstruct(ssa.obj, groups = d)
+  # 
+  # eig <- ssa.obj$sigma
+  U <- ssa.obj$U[, 1:d]
+  V <- calc.v(ssa.obj, 1:d)[, 1:d]
+
+  P <- U %*% t(U)
+  Q <- V %*% t(V)
+
+  list(P = P, Q = Q)
+}
+
+calc.pe_eq_peq <- function(pq, E, L) {
+  P <- pq$P
+  Q <- pq$Q
+  E <- hankel(E, L=L)
+  P %*% E + E %*% Q - P %*% E %*% Q
+}
+```
+
+### 2. Создание вектора максимальных ошибок восстановления ряда при $L = \lfloor N/3\rfloor$
+
+```{r}
+library("latex2exp")
+```
+
+```{r}
+N<-1000
+n<-seq(9, N, by=10)
+L<-n%/%3
+d<-2
+H<-CreatePolynomialTimeSeries(c(0,1), N)
+Edf<-data.frame(A=c(16,12,-17,18,14,-15, 7, 3), freq=c(0.1,0.3,0.25,0.4,0.2,0.17,0.44,0.49), angle=c(pi*0.8, pi*1.3, pi*0.3, pi*1.5, pi*0.7, pi*1.1, 0, pi*0.6))
+# Parameters
+
+# Initialize the total exponential component
+E_total <- numeric(N)
+
+# Sum each exponential series from Edf with alpha = 0
+for (i in 1:nrow(Edf)) {
+  E_i <- CreateExponentialTimeSeries(
+    A = Edf$A[i], 
+    alpha = 0,          # No exponential modulation as in the example
+    freq = Edf$freq[i], 
+    angle = Edf$angle[i], 
+    N = N
+  )
+  E_total <- E_total + E_i
+}
+E <- E_total
+# Final signal: H + sum of exponential components
+X <- H + E
+```
+
+```{r}
+library(Rssa)
+delta <- 1
+
+# Предварительное выделение памяти
+n_len <- length(n)
+Xssa_lin <- numeric(n_len)
+Xlinear_lin <- numeric(n_len)
+
+
+for (i in seq_along(n)) {
+  print(  
+    system.time({
+    L_curr <- L[i]
+    n_curr <- n[i]
+    H_curr <- H[1:n_curr]
+    E_curr <- E[1:n_curr]
+    X_curr <- H_curr + delta * E_curr
+
+    tempssa <- ssa(X_curr, L_curr, kind = "1d-ssa")
+    D <- reconstruct(tempssa, groups = list(1:d))$F1
+    Xssa_lin[i] <- max(abs(D - H_curr))  # Запись в выделенный вектор
+
+    # Конструирование pe_eq_peq
+    pq <- calc.p_q(H_curr, L_curr, d)
+    pe_eq_peq <- calc.pe_eq_peq(pq, E_curr, L_curr)
+    Xlinear_lin[i] <- max(abs(diag_averaging(pe_eq_peq))) * delta  # Запись в выделенный вектор
+    }
+    )
+    )
+  print(n[i])
+}
+```
+
+```{r}
+size_param<-0.6
+df<-data.frame(t=1:200, x=X[1:200])
+graph<-ggplot(df, aes(x = t)) +
+  geom_line(aes(y = x), size = size_param) +
+  labs(
+    title = TeX(r"(График lin $+$ harm)"),
+    x = TeX(r"($N$)"),
+    y = TeX(r"($h_n(\delta)$)")
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    legend.text = element_text(size = 10),
+    plot.title = element_text(hjust = 0.5)
+  )
+graph
+```
+
+```{r}
+# Подготовка данных для графиков
+df <- data.frame(
+  N = n,
+  SSA_Error = Xssa_lin,
+  Linear_Estimate = Xlinear_lin,
+  SSA_Error_N = Xssa_lin * n,
+  Linear_Estimate_N = Xlinear_lin * n
+)
+
+# График 1: Максимальная ошибка восстановления
+p1 <- ggplot(df, aes(x = N)) +
+  geom_line(aes(y = SSA_Error, color = "Ошибка SSA"), size = size_param) +
+  # geom_point(aes(y = SSA_Error, color = "Ошибка SSA"), size = 2) +
+  geom_line(aes(y = Linear_Estimate, color = "Линейное приближение"), size = size_param) +
+  # geom_point(aes(y = Linear_Estimate, color = "Оценка линейным членом"), size = 2) +
+  labs(
+    title = TeX(r"(Максимальная ошибка восстановления сигнала $L \sim N/3$)"),
+    x = TeX(r"($N$)"),
+    y = "Максимальная ошибка"
+  ) +
+  scale_color_manual(
+    values = c("Ошибка SSA" = "black", "Линейное приближение" = "red"),
+    name = NULL
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    legend.text = element_text(size = 10),
+    plot.title = element_text(hjust = 0.5)
+  ) +
+  guides(color = guide_legend(override.aes = list(linetype = c("solid", "dashed"), shape = c(16, 17))))
+print(p1)
+p2 <- ggplot(df, aes(x = N)) +
+  geom_line(aes(y = SSA_Error_N, color = "Ошибка SSA"), size = size_param) +
+  # geom_point(aes(y = SSA_Error_N, color = "Ошибка SSA"), size = 2) +
+  geom_line(aes(y = Linear_Estimate_N, color = "Линейное приближение"), size = size_param) +
+  # geom_point(aes(y = Linear_Estimate_N, color = "Оценка линейным членом"), size = 2) +
+  labs(
+    title = TeX(r"(Максимальная ошибка восстановления сигнала $L \sim N/3$, умноженная на $N$)"),
+    x = TeX(r"($N$)"),
+    y = TeX(r"(Максимальная ошибка, умноженная на $N$)")
+  ) +
+  scale_color_manual(
+    values = c("Ошибка SSA" = "black", "Линейное приближение" = "red"),
+    name = NULL
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    legend.text = element_text(size = 10),
+    plot.title = element_text(hjust = 0.5, size=11)
+  ) +
+  guides(color = guide_legend(override.aes = list(linetype = c("solid", "dashed"), shape = c(16, 17))))
+print(p2)
+```
+
+```{r}
+library(Cairo)
+cairo_pdf("LinHarmGraph3.pdf", width=6, height=4)
+print(graph)
+dev.off()
+
+cairo_pdf("MaxLin4.pdf", width=6, height=4)
+print(p1)
+dev.off()
+
+cairo_pdf("MaxLinMultN4.pdf", width=6, height=4)
+print(p2)
+dev.off()
+```
+
+# Пример. Полиномиальный сигнал с гармонической помехой
+
+```{r}
+N<-1500
+d<-4
+div<-4
+n<-seq(d*div, N, by=30)
+L<-n%/%div
+
+theta<-c(2020/1000,-2141/10^4,122/10^4,-1/10^3)
+
+H<-CreatePolynomialTimeSeries(theta, N)
+
+df_E_param<-data.frame(A=c(12, -6, -10, 4), omega=c(1/sqrt(10), sqrt(3)/10, 1/31, sqrt(2)/5), varphi=c(7*PI/5, 13*PI/17, PI/2, 4*PI/7),alpha=rep.int(0,4))
+
+E<-CreateExponentialTimeSeries(df_E_param$A, df_E_param$alpha, df_E_param$omega, df_E_param$varphi, N)
+plot(H+E)
+```
+
+```{r}
+library(Rssa)
+delta <- 1
+
+# Предварительное выделение памяти
+n_len <- length(n)
+Xssa_polyn <- numeric(n_len)
+Xlinear_polyn <- numeric(n_len)
+
+
+for (i in seq_along(n)) {
+  print(  
+    system.time({
+    L_curr <- L[i]
+    n_curr <- n[i]
+    H_curr <- H[1:n_curr]
+    E_curr <- E[1:n_curr]
+    X_curr <- H_curr + delta * E_curr
+
+    tempssa <- ssa(X_curr, L_curr, kind = "1d-ssa")
+    D <- reconstruct(tempssa, groups = list(1:d))$F1
+    Xssa_polyn[i] <- max(abs(D - H_curr))  # Запись в выделенный вектор
+
+    # Конструирование pe_eq_peq
+    pq <- calc.p_q(H_curr, L_curr, d)
+    pe_eq_peq <- calc.pe_eq_peq(pq, E_curr, L_curr)
+    Xlinear_polyn[i] <- max(abs(diag_averaging(pe_eq_peq))) * delta  # Запись в выделенный вектор
+    }
+    )
+    )
+  print(n[i])
+}
+
+```
+
+```{r}
+library(ggplot2)
+library(latex2exp)
+df_mre <- data.frame(
+  N = n,
+  SSA_Error = Xssa_polyn,
+  Linear_Estimate = Xlinear_polyn,
+  SSA_Error_N = Xssa_polyn * n,
+  Linear_Estimate_N = Xlinear_polyn * n
+)
+
+r<-100
+df_graph<-data.frame(t=1:r, x=H[1:r]+delta*E[1:r])
+```
+
+```{r}
+size_param<-0.6
+graph<-ggplot(df_graph, aes(x = t)) +
+  geom_line(aes(y = x), size = size_param) +
+  labs(
+    title = TeX(r"(График polyn (3) $+$ harm)"),
+    x = TeX(r"($N$)"),
+    y = TeX(r"($h_n(\delta)$)")
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    legend.text = element_text(size = 10),
+    plot.title = element_text(hjust = 0.5)
+  )
+graph
+```
+
+```{r}
+# Подготовка данных для графиков
+df <- data.frame(
+  N = n,
+  SSA_Error = Xssa_polyn,
+  Linear_Estimate = Xlinear_polyn,
+  SSA_Error_N = Xssa_polyn * n,
+  Linear_Estimate_N = Xlinear_polyn * n
+)
+
+# График 1: Максимальная ошибка восстановления
+p1 <- ggplot(df, aes(x = N)) +
+  geom_line(aes(y = SSA_Error, color = "Ошибка SSA"), size = size_param) +
+  # geom_point(aes(y = SSA_Error, color = "Ошибка SSA"), size = 2) +
+  geom_line(aes(y = Linear_Estimate, color = "Линейное приближение"), size = size_param) +
+  # geom_point(aes(y = Linear_Estimate, color = "Оценка линейным членом"), size = 2) +
+  labs(
+    title = TeX(r"(Максимальная ошибка восстановления сигнала $L \sim N/4$)"),
+    x = TeX(r"($N$)"),
+    y = "Максимальная ошибка"
+  ) +
+  scale_color_manual(
+    values = c("Ошибка SSA" = "black", "Линейное приближение" = "red"),
+    name = NULL
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    legend.text = element_text(size = 10),
+    plot.title = element_text(hjust = 0.5)
+  ) +
+  guides(color = guide_legend(override.aes = list(linetype = c("solid", "dashed"), shape = c(16, 17))))
+print(p1)
+p2 <- ggplot(df, aes(x = N)) +
+  geom_line(aes(y = SSA_Error_N, color = "Ошибка SSA"), size = size_param) +
+  # geom_point(aes(y = SSA_Error_N, color = "Ошибка SSA"), size = 2) +
+  geom_line(aes(y = Linear_Estimate_N, color = "Линейное приближение"), size = size_param) +
+  # geom_point(aes(y = Linear_Estimate_N, color = "Оценка линейным членом"), size = 2) +
+  labs(
+    title = TeX(r"(Максимальная ошибка восстановления сигнала $L \sim N/4$, умноженная на $N$)"),
+    x = TeX(r"($N$)"),
+    y = TeX(r"(Максимальная ошибка, умноженная на $N$)")
+  ) +
+  scale_color_manual(
+    values = c("Ошибка SSA" = "black", "Линейное приближение" = "red"),
+    name = NULL
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    legend.text = element_text(size = 10),
+    plot.title = element_text(hjust = 0.5, size=11)
+  ) +
+  guides(color = guide_legend(override.aes = list(linetype = c("solid", "dashed"), shape = c(16, 17))))
+print(p2)
+```
+
+```{r}
+library(Cairo)
+cairo_pdf("Polyn3HarmGraph.pdf", width=6, height=4)
+print(graph)
+dev.off()
+
+cairo_pdf("MaxPolyn3Harm.pdf", width=6, height=4)
+print(p1)
+dev.off()
+
+cairo_pdf("MaxPolyn3HarmMultN.pdf", width=6, height=4)
+print(p2)
+dev.off()
+```

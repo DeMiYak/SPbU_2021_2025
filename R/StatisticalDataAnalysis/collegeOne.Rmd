@@ -1,0 +1,393 @@
+---
+title: "collegeOne"
+author: "Yakovlev D.M."
+date: "2024-11-27"
+output: html_document
+---
+
+## Список задач:
+
+### 0. Подготовка данных
+```{r}
+library(tidyverse)
+library(GGally)
+library(ggplot2)
+library(psych)
+library(ggpubr)
+library(patchwork)
+library(kableExtra)
+library(skimr)
+```
+
+```{r}
+library(readxl)
+col_I_sn<-read_excel("stat2021_sm\\us_col.std\\I_shortname.xls")
+col_I<-read_excel("stat2021_sm\\us_col.std\\I.xls")
+```
+
+```{r}
+head(col_I_sn)|>rmarkdown::paged_table()
+summary(col_I_sn)
+```
+
+```{r}
+colSums(is.na(col_I_sn))
+```
+```{r}
+col_I_sn$PPIND=ifelse(col_I_sn$PPIND==1, "public", "private")
+```
+
+```{r}
+col_I_sn_noNA<-col_I_sn|>na.omit()
+paste("col_I_sn dim: ", paste(dim(col_I_sn),collapse=", "))
+paste("col_I_sn_noNA dim: ", paste(dim(col_I_sn_noNA), collapse=", "))
+```
+Огромная потеря в данных для case-wise. Следует либо применить pair-wise, либо заполнить данные. 
+
+Логарифмируем датасет
+```{r}
+q_cols<-sapply(col_I_sn, is.numeric)
+q_cols[c("PPIND", "FICE")]<-FALSE
+q_cols<-names(q_cols)[q_cols==TRUE]
+q_cols
+col_I_sn_log<-col_I_sn|>
+  mutate(across(q_cols, ~log(.x)))|>
+  rename_with(~paste0("log-", .x), q_cols)
+
+head(col_I_sn_log)|>rmarkdown::paged_table()
+```
+
+Так как в столбце NUM_INS были 0, они станут -inf и их стоит не учитывать
+```{r}
+col_I_sn_log$`log-NUM_INS`[col_I_sn_log$`log-NUM_INS`==-Inf]=NA
+```
+
+Для обсуждения данных нужно сделать следующее (написано много, так как очень подробно):
+
+1. Разобраться в том, что означают признаки.
+
+Количественные признаки:
+
+* AVRMATH Average Math SAT score                     
+* AVRVERB Average Verbal SAT score                   
+* AVRCOMB Average Combined SAT score
+* AVR_ACT Average ACT score                     
+* MATH_1 First quartile - Math SAT                    
+* MATH_3 Third quartile - Math SAT                   
+* VERB_1 First quartile - Verbal SAT
+* VERB_3 Third quartile - Verbal SAT
+* ACT_1 First quartile - ACT                          
+* ACT_3 Third quartile - ACT              
+* APP_REC Number of applications received             
+* APP_ACC Number of applicants accepted             
+* NEW_STUD Number of new students enrolled   
+* FULLTIME Number of fulltime undergraduates          
+* PARTTIME Number of parttime undergraduates
+* IN_STATE In-state tuition                        
+* OUT_STAT Out-of-state tuition                       
+* R_B_COST Room and board costs
+* ROOM Room costs                                    
+* BOARD Board costs                              
+* ADD_FEE Additional fees                            
+* BOOK Estimated book costs                 
+* PERSONAL Estimated personal spending
+* PH_D Pct. of faculty with Ph.D.'s          
+* TERM_D Pct. of faculty with terminal degree         
+* SAL_FULL Average salary - full professor          
+* SAL_AC Average salary - associate professor         
+* SAL_AS Average salary - assistant professor         
+* SAL_ALL Average salary - all ranks       
+* COMP_FUL Average compensation - full professor   
+* COMP_AC Average compensation - associate professor  
+* COMP_AS Average compensation - assistant professor  
+* COMP_ALL Average compensation - all ranks           
+* NUM_FULL Number of full professor
+* NUM_AC Number of associate professor                
+* NUM_AS Number of assistant professor                
+* NUM_INS Number of instructors                
+* NUM_ALL Number of faculty - all ranks   
+* INSTRUCT Instructional expenditure per student
+* GRADUAT Graduation rate
+* SF_RATIO Student/faculty ratio
+* DONATE Pct.alumni who donate
+* NEW10 Pct. new students from top 10% of H.S. class - % студентов из топ 10% своей старшей школы
+* NEW25 Pct. new students from top 25% of H.S. class - % студентов из топ 25% своей старшей школы
+
+Порядковые признаки:
+
+* FICE - Federal ID Number
+
+Качественные признаки:
+
+* ...1 - Название университета 
+* PPIND Public/private indicator (public=1, private=2)
+* STATE State (postal code)
+* TYPE - I (можно удалить)
+
+2. Если признаков очень много, то отобрать признаки (примерно 7-10) из следующих соображений: там должны быть признаки, упоминаемые в задании, и признаки, которые оказывают влияние на зависимую переменную в пункте 4 задания. Также, можно сократить число признаков, выбрав по представителю из каждой группы сильно коррелированных и похожих по смыслу признаков. При выборе представителей можно обращать внимание на число пропусков, на интерпретируемость и пр.
+
+Рассматриваемые признаки (из .tsk):
+
+1. PPIND
+2. ADD_FEE
+3. BOOK
+4. NEW10 (зависимая переменная, также NEW25)
+
+К ним можно добавить следующие признаки:
+
+1. AVRMATH, MATH_1, MATH_3, AVRVERB, VERB_1, VERB_3, AVR_ACT, ACT_1, ACT_3 и AVRCOMB (могут влиять на NEW10 по смыслу)
+
+```{r}
+col_NEW10_sn<-col_I_sn[c("...1", "PPIND", "AVRMATH", "MATH_1", "MATH_3", "AVRVERB", "VERB_1", "VERB_3", "AVR_ACT", "ACT_1", "ACT_3", "AVRCOMB")]
+  
+```
+
+3. Определить вид признаков (колич., порядковые, качеств.). Для количеств. признаков определить, непрерывные они или дискретные (в том числе, дискретными могут стать непрерывные признаки, которые измерены с плохой точностью). Как вариант, это можно увидеть, посмотрев на частоту моды.
+
+```{r}
+create_plots_list <- function(vec) {
+    list(
+        unique = unique(vec),
+        hist = hist(vec, plot=FALSE),
+        ecdf = ecdf(vec),
+        ggqqplot = ggqqplot(vec),
+        shapiro_test=shapiro.test(vec)
+    )
+}
+
+col_I_sn_q_pub<-col_I_sn|>
+  filter(PPIND=="public")|>
+  select(q_cols)|>
+  map(create_plots_list)|>
+  set_names(q_cols)
+
+col_I_sn_q_prv<-col_I_sn|>
+  filter(PPIND=="private")|>
+  select(q_cols)|>
+  map(create_plots_list)|>
+  set_names(q_cols)
+
+col_I_sn_q_all<-col_I_sn|>
+  select(q_cols)|>
+  map(create_plots_list)|>
+  set_names(q_cols)
+```
+
+```{r}
+imap(col_I_sn_q_all, ~plot(.x$ecdf, main = .y, sub = paste("p-value = ",round(.x$shapiro_test$p.value,5)))+plot(.x$ggqqplot, main=.y))
+```
+
+Визуально по ecdf (Empirical CDF) можно разделить количественные признаки на непрерывные и дискретные следующим образом:
+
+Дискретные:
+
+* AVR_ACT
+* MATH_1
+* MATH_3
+* VERB_1
+* VERB_3
+* ACT_1 
+* ACT_3
+* PH_D ? 
+* TERM_D
+* DONATE ? (В процентах, предположительно непрерывные, но визуально похожи на дискретные)
+
+Непрерывные:
+
+* Остальные
+
+```{r}
+q_cols_log<-paste0("log-",q_cols)
+col_I_sn_q_all_log<-col_I_sn_log|>
+  select(q_cols_log)|>
+  map(create_plots_list)|>
+  set_names(q_cols_log)
+```
+
+```{r}
+imap(col_I_sn_q_all_log, ~plot(.x$ecdf, main=.y, sub=paste0("p-value = ", round(.x$shapiro_test$p.value, 5)))+plot(.x$ggqqplot, main=.y))
+```
+
+
+5. Построить matrix plot (pairs plot), его долго разглядывать с точки зрения outliers, неоднородностей, вида распределений, вида зависимостей (линейные/нелинейные) и пр.
+
+```{r}
+names_col<-names(col_I_sn)
+names_col
+avr_col<-names_col[grep("AVR", names_col)]
+avr_col
+act_col<-names_col[grep("ACT", names_col)]
+num_col<-names_col[grep("NUM", names_col)]
+sal_col<-names_col[grep("SAL", names_col)]
+comp_col<-names_col[grep("COMP", names_col)]
+new_col<-names_col[grep("NEW", names_col)]
+math_col<-names_col[grep("MATH", names_col)]
+verb_col<-names_col[grep("VERB", names_col)]
+app_col<-names_col[grep("APP", names_col)]
+time_col<-names_col[grep("TIME", names_col)]
+cat_col<-c("PPIND", "FICE", "STATE")
+stat_col<-c("IN_STATE", "OUT_STAT")
+misc_col<-c("R_B_COST", "ROOM", "BOARD", "ADD_FEE", "BOOK", "PERSONAL", "INSTRUCT")
+```
+
+```{r}
+col_list <- list(avr_col, act_col, num_col, sal_col, comp_col, new_col, math_col, verb_col, app_col, time_col)
+
+
+create_ggpairs <- function(cols) {
+  ggpairs(col_I_sn[c(cols, "PPIND")], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+}
+
+ggpairs_list <- map(col_list, create_ggpairs)
+names(ggpairs_list) <- c("avr", "act", "num", "sal", "comp", "new", "math", "verb", "app", "time")
+
+```
+
+```{r}
+ggpairs_list
+```
+
+```{r}
+col_list_log<-lapply(col_list, function(x) paste0("log-", x))
+col_list_log
+
+create_ggpairs_log <- function(cols) {
+  ggpairs(col_I_sn_log[c(cols, "PPIND")], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+}
+
+ggpairs_list_log <- map(col_list_log, create_ggpairs_log)
+names(ggpairs_list_log) <-paste0("log-", c("avr", "act", "num", "sal", "comp", "new", "math", "verb", "app", "time"))
+```
+
+```{r}
+ggpairs_list_log
+```
+
+```{r}
+ggpairs(col_I_sn[c(num_col, "PPIND")], aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+6. Если есть сильно несимметричные (с хвостом вправо) распределения на положительной полуоси, то прологарифмировать их и снова построить pairs plot - зависимости должны стать более линейными, а распределения более симметричными.
+
+7. Если есть outliers, то попробовать объяснить причину (ошибка в данных, особые индивиды) и удалить их.
+
+```{r}
+# Function to detect outliers using boxplot.stats
+find_outliers_boxplot <- function(x) {
+  boxplot.stats(x)$out
+}
+
+# Apply the function to each column
+outlier_list_boxplot <- lapply(col_I_sn[q_cols], find_outliers_boxplot)
+names(outlier_list_boxplot) <- q_cols
+
+lapply(outlier_list_boxplot, summary)
+```
+
+```{r}
+remove_outliers <- function(df, outlier_list) {
+  df_cleaned <- list()
+
+  for (i in seq_along(df)) {  
+      attr_name <- names(df)[i]
+      outliers <- outlier_list[[attr_name]]
+      if (!is.null(outliers)) {
+        df_cleaned[[attr_name]] <- df[[attr_name]][!(df[[attr_name]] %in% outliers)]
+      }
+  }
+  df_cleaned
+}
+
+df_cleaned <- remove_outliers(col_I_sn[q_cols], outlier_list_boxplot)
+```
+
+
+```{r}
+# Function to create a data frame with specific attribute and PPIND, filtered for "public" and "private"
+create_filtered_df <- function(df, attr_name, outliers) {
+    df %>%
+      select(PPIND, attr_name) |>
+      filter(if (!is.null(outliers)) !(!!sym(attr_name) %in% outliers)) #Remove outliers
+}
+
+# Create a list of data frames
+attribute_names <- names(df)[-1]  #Exclude PPIND
+list_dfs <- map2(q_cols, outlier_list_boxplot, ~ create_filtered_df(col_I_sn[c("PPIND", q_cols)], .x, .y))
+names(list_dfs) <- q_cols
+```
+
+```{r}
+create_boxplot <- function(df, attr_name) {
+  ggplot(df, aes(x = 1, y = !!sym(attr_name), fill = PPIND)) +
+    geom_boxplot() +
+    labs(title = paste("Boxplot of", attr_name, "by PPIND"), y = attr_name) +
+    theme_bw()
+}
+
+boxplot_list <- map2(list_dfs, names(list_dfs), ~create_boxplot(.x, .y))
+names(boxplot_list) <- names(list_dfs)
+
+boxplot_list
+```
+
+
+10. Посмотрите также на descriptive statistics с точки зрения минимумов-максимумов, асимметрии, эксцесса и пр.
+
+```{r}
+describe(col_I_sn)|>rmarkdown::paged_table()
+
+results <- describeBy(col_I_sn, group=col_I_sn$PPIND)
+df_results <- map_dfr(results, ~as.data.frame(.x), .id = "group")
+kable(df_results, "html") %>%
+  kable_styling(full_width = FALSE) %>%
+  scroll_box(width = "100%", height = "400px")
+
+skim(col_I_sn)[,c("skim_variable", "numeric.hist")]|>rmarkdown::paged_table()
+```
+
+```{r}
+describe(col_I_sn_log)|>rmarkdown::paged_table()
+
+results <- describeBy(col_I_sn_log, group=col_I_sn_log$PPIND)
+
+df_results <- map_dfr(results, ~as.data.frame(.x), .id = "group")
+
+kable(df_results, "html") %>%
+  kable_styling(full_width = FALSE) %>%
+  scroll_box(width = "100%", height = "400px")
+```
+
+```{r}
+data <- col_I_sn
+
+results <- describeBy(col_I_sn, group=col_I_sn$PPIND)
+
+df_results <- map_dfr(results, ~as.data.frame(.x), .id = "group")
+
+kable(df_results, "html") %>%
+  kable_styling(full_width = FALSE) %>%
+  scroll_box(width = "100%", height = "400px")
+```
+
+```{r}
+df_long <- col_I_sn[c("PPIND", q_cols)] |>
+  pivot_longer(cols = -PPIND, names_to = "attribute", values_to = "value")
+df_long|>rmarkdown::paged_table()
+
+ggplot(df_long, aes(x = attribute, y = value, color = PPIND)) +
+  geom_boxplot() +
+  labs(title = "Boxplots of Attributes by PPIND", x = "Attribute", y = "Value") +
+  theme_bw() +
+  theme(axis.text.x = element_text(size=3.5, angle = 45, hjust = 1, vjust=1)) +
+    facet_wrap(~PPIND, scales="free") +
+  theme(legend.position = "no")
+
+ggplot(df_long, aes(x = attribute, y = value, color = PPIND)) +
+  geom_boxplot() +
+  labs(title = "Boxplots of Attributes by PPIND", x = "Attribute", y = "Value") +
+  theme_bw() +
+  theme(axis.text.x = element_text(size=3.5, angle = 45, hjust = 1, vjust=1))
+```

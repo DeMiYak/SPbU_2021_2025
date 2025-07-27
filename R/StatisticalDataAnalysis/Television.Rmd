@@ -1,0 +1,160 @@
+---
+title: "Television"
+author: "Yakovlev D.M."
+date: "2025-03-03"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(lm.beta)
+library(ggplot2)
+library(GGally)
+```
+
+
+## 1. Посмотреть на данные
+
+```{r}
+tv_data <- read.fwf("televisions.dat", widths = c(22, 6, 7, 5, 4, 4),
+                   col.names = c("Country", "Life_Expectancy", "People_per_TV",
+                                 "People_per_Physician", "Female_Life_Exp", "Male_Life_Exp"))[1:40,]
+
+tv_data[tv_data == "*"] <- NA
+tv_data$Life_Expectancy <- as.numeric(gsub(",", ".", tv_data$Life_Expectancy))
+tv_data$People_per_TV <- as.numeric(gsub(",", ".", tv_data$People_per_TV))
+
+head(tv_data)
+tv_data$Country[is.na(tv_data$People_per_TV)]
+```
+
+## 2. Посмотреть на графики
+```{r}
+ggplot(tv_data) +
+  geom_point(aes(y=Life_Expectancy, x=People_per_TV))
+ggplot(tv_data) +
+  geom_point(aes(y=Life_Expectancy, x=People_per_Physician))
+ggplot(tv_data) +
+  geom_point(aes(y=Life_Expectancy, x=Female_Life_Exp))
+ggplot(tv_data) +
+  geom_point(aes(y=Life_Expectancy, x=Male_Life_Exp))
+```
+
+На самом деле (это описано в файле) Life_Expectancy = (Male_Life_Exp+Female_Life_Exp)/2, поэтому в рамках задачи продолжительность жизни женщин и мужчин можно опустить.
+```{r}
+ggplot(tv_data) +
+  geom_point(aes(y=Life_Expectancy, x=(Male_Life_Exp+Female_Life_Exp)/2))
+```
+
+
+### 2.1. Изменение графиков
+```{r}
+tv_data_log<-tv_data
+tv_data_log$People_per_TV<-log(tv_data$People_per_TV)
+tv_data_log$People_per_Physician<-log(tv_data$People_per_Physician)
+tv_data_log<-tv_data_log|>rename(People_per_Physician_log=People_per_Physician, People_per_TV_log=People_per_TV)
+```
+
+```{r}
+ggplot(tv_data_log) +
+  geom_point(aes(y=Life_Expectancy, x=People_per_TV_log))
+ggplot(tv_data_log) +
+  geom_point(aes(y=Life_Expectancy, x=People_per_Physician_log))
+
+```
+
+
+## 3. Построение моделей
+
+### 3.1. Централизованная модель (lm)
+```{r}
+tv_data_log_c<-tv_data_log[,1:4]
+tv_data_log_c[,2:4]<-scale(tv_data_log_c[,2:4], scale=FALSE)
+tv_data_log_c<-tv_data_log_c|>rename(People_per_TV_log_c = People_per_TV_log, People_per_Physician_log_c = People_per_Physician_log)
+# tv_data_log_c
+```
+
+```{r}
+
+model_tv <- lm(Life_Expectancy ~ People_per_TV_log_c + 0, data = tv_data_log_c)
+summary(model_tv)
+model_tv_beta <- lm.beta(model_tv)
+```
+```{r}
+plot_tv <- ggplot(tv_data_log_c, aes(x = People_per_TV_log_c, y = Life_Expectancy)) +
+  geom_point() +
+  geom_abline(slope = coef(model_tv)[1], color = "red") +
+  labs(title = "Life Expectancy vs. log(People per TV), Centralized",
+       x = "log(People per TV)",
+       y = "Life Expectancy")
+
+plot_tv
+lm(model_tv)
+```
+
+
+```{r}
+model_physician <- lm(Life_Expectancy ~ People_per_Physician_log_c + 0, data = tv_data_log_c)
+summary(model_physician)
+model_physician_beta <- lm.beta(model_physician)
+```
+
+```{r}
+plot_physician <- ggplot(tv_data_log_c, aes(x = People_per_Physician_log_c, y = Life_Expectancy)) +
+  geom_point() +
+  geom_abline(slope = coef(model_physician)[1], color = "blue") +
+  labs(title = "Life Expectancy vs. log(People per Physician), Centralized",
+       x = "log(People per Physician)",
+       y = "Life Expectancy")
+
+plot_physician
+lm(model_physician)
+```
+
+### 3.2 Стандартизированная модель (lm.beta)
+```{r}
+tv_data_log_s<-tv_data_log_c
+tv_data_log_s[,2:4]<-scale(tv_data_log_s[,2:4])
+tv_data_log_s<-tv_data_log_s|>rename(People_per_TV_log_s = People_per_TV_log_c, People_per_Physician_log_s = People_per_Physician_log_c)
+# tv_data_log_s
+```
+
+```{r}
+plot_tv_s <- ggplot(tv_data_log_s, aes(x = People_per_TV_log_s, y = Life_Expectancy)) +
+  geom_point() +
+  geom_abline(slope = coef(model_tv_beta)[1], color = "red") +
+  labs(title = "Life Expectancy vs. log(People per TV), Standardized",
+       x = "log(People per TV)",
+       y = "Life Expectancy")
+
+plot_tv_s
+model_tv_beta
+```
+
+```{r}
+plot_physician_s <- ggplot(tv_data_log_s, aes(x = People_per_Physician_log_s, y = Life_Expectancy)) +
+  geom_point() +
+  geom_abline(slope = coef(model_physician_beta)[1], color = "blue") +
+  labs(title = "Life Expectancy vs. log(People per Physician), Standardized",
+       x = "log(People per Physician)",
+       y = "Life Expectancy")
+
+plot_physician_s
+model_physician_beta
+```
+
+```{r}
+ggpairs(tv_data[,2:4])
+```
+
+```{r}
+ggpairs(tv_data_log[,2:4])
+```
+
+```{r}
+model_tv_log <- lm(Life_Expectancy ~ People_per_TV_log + People_per_Physician_log, data = tv_data_log)
+summary(model_tv_log)
+lm(model_tv_log)
+lm.beta(model_tv_log)
+summary(lm.beta(model_tv_log))
+```

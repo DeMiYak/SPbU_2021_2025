@@ -1,0 +1,668 @@
+---
+title: "ML_YDM"
+author: "Yakovlev D.M."
+date: "2024-11-11"
+output: html_document
+---
+
+```{r pressure, echo=FALSE, fig.cap="A caption", out.width = '100%'}
+knitr::include_graphics("C:\\MyFiles\\RSpace\\ContemporaryMethods\\pictures\\mlr3_ecosystem.svg")
+```
+
+# Методы машинного обучения и их применение (в R).
+While tidymodels in particular makes it very easy to perform simple ML tasks, mlr3 is more geared towards advanced ML.
+
+На основе датасета из Kaggle (Spaceship Titanic):
+train.csv - Personal records for about two-thirds (~8700) of the passengers, to be used as training data.
+
+PassengerId - A unique Id for each passenger. Each Id takes the form gggg_pp where gggg indicates a group the passenger is travelling with and pp is their number within the group. People in a group are often family members, but not always.
+
+HomePlanet - The planet the passenger departed from, typically their planet of permanent residence.
+
+CryoSleep - Indicates whether the passenger elected to be put into suspended animation for the duration of the voyage. Passengers in cryosleep are confined to their cabins.
+
+Cabin - The cabin number where the passenger is staying. Takes the form deck/num/side, where side can be either P for Port or S for Starboard.
+
+Destination - The planet the passenger will be debarking to.
+
+Age - The age of the passenger.
+
+VIP - Whether the passenger has paid for special VIP service during the voyage.
+
+RoomService, FoodCourt, ShoppingMall, Spa, VRDeck - Amount the passenger has billed at each of the 
+Spaceship Titanic's many luxury amenities.
+
+Name - The first and last names of the passenger.
+
+Transported - Whether the passenger was transported to another dimension. This is the target, the column you are trying to predict.
+
+### 0. Подготовительный этап, EDA.
+
+Рассмотрим нашу задачу: необходимо смоделировать Transported в зависимости от каждого признака (кроме, разве что, PassengerId и Name). Для этого, при необходимости, конвертируем типы в нужные нам типы.
+```{r}
+library(mlr3verse)
+library(tidyverse)
+dt<-read.csv("spaceship-titanic\\train.csv")
+summary(dt)
+```
+```{r}
+head(dt)
+```
+
+```{r}
+dt_modified<-dt
+```
+
+```{r}
+dt_modified$CryoSleep<-as.integer(as.logical(dt_modified$CryoSleep))
+dt_modified$VIP<-as.integer(as.logical(dt_modified$VIP))
+for(i in 1:length(dt_modified)){
+  if((is.character(dt_modified[,i]) && (names(dt_modified)[i]!="Transported"))){
+    dt_modified[,i]<-match(dt_modified[,i], levels(factor(dt_modified[,i])))-1
+  }
+}
+# for(i in 1:length(dt_modified)){
+#   if((is.character(dt_modified[,i]) && (names(dt_modified)[i]!="Transported"))){
+#     dt_modified[,i]<-as.factor(dt_modified[,i])
+#   }
+# }
+# dt_modified<-dt_modified[-c(1,(length(dt_modified)-1))]
+str(dt_modified)
+summary(dt_modified)
+```
+
+```{r}
+dt_modified<-dt_modified|>drop_na()
+summary(dt_modified)
+dim(dt)
+dim(dt_modified)
+```
+
+```{r}
+tsk_spt<-as_task_classif(dt_modified, target="Transported", id="ClassifTask", positive="True")
+tsk_spt$set_col_roles(c("HomePlanet", "CryoSleep", "VIP", "Destination"), "stratum")
+names(dt_modified)
+# tsk_spt$select(c("HomePlanet", "CryoSleep", "Destination", "Age", "VIP", "RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"))
+tsk_spt$select(c("Age", "RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"))
+tsk_spt
+```
+
+Resample
+```{r}
+as.data.table(rsmps())
+holdout = rsmp("holdout", ratio = 0.8)
+cv3 = rsmp("cv", folds = 3)
+```
+Measures
+```{r}
+as.data.table(msrs())
+```
+Benchmark
+```{r}
+lrn("classif.kknn")$param_set
+lrn("classif.kknn")$param_set$default
+```
+
+```{r}
+lrn("classif.ranger")$param_set
+lrn("classif.ranger")$param_set$default
+```
+
+```{r}
+lrn("classif.featureless")$param_set
+lrn("classif.featureless")$param_set$default
+```
+
+```{r}
+lrn("classif.svm")$param_set
+lrn("classif.svm")$param_set$default
+```
+
+```{r}
+design=benchmark_grid(
+  tasks = tsk_spt,
+  learners = lrns(c("classif.kknn", "classif.ranger", "classif.featureless", "classif.log_reg", "classif.svm"), predict_type="prob"),
+  resamplings = c(holdout, cv3)
+)
+as.data.table(lrns())
+```
+
+```{r}
+library(e1071)
+bmr = benchmark(design)
+bmr
+```
+
+```{r}
+bmr$score(msr("classif.acc"))[, .(iteration, task_id, learner_id, classif.acc)]
+bmr$aggregate(msr("classif.acc"))[, .(task_id, learner_id, classif.acc)]
+```
+
+```{r}
+autoplot(bmr, measure = msr("classif.acc"))
+```
+
+```{r}
+measures = msrs(c("classif.ce", "classif.tnr", "classif.fnr", "classif.tpr", "classif.fpr", "time_both"))
+bmr$aggregate(measures)
+```
+
+```{r}
+library(mlr3measures)
+for(i in 1:length(bmr$resample_results$nr)){
+  rr_predict<-bmr$resample_result(i)$prediction()
+  print(confusion_matrix(rr_predict$truth, rr_predict$response, rr_predict$positive))
+}
+```
+
+```{r}
+library(patchwork)
+bmr
+bmr_holdout<-bmr$clone(deep=TRUE)
+bmr_holdout$filter(resampling_id = "holdout")
+bmr_holdout
+autoplot(bmr_holdout, type="roc")+autoplot(bmr_holdout, type="prc")+
+  plot_layout(guides="collect")
+```
+
+```{r}
+bmr_cv<-bmr$clone(deep=TRUE)
+bmr_cv$filter(resampling_id = "cv")
+bmr_cv
+autoplot(bmr_cv, type="roc")+autoplot(bmr_cv, type="prc")+
+  plot_layout(guides="collect")
+```
+
+Если хотим оптимизировать гиперпараметры:
+
+classif.kknn
+```{r}
+lrn("classif.kknn")$param_set$default
+learner_kknn = lrn("classif.kknn",
+                   k = to_tune(1, 200),
+                   distance = to_tune(0.10, 10),
+                   scale = TRUE,
+                   kernel = "optimal")
+```
+
+```{r}
+library(mlr3tuning)
+library(mlr3tuningspaces)
+instance = ti(
+  task = tsk_spt,
+  learner = learner_kknn,
+  resampling = cv3,
+  measures = msr("classif.ce"),
+  terminator = trm("none")
+)
+as.data.table(trms())
+tuner = tnr("grid_search", resolution=5, batch_size=3)
+tuner$param_set
+```
+
+```{r}
+tuner$optimize(instance)
+```
+
+```{r}
+autoplot(instance, type="surface")
+```
+
+```{r}
+learner_kknn = lrn("classif.kknn", predict_type="prob")
+learner_kknn$param_set$set_values(.values=instance$result_learner_param_vals)
+rsmp_kknn = resample(tsk_spt, learner_kknn, cv3)
+rsmp_kknn$aggregate(msr("classif.ce"))
+```
+
+```{r}
+bmr_1=as_benchmark_result(rsmp_kknn)
+bmr_2=as_benchmark_result(bmr_cv$resample_result(1))
+bmr_kknn<-c(bmr_1, bmr_2)
+bmr_kknn$aggregate(measures)
+(autoplot(bmr_1, type='roc')+autoplot(bmr_2, type='roc'))/(autoplot(bmr_1,type='prc')+autoplot(bmr_2, type='prc'))+plot_layout(guides="collect")
+```
+Более точная модель требует больше времени на обучение (2 сек. vs. 0.17 сек)
+
+### Интерпретация результатов
+```{r}
+bmr$aggregate(measures)
+```
+Лучше всех проявила себя модель classif.svm при holdout (ratio=0.8)
+```{r}
+rr_svm=bmr$resample_result(9)
+rr_svm
+```
+
+```{r}
+pred_svm = rr_svm$prediction()
+
+cor_svm = pred_svm$row_ids[pred_svm$truth==pred_svm$response]
+incor_svm = pred_svm$row_ids[pred_svm$truth!=pred_svm$response]
+cor_svm
+incor_svm
+```
+
+```{r}
+cor_dt = dt[cor_svm,]
+incor_dt = dt[incor_svm,]
+```
+
+```{r}
+cor_dt
+```
+```{r}
+cat_names<-c("HomePlanet", "CryoSleep", "Cabin", "Destination", "VIP", "Transported")
+num_names<-c("Age", "RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck")
+```
+
+```{r}
+library(GGally)
+```
+
+```{r}
+ggpairs(cor_dt[c(num_names, "HomePlanet")], aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(cor_dt[c(num_names, "Destination")], aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+cor_dt_log<-cor_dt
+cor_dt_log[num_names]<-log(cor_dt_log[num_names])
+incor_dt_log<-incor_dt
+incor_dt_log[num_names]<-log(incor_dt_log[num_names])
+```
+
+```{r}
+ggpairs(cor_dt_log[c(num_names, "Destination")], aes(alpha = 0.5),
+        diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(cor_dt[c("HomePlanet", "Destination", "CryoSleep", "VIP", "Transported")], aes(color=Transported, alpha=0.5), diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(cor_dt_log[c(num_names, "Transported")], aes(color=Transported, alpha=0.5), diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(incor_dt[c("HomePlanet", "Destination", "CryoSleep", "VIP", "Transported")], aes(color=Transported, alpha=0.5), diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+```{r}
+ggpairs(incor_dt_log[c(num_names, "Transported")], aes(color=Transported, alpha=0.5), diag = list(continuous = wrap("barDiag", bins = 20)))
+```
+
+Из результатов можно заметить из cor_dt (обучаемая модель верно предсказала Transported), что CryoSleep влияет на Transported.
+
+```{r}
+cor_dt_mod<-dt_modified[cor_svm,]
+cor_dt_mod$Transported<-as.integer(as.logical(cor_dt_mod$Transported))
+ggcorr(cor_dt_mod[c("HomePlanet", "VIP", "CryoSleep", "Transported")])
+```
+
+```{r}
+ggcorr(cor_dt)
+```
+
+
+```{r}
+incor_dt_mod<-dt_modified[incor_svm,]
+incor_dt_mod$Transported<-as.integer(as.logical(incor_dt_mod$Transported))
+ggcorr(incor_dt_mod[c("HomePlanet", "VIP", "CryoSleep", "Transported", "Cabin", "Destination")])
+```
+
+```{r}
+ggcorr(incor_dt)
+```
+
+```{r}
+p_1=0.65
+p_2=0.21
+p_mean = 0.386
+n_1 = 200
+n_2 = 300
+z = sqrt(p_mean*(1-p_mean)/n_1 + p_mean*(1-p_mean)/n_2)
+z
+```
+
+```{r}
+p_1=0.3
+p_2=0.24
+p_mean = 0.27
+n_1 = 100
+n_2 = 100
+z = (p_1-p_2)/sqrt(p_mean*(1-p_mean)/n_1 + p_mean*(1-p_mean)/n_2)
+z
+```
+
+```{r}
+p_1=0.295
+p_2=0.31
+p_mean = 0.304
+n_1 = 200
+n_2 = 300
+z = sqrt(p_mean*(1-p_mean)/n_1 + p_mean*(1-p_mean)/n_2)
+z
+```
+
+```{r}
+pnorm(z)
+2*(1-pnorm(z))
+```
+```{r}
+p_1=8/59
+p_2=20/75
+p_mean = 28/134
+p_mean
+n_1 = 59
+n_2 = 75
+z = (p_1-p_2)/sqrt(p_mean*(1-p_mean)/n_1 + p_mean*(1-p_mean)/n_2)
+z
+```
+
+```{r}
+pnorm(z)
+1-pnorm(z)
+```
+
+```{r}
+freq<-c(58,65,55,22)
+thprob<-c(0.44, 0.42, 0.10, 0.04)
+n<-200
+thfreq<-n*thprob
+thfreq
+chisq<-(thfreq-freq)^2/thfreq
+chisq
+z = sum(chisq)
+```
+
+```{r}
+1-pchisq(z, 3, lower.tail=FALSE)
+```
+
+```{r}
+freq<-c(159,90,51, 27,42,31)
+thfreq<-c(139.5, 99, 61.5, 46.5, 33, 20.5)
+chisq<-(thfreq-freq)^2/thfreq
+chisq
+z = sum(chisq)
+z
+```
+
+```{r}
+pchisq(z, 2, lower.tail=FALSE)
+```
+
+```{r}
+1-2*pnorm(-1)
+1-2*pnorm(-2)
+```
+
+```{r}
+n1=200
+n2=100
+p1=0.4
+p2=0.56
+pmean=(n1*p1+n2*p2)/(n1+n2)
+pmean
+pr=sqrt(pmean*(1-pmean)/n1+pmean*(1-pmean)/n2)
+gamma=0.95
+pr
+```
+```{r}
+cgamma = qnorm(gamma + (1-gamma)/2)
+cgamma
+pmed=p1-p2
+pmed
+c(pmed-cgamma*pr, pmed+cgamma*pr)
+```
+
+```{r}
+n1=150
+n2=200
+p1=0.8
+p2=0.6
+pmean=(n1*p1+n2*p2)/(n1+n2)
+pmean
+pr=sqrt(pmean*(1-pmean)/n1+pmean*(1-pmean)/n2)
+gamma=0.99
+pr
+```
+
+```{r}
+cgamma = qnorm(gamma + (1-gamma)/2)
+cgamma
+pmed=p1-p2
+pmed
+c(pmed-cgamma*pr, pmed+cgamma*pr)
+```
+
+```{r}
+pnorm(-1.25)
+1-2*pnorm(-1.25)
+```
+
+```{r}
+salary<-c(800,1200,1000,900,850,907,1100)
+expences<-c(60,200,160,135,45,90,150)
+n=7
+plot(expences, salary)
+```
+
+```{r}
+x_mean = sum(expences)
+y_mean = sum(salary)
+```
+ 
+```{r}
+r = cor(expences, salary)
+r
+t = r*sqrt((n-2)/(1-r*r))
+t
+pt(t, 5)
+pt(-t, 5)
+2*(1-pt(t,5))
+```
+
+```{r}
+mm<-lm(salary~expences)
+mm$coefficients
+```
+
+```{r}
+plot(expences, salary) + abline(mm)
+```
+
+```{r}
+age = c(18,24,36,40,58)
+hours=c(3.9,2.6,2,2.3,1.2)
+x_mean = mean(age)
+n=length(age)
+n
+r = cor(age, hours)
+r
+```
+
+```{r}
+mm =lm(hours~age)
+new_data = data.frame(x=c(38,20))
+```
+
+```{r}
+
+prediction <- predict(mm, new_data, 
+                      interval = "prediction")
+```
+
+```{r}
+b<-coef(mm)[1]
+a<-coef(mm)[2]
+x=38
+b
+a*x+b
+```
+
+```{r}
+new_data <- data.frame(x = 20)
+prediction <- predict(model, newdata = new_data, interval = "prediction", level = 0.9)
+standard_error <- (prediction[,"upr"] - prediction[,"lwr"]) / 2
+prediction_interval <- c(prediction[,"lwr"], prediction[,"upr"])
+prediction_interval
+
+print(paste("Предсказанное значение:", prediction[,"fit"]))
+print(paste("Стандартная ошибка предсказания:", standard_error))
+print(paste("90% интервал предсказания:", prediction_interval))
+```
+
+
+```{r}
+x=20
+res=a*x+b
+summary(mm)
+gamma<-0.9
+cgamma<-qnorm((1+gamma)/2)
+```
+
+```{r}
+res_err = 0.4569
+cgamma
+x_mean
+x_sd= sd(age)
+x_sd
+```
+
+```{r}
+intrv = c(res-cgamma*res_err*sqrt(1+1/n+(x-x_mean)^2/(n*x_sd)), res+cgamma*res_err*sqrt(1+1/n+(x-x_mean)^2/(n*x_sd)))
+intrv
+
+
+```
+
+```{r}
+t1=c(230,245,220,210,225)
+t2=c(260,255,270,240,245)
+t3=c(290,280,275,265,300)
+total=rbind(t1,t2,t3)
+total
+summary(total)
+
+```
+
+```{r}
+t1=c(230,245,220,210,225)
+s_t1<-sum(t1)
+
+t2=c(260,255,270,240,245)
+s_t2<-sum(t2)
+t3=c(290,280,275,265,300)
+s_t3<-sum(t3)
+k=3
+N=15
+df<-data.frame(t1,t2,t3)
+
+# Средние по уровням
+
+m_t1<-mean(t1)
+m_t2<-mean(t2)
+m_t3<-mean(t3)
+
+# Общий средний
+mean_gen<-mean(c(t1,t2,t3))
+
+# Sum Square Between Groups
+ssb_gen<-s_t1*(m_t1-mean_gen)^2+s_t2*(m_t2-mean_gen)^2+s_t3*(m_t3-mean_gen)^2 
+ssb_gen
+# Sum Square Within Groups
+ssw_t1<-sum((t1 - m_t1)^2)
+ssw_t2<-sum((t2 - m_t2)^2)
+ssw_t3<-sum((t3 - m_t3)^2)
+# Sum Square
+ssw_gen<-ssw_t1+ssw_t2+ssw_t3
+ssw_gen
+ss_gen<- ssb_gen + ssw_gen
+ss_gen
+
+# Mean Square Between Groups
+msb<-ssb_gen/(k-1)
+msb
+# Mean Square Within Groups
+msw<-ssw_gen/(N-k)
+msw
+f<-msb/msw
+# Критическое значение
+alpha<-0.01
+crit_val<-qf(1-alpha, k-1, N-k)
+f
+crit_val
+crit_val<f
+## Какие-то странные вычисления. Либо что-то упустил, либо не так понял.
+
+
+```
+
+```{r}
+X<-c(12,15,14,13,16,17,13,14,15,12)
+Y<-c(18,14,16,19,15,12,17,16,13,15)
+x_mean=mean(X)
+y_mean=mean(Y)
+x_mean
+y_mean
+xlen=length(X)
+xlen
+```
+
+```{r}
+x_sd=sd(X)
+y_sd=sd(Y)
+t = (x_mean-y_mean)/sqrt((x_sd^2+y_sd^2)/xlen)
+t
+```
+
+```{r}
+pt(abs(t), 8)
+2*(1-pt(abs(t), 8))
+```
+
+```{r}
+n=10
+r_spear=3/11
+t=r_spear*sqrt((n-2)/(1-r_spear^2))
+t
+```
+
+```{r}
+pt(t, n-1)
+2*(1-pt(t,n-1))
+```
+
+```{r}
+r_kend=13/45
+z=r_kend/sqrt(2*(2*n+5)/(9*n*(n-1)))
+z
+```
+
+```{r}
+2*(1-pnorm(z))
+```
+
+```{r}
+mu=9
+mu_sup=10
+sd=5
+n=120
+alpha=0.05
+zalpha=qnorm(alpha)
+zalpha
+```
+
+```{r}
+new_mid=sqrt(n)*(mu-mu_sup)/sd
+new_mid
+1-pnorm(zalpha,new_mid)
+```

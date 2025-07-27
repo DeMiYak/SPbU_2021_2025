@@ -1,0 +1,501 @@
+---
+title: "CollegeTwo"
+author: "Yakovlev D.M."
+date: "2024-12-04"
+output: html_document
+---
+
+# О виде распределений и о сравнении распределений
+
+### 1. Проверка гипотез на нормальное распределение:
+
+Для чего нужна проверка на нормальное распределение?
+
+* Некоторые параметрические методы опираются на данные с нормальным распределением
+* Для задач регрессионного анализа нормальные (гауссовские) распределения могут иметь только линейную зависимость, что важно
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(GGally)
+library(ggplot2)
+library(psych)
+library(ggpubr)
+library(patchwork)
+library(kableExtra)
+library(skimr)
+library(fitdistrplus)
+library(car)
+library(nortest)
+library(plotrix)
+```
+
+```{r} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+Воспользуемся полученными в первой части задания результатами.
+
+```{r}
+library(readxl)
+col_I_sn<-read_excel("stat2021_sm\\us_col.std\\I_shortname.xls")
+col_I<-read_excel("stat2021_sm\\us_col.std\\I.xls")
+```
+Убираем IN_STATE как фиктивный признак
+
+```{r}
+col_I_sn$PPIND=ifelse(col_I_sn$PPIND==1, "public", "private")
+head(col_I_sn)
+colNames<-c("ADD_FEE", "BOOK", "R_B_COST","OUT_STAT","NEW10","AVRCOMB","SF_RATIO","PH_D","GRADUAT","PPIND")
+col_I_comp<-col_I_sn[colNames]
+```
+Выделим основные признаки, по которым будет проходить дальнейший анализ данных
+
+Количественные признаки:
+
+* AVRMATH Average Math SAT score                     
+* AVRVERB Average Verbal SAT score                   
+* AVRCOMB Average Combined SAT score
+* AVR_ACT Average ACT score                     
+* MATH_1 First quartile - Math SAT                    
+* MATH_3 Third quartile - Math SAT                   
+* VERB_1 First quartile - Verbal SAT
+* VERB_3 Third quartile - Verbal SAT
+* ACT_1 First quartile - ACT                          
+* ACT_3 Third quartile - ACT              
+* APP_REC Number of applications received             
+* APP_ACC Number of applicants accepted             
+* NEW_STUD Number of new students enrolled   
+* FULLTIME Number of fulltime undergraduates          
+* PARTTIME Number of parttime undergraduates
+* IN_STATE In-state tuition                        
+* OUT_STAT Out-of-state tuition                       
+* R_B_COST Room and board costs
+* ROOM Room costs                                    
+* BOARD Board costs                              
+* ADD_FEE Additional fees                            
+* BOOK Estimated book costs                 
+* PERSONAL Estimated personal spending
+* PH_D Pct. of faculty with Ph.D.'s          
+* TERM_D Pct. of faculty with terminal degree         
+* SAL_FULL Average salary - full professor          
+* SAL_AC Average salary - associate professor         
+* SAL_AS Average salary - assistant professor         
+* SAL_ALL Average salary - all ranks       
+* COMP_FUL Average compensation - full professor   
+* COMP_AC Average compensation - associate professor  
+* COMP_AS Average compensation - assistant professor  
+* COMP_ALL Average compensation - all ranks           
+* NUM_FULL Number of full professor
+* NUM_AC Number of associate professor                
+* NUM_AS Number of assistant professor                
+* NUM_INS Number of instructors                
+* NUM_ALL Number of faculty - all ranks   
+* INSTRUCT Instructional expenditure per student
+* GRADUAT Graduation rate
+* SF_RATIO Student/faculty ratio
+* DONATE Pct.alumni who donate
+* NEW10 Pct. new students from top 10% of H.S. class - % студентов из топ 10% своей старшей школы
+* NEW25 Pct. new students from top 25% of H.S. class - % студентов из топ 25% своей старшей школы
+
+Качественные признаки:
+
+* FICE - Federal ID Number
+* ...1 - Название университета 
+* PPIND Public/private indicator (public=1, private=2)
+* STATE State (postal code)
+* TYPE - I (можно удалить)
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_I_comp, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+
+log dataset
+```{r}
+q_cols<-sapply(col_I_sn, is.numeric)
+q_cols[c("PPIND", "FICE")]<-FALSE
+q_cols<-names(q_cols)[q_cols==TRUE]
+
+col_I_sn_log<-col_I_sn|>
+  mutate(across(q_cols, ~log(.x)))|>
+  rename_with(~paste0("log-", .x), q_cols)
+
+```
+
+Выбранные признаки с разделением по группам
+```{r}
+colNames<-c("ADD_FEE", "BOOK", "R_B_COST", "OUT_STAT","NEW10","AVRCOMB","SF_RATIO","PH_D","GRADUAT", "PPIND")
+colFin<-c("ADD_FEE", "BOOK", "PPIND")
+colCost<-c("R_B_COST", "OUT_STAT", "PPIND")
+colNew<-c("AVRCOMB", "PPIND")
+colStud<-c("SF_RATIO", "PH_D", "NEW10", "GRADUAT", "PPIND")
+col_I_comp<-col_I_sn[colNames]
+head(col_I_comp)
+```
+
+```{r}
+log_colNames<-c(paste0("log-", colNames)[-length(colNames)], "PPIND")
+col_I_comp_log<-col_I_sn_log[log_colNames]
+head(col_I_comp_log)|>rmarkdown::paged_table()
+```
+
+```{r}
+col_I_mixed<-col_I_comp|>mutate(ADD_FEE=col_I_comp_log$`log-ADD_FEE`)|>rename(`log-ADD_FEE`=ADD_FEE)
+head(col_I_mixed)
+```
+
+```{r message=FALSE, warning=FALSE}
+ggpairs(col_I_mixed, aes(alpha = 0.5, color=PPIND),
+        diag = list(continuous = wrap("barDiag", bins = 20)),
+        upper = list(continuous = wrap("cor", size = 2)))
+```
+
+Учтём комментарий из первой части: 
+
+"В дальнейшем вид pairs plots, распределения признаков и корреляции анализировать отдельно для неоднородных групп."
+
+Неоднородность групп в этом датасете определяется признаком PPIND. Тогда разделим рассматриваемые признаки на две части, либо используем facet_wrap(~PPIND) 
+```{r}
+col_split_mixed<-split(col_I_mixed, col_I_mixed$PPIND)
+names(col_split_mixed)<-c("private", "public")
+colMixed<-names(col_I_mixed)
+colMixed<-colMixed[-length(colMixed)]
+colMixed
+```
+
+```{r}
+chi_squared_normality_test <- function(data, method = "quantile", n_bins = 10, min_expected = 5) {
+  data <- na.omit(data)
+  n <- length(data)
+  if (n < 10) stop("Sample size too small for this test. Need at least 10 observations.")
+
+  mu <- mean(data)
+  sigma <- sd(data)
+
+  # Choose bins based on the specified method
+  if (method == "quantile") {
+    breaks <- quantile(data, probs = seq(0, 1, length.out = n_bins + 1))
+  } else if (method == "equalwidth") {
+    breaks <- seq(min(data), max(data), length.out = n_bins + 1)
+  } else {
+    stop("Invalid binning method. Choose 'quantile' or 'equalwidth'.")
+  }
+
+  #Observed Frequencies
+  observed <- hist(data, breaks = breaks, plot = FALSE)$counts
+
+  #Expected Frequencies (using pnorm)
+  expected <- diff(pnorm(breaks, mean = mu, sd = sigma)) * n
+
+  #Check for minimum expected frequency.  If not met, return NA.
+  if (any(expected < min_expected)) {
+    warning("Some expected frequencies are below the minimum. Consider increasing sample size or n_bins.")
+    return(list(p_value = NA, chisq = NA, df = NA, method = method, n_bins = n_bins))
+  }
+
+  chi_squared <- sum((observed - expected)^2 / expected)
+  df <- length(breaks) - 3  #Corrected degrees of freedom
+
+  p_value <- pchisq(chi_squared, df = df, lower.tail = FALSE)
+
+  return(list(p_value = p_value, statistic = chi_squared, df = df, method = method, n_bins = n_bins))
+}
+```
+
+```{r}
+chi_squared_normality_test <- function(data, min_expected = 4.9) {
+  data <- na.omit(data)
+  n <- length(data)
+  if (n < 10) stop("Sample size too small for this test. Need at least 10 observations.")
+
+  mu <- mean(data)
+  sigma <- sd(data)
+
+   # Calculate quantiles for breaks
+   probs <- seq(5/n, 1 - 5/n, by = 5/n)
+   breaks <- qnorm(probs, mean = mu, sd = sigma)
+
+   # Add extreme quantiles
+   breaks <- c(qnorm(0), breaks, qnorm(1))
+
+  #Observed Frequencies
+  observed <- hist(data, breaks = breaks, plot = FALSE)$counts
+
+  #Expected Frequencies (using pnorm)
+    expected <- diff(pnorm(breaks, mean = mu, sd = sigma)) * n
+
+  chi_squared <- sum((observed - expected)^2 / expected)
+  df <- length(breaks) - 3  #Corrected degrees of freedom
+
+  p_value <- pchisq(chi_squared, df = df, lower.tail = FALSE)
+
+  return(list(p_value = p_value, statistic = chi_squared, df = df))
+}
+```
+
+```{r}
+data<-rnorm(404)
+
+data <- na.omit(data)
+n <- length(data)
+if (n < 10) stop("Sample size too small for this test. Need at least 10 observations.")
+
+mu <- mean(data)
+sigma <- sd(data)
+
+ # Calculate quantiles for breaks
+ probs <- seq(5/n, 1 - 5/n, by = 5/n)
+ breaks <- qnorm(probs, mean = mu, sd = sigma)
+probs*n
+ # Add extreme quantiles
+ breaks <- c(qnorm(0), breaks, qnorm(1))
+breaks
+#Observed Frequencies
+observed <- hist(data, breaks = breaks, plot = FALSE)$counts
+observed
+#Expected Frequencies (using pnorm)
+  expected <- diff(pnorm(breaks, mean = mu, sd = sigma)) * n
+expected
+
+```
+
+Проверка на соответствие
+```{r}
+n = 500
+test<-replicate(3000, chi_squared_normality_test(rnorm(n))$p_value)
+quantile(test)
+```
+
+<h3>Комментарий к функции perform_normality_tests. Если выбран метод "equalwidth", то для chi-square теста на нормальность выполняется вычисление так, чтобы в каждом bin было не менее 5 значений (n_bins = length(data) - 1). </h3>
+```{r}
+perform_normality_tests <- function(df, cols) {
+  # Input validation (remains the same)
+    # Function to perform a single normality test (simplified)
+  run_test <- function(data, test_name) {
+    if (test_name == "Chi-squared") {
+      chisq_test<-chi_squared_normality_test(data)
+      return(chisq_test[c("p_value", "statistic", "df")])
+    }
+    test_result <- switch(test_name,
+                          "Lilliefors" = lillie.test(data),
+                          "Anderson-Darling" = ad.test(data),
+                          "Shapiro-Wilk" = shapiro.test(data)
+    )
+    return(list(p_value = test_result$p.value, statistic = test_result$statistic, df=length(na.omit(data))))  # Removed test_name
+  }
+     results <- lapply(cols, function(col) {
+    data <- df[[col]]
+    n_na <- sum(is.na(data))
+    if (n_na > 0) {
+      warning(paste0("Removed ", n_na, " NA values from column '", col, "' before testing."))
+      data <- na.omit(data)
+    }
+    test_results <- lapply(c("Lilliefors", "Anderson-Darling", "Shapiro-Wilk", "Chi-squared"), function(test) run_test(data, test))
+    list(column = col, tests = test_results)
+  })
+
+  results_df <- do.call(rbind, lapply(results, function(x) {
+    test_names <- c("Lilliefors", "Anderson-Darling", "Shapiro-Wilk", "Chi-squared")
+    p_values <- sapply(x$tests, "[[", "p_value")
+    data.frame(
+      Column = x$column,
+      Test = test_names, #Directly use test_names vector
+      Statistic = sapply(x$tests, "[[", "statistic"),
+      P_value = p_values,
+      Size = sapply(x$tests, "[[", "df"),
+      Significance = sapply(p_values, function(p) ifelse(p < 0.05, "\u2714", "\u2716")),
+      stringsAsFactors = FALSE
+    )
+  }))
+
+  plots <- lapply(cols, function(col) {
+    data <- df[[col]]
+    data <- na.omit(data)
+    ggqqplot(data, title = paste("Normal Probability Plot for", col))
+
+  })
+  names(plots)<-cols
+  list(results = results_df, plots = plots)
+}
+```
+
+Случай общественных вузов
+```{r}
+colSums(is.na(col_split_mixed$public))
+col_norm_public<-col_split_mixed$public|>perform_normality_tests(colMixed)
+col_norm_public$plots
+col_norm_public$results|>dplyr::select(-Statistic)|>rmarkdown::paged_table()
+```
+
+Если оценивать по критерию хи-квадрат, то для public не отвергаем AVRCOMB, SF_RATIO, PH_D, GRADUAT
+Можно заметить "хвосты" на некоторых графиках.
+
+```{r}
+col_norm_private<-col_split_mixed$private|>perform_normality_tests(colMixed, n_bins_private, "equalwidth")
+col_norm_private$plots
+col_norm_private$results|>dplyr::select(-Statistic)|>rmarkdown::paged_table()
+```
+Если сверяться с хи-квадратом, то для private не отвергаем log-ADD_FEE, R_B_COST, AVRCOMB, SF_RATIO
+
+
+### Проверка равенств распределений
+
+1.1. Исследовать однородность данных по PPIND
+(public/private) визуально (с помощью ящиков с усами) и
+по критериям.
+Сравнить величину дополнительных взносов (ADD FEE) и затраты на книги (BOOK).
+
+```{r}
+perform_tests <- function(data,
+                          quantitative_columns,
+                          categorical_column,
+                          alpha = 0.05) {
+  results <- list()
+  
+  for (col in quantitative_columns) {
+    levene_test<-leveneTest(data[[col]] ~ data[[categorical_column]])
+    var_test <- var.test(data[[col]] ~ data[[categorical_column]])
+    wilcox_test <- wilcox.test(data[[col]]~data[[categorical_column]])
+    t_test_equal <- t.test(data[[col]] ~ data[[categorical_column]], var.equal = TRUE)
+    t_test_unequal <- t.test(data[[col]] ~ data[[categorical_column]], var.equal = FALSE)
+    
+    results[[col]] <- list(
+      t_test_unequal_p_value = t_test_unequal$p.value,
+      t_test_equal_p_value = t_test_equal$p.value,
+      levene_test_p_value = levene_test$`Pr(>F)`[1],
+      var_test_p_value = var_test$p.value,
+      wilcox_test_p_value = wilcox_test$p.value
+    )
+  }
+  
+  return(results |> enframe(name = "attribute", value = "p_values") |>
+  unnest_wider(p_values))
+}
+```
+
+```{r}
+df_tests = perform_tests(col_I_mixed, colMixed, "PPIND")
+df_tests
+```
+
+Box with Whiskers
+```{r}
+df_long <- col_I_mixed|>
+  pivot_longer(cols = -PPIND, names_to = "attribute", values_to = "value")
+```
+
+```{r}
+# Объединяем результаты теста с основными данными
+df_with_tests <- df_long %>%
+  left_join(df_tests, by = "attribute")
+```
+
+```{r}
+df_with_tests_cost <- df_with_tests[df_with_tests$attribute%in%colCost[-length(colCost)],]
+df_with_tests_new <- df_with_tests[df_with_tests$attribute%in%colNew[-length(colNew)],]
+df_with_tests_stud <- df_with_tests[df_with_tests$attribute%in%colStud[-length(colStud)],]
+df_with_tests_fin <- df_with_tests[df_with_tests$attribute%in%c("log-ADD_FEE", "BOOK"),]
+
+p<-ggplot(df_with_tests_cost,
+       aes(x = attribute,
+           y = value,
+           fill = PPIND)) +
+  geom_boxplot() +
+  labs(title = "Boxplot",
+       x = "Attribute",
+       y = "Value")+
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.caption = element_text(size = 8, hjust = 0)) +
+  scale_fill_manual(values = c("private" = "red", "public" = "lightblue"))
+```
+
+```{r}
+p$data<-df_with_tests_new
+p
+df_with_tests|>dplyr::filter(attribute%in%colNew[-length(colNew)])|>dplyr::select(-PPIND, -value)|>head(1)|>rmarkdown::paged_table()
+```
+Можем сказать, что public и private имеют разные матожидания.
+
+```{r}
+p$data<-df_with_tests_fin|>filter(attribute%in%"BOOK")
+p
+p$data<-df_with_tests_fin|>filter(attribute%in%"log-ADD_FEE")
+p
+df_with_tests|>dplyr::filter(attribute%in%c("log-ADD_FEE", "BOOK"))|>dplyr::select(-PPIND, -value)|>head(length(colFin)-1)|>rmarkdown::paged_table()
+```
+Исходя из p_value не отвергаем, что public и private имеют равные матожидания. Тест Вилкоксона также характеризует их однородность. 
+
+Проверим log-ADD_FEE и BOOK друг с другом
+```{r}
+compare_column_tests <- function(column_1,
+                          column_2,
+                          alpha = 0.05) {
+  levene_test<-leveneTest(column_2, column_1)
+  var_test <- var.test(column_1, column_2)
+  wilcox_test <- wilcox.test(column_1, column_2)
+  t_test_equal <- t.test(column_1, column_2, var.equal = TRUE)
+  t_test_unequal <- t.test(column_1, column_2, var.equal = FALSE)
+  
+  results <- data.frame(
+    t_test_unequal_p_value = t_test_unequal$p.value,
+    t_test_equal_p_value = t_test_equal$p.value,
+    levene_test_p_value = levene_test$`Pr(>F)`[1],
+    var_test_p_value = var_test$p.value,
+    wilcox_test_p_value = wilcox_test$p.value
+  )
+}
+```
+
+```{r}
+af_private<-col_I_sn$ADD_FEE[col_I_sn$PPIND=="private"]
+af_pu<-col_I_sn$ADD_FEE[col_I_sn$PPIND=="public"]
+b_pr<-col_split_mixed$private$BOOK
+b_pu<-col_split_mixed$public$BOOK
+
+print(compare_column_tests(af_pr, b_pr))
+print(compare_column_tests(af_pu, b_pu))
+```
+В общем случае тесты показывают, что разница есть в случае общественных вузов, но для частных вузов не отвергаем равенство дисперсий (из levene's test) и матожиданий
+
+```{r}
+p$data<-df_with_tests_stud
+p
+df_with_tests|>dplyr::filter(attribute%in%colStud[-length(colStud)])|>dplyr::select(-PPIND, -value)|>head(length(colStud)-1)|>rmarkdown::paged_table()
+
+```
+Не отвергаем равенство дисперсий. В случае с NEW10 по Levene Test отвергаем гипотезу, а по Var Test не отвергаем. Визуально, из-за выбросов Var Test становится мощнее, поэтому следует отвергнуть равенство дисперсий NEW10.
+
+```{r}
+p$data<-df_with_tests_cost
+p
+df_with_tests|>dplyr::filter(attribute%in%colCost[-length(colCost)])|>dplyr::select(-PPIND, -value)|>head(length(colCost)-1)|>rmarkdown::paged_table()
+
+```
+
+Для R_B_COST не отвергается равенство дисперсий.
+
+
+### Выводы:
+
+* Хи-квадрат тест на нормальность:
+
+1. Public: не отвергаем AVRCOMB, SF_RATIO, PH_D, GRADUAT.
+
+2. Private: не отвергаем log-ADD_FEE, R_B_COST, AVRCOMB, SF_RATIO.
+
+* Равенство матожиданий между группами private/public:
+
+- log-ADD_FEE, BOOK
+
+* Равенство дисперсий между группами private/public:
+
+- log-ADD_FEE, BOOK
+- R_B_COST
+- SF_RATIO, PH_D, GRADUAT
+
+* Сравнение ADD_FEE и BOOK:
+
+- Private отвергается равенство матожиданий и дисперсий
+- Public не отвергается равенство матожиданий и дисперсий

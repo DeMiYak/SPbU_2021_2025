@@ -1,0 +1,31 @@
+---
+title: "Task7"
+author: "Yakovlev D.M."
+date: "2023-10-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library("tidyverse")
+
+#> For each artist find the total track number
+#> total listening of all tracks number
+#> and print the most listened tracks' names 
+
+dataset <- read.csv(file = "spotify-23.csv")
+
+data <- dataset |>
+  mutate(artist_names = strsplit(artist.s._name, ', ')) |>
+  select(artist_names, track_name, streams) |>
+  unnest_longer(artist_names) |>
+  group_by(artist_names) |>
+  summarize(num.tracks = n(), 
+            streams.max = max(streams),
+            track.hit = track_name[which.max(streams)],)
+
+data |>
+  rmarkdown::paged_table()
+```

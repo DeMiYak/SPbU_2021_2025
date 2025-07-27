@@ -1,0 +1,451 @@
+---
+title: "NameByStateYMD"
+author: "Yakovlev D.M."
+date: "2023-12-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# USA Name Data
+```{r}
+library("tidyverse")
+library("ggridges")
+```
+
+```{r}
+data <- read.csv("USA Name Data.csv")
+top10 <- 10
+```
+
+Проверим популярность имён по первой букве
+```{r}
+data_by_first_letter <- data |>
+  select(Name, Number, Gender)|>
+  group_by(Name)|>
+  mutate(Name = sapply(Name, function(x) substring(x, 1, 1)))
+```
+
+Мальчики
+```{r}
+data_male <- data_by_first_letter|>
+  filter(Gender == "M")|>
+  summarise(Number = sum(Number))|>
+  mutate(Ratio = Number/sum(Number), 
+         Color = ifelse(Number >= mean(Number), "lightblue", "tomato"))
+```
+
+```{r}
+barplot(data_male$Number, 
+        names.arg = data_male$Name, 
+        xlab = "First Letter", 
+        ylab = "Number",
+        main = "Male names",
+        col = data_male$Color)
+```
+```{r}
+summary(data_male$Number)
+```
+Девочки
+```{r}
+data_female <- data_by_first_letter|>
+  filter(Gender == "F")|>
+  summarise(Number = sum(Number))|>
+  mutate(Ratio = Number/sum(Number),
+         Color = ifelse(Number >= mean(Number), "lightblue", "tomato"))
+```
+
+```{r}
+barplot(data_female$Number, 
+        names.arg = data_female$Name, 
+        xlab = "First Letter", 
+        ylab = "Number",
+        main = "Female names",
+        col = data_female$Color)
+```
+
+```{r}
+summary(data_female$Number)
+```
+
+Все
+```{r}
+data_by_first_letter <- data_by_first_letter |>
+  summarize(Number = sum(Number))|>
+  mutate(Ratio = Number/sum(Number),
+         Color = ifelse(Number >= mean(Number), "lightblue", "tomato"))
+```
+
+```{r}
+barplot(data_by_first_letter$Number, 
+        names.arg = data_by_first_letter$Name, 
+        xlab = "First Letter", 
+        ylab = "Number",
+        main = "All names",
+        col = data_by_first_letter$Color)
+```
+Самые используемые первые буквы 
+```{r}
+data_by_first_letter|>
+  slice_max(order_by=Number, n = 5)
+```
+```{r}
+data_male |>
+  slice_max(order_by=Number, n = 5)
+```
+
+```{r}
+data_female|>
+  slice_max(order_by = Number, n = 5)
+```
+
+Самые малоиспользуемые
+```{r}
+data_by_first_letter|>
+  slice_min(order_by = Number, n = 5)
+```
+
+```{r}
+data_male |>
+  slice_min(order_by=Number, n = 5)
+```
+
+```{r}
+data_female|>
+  slice_min(order_by = Number, n = 5)
+```
+```{r}
+data_cor <- data.frame(Names = data_male$Name, 
+      Correlation = data_male$Number/data_female$Number) 
+```
+
+```{r}
+barplot(data_cor$Correlation,
+        names.arg = data_cor$Names,
+        xlab = "First letter",
+        ylab = "Correlation",
+        main = "Male to Female correlation")
+```
+## Выводы
+1. Имена на букву U --- самые нераспространённые.
+2. Чаще всего в USA имена мальчиков начинаются на букву J, а девочек --- на M.
+3. Имена на A,B,C,D,E в среднем распространены как у мальчиков, так и у девочек.
+4. Если говорить об отношениях:
+4.1. Больше всего мальчиков на девочку приходится на букву W: 6:1
+4.2. Девочек на мальчика --- на букву Y: 5:1.
+
+```{r}
+data_by_year <- data|>
+  group_by(Year)|>
+  summarise(Number = sum(Number))
+```
+
+```{r}
+plot(data_by_year$Year, data_by_year$Number, type="l",
+     xlab = "Year", ylab = "Number of Births")
+```
+Заметный резкий рост рождаемости с 1948 по 1970.
+
+```{r}
+summary(data_by_year$Number)
+```
+
+```{r}
+data_by_year$Year[which.max(data_by_year$Number)]
+```
+
+```{r}
+data_by_state <- data |>
+  group_by(State)|>
+  summarise(Number = sum(Number))|>
+  mutate(Ratio = Number/sum(Number))
+```
+
+```{r}
+barplot(data_by_state$Number,
+        names.arg = data_by_state$State,
+        xlab = "State",
+        ylab = "Number of Births",
+        main = "Births by State")
+```
+
+
+```{r}
+data_by_state|>
+  slice_max(order_by = Number, n = 10)
+```
+
+```{r}
+data_by_state|>
+  slice_min(order_by = Number, n = 10)
+```
+
+```{r}
+data_by_name <- data|>
+  group_by(Name, Year)|>
+  summarize(Number = sum(Number))
+```
+
+```{r}
+data_by_gender <- data|>
+  group_by(Name, Gender)|>
+  summarize(Number = sum(Number))
+```
+
+Мальчики
+```{r}
+top10_male <- data_by_gender|> as.data.frame()|>
+  filter(Gender == "M")|>
+  slice_max(order_by = Number, n = top10)|>
+  select(Name)|> as.vector()
+```
+Рассмотрим 10 самых распространённых имён
+```{r}
+split_male <- data |>
+  as.data.frame()|>
+  filter(Gender == "M")|>
+  group_by(Name, Year)|>
+  summarize(Number = sum(Number))|>
+  filter(Name %in% top10_male$Name)
+```
+
+```{r}
+theme_set(theme_bw())
+ggplot(split_male, aes(x = Year, y = Number, color = Name))+
+  geom_line(linewidth = 1.5) +
+  labs(y = "Number of Births",
+       title = "Male Names",
+       subtitle = "Top 10 Birth Names from 1910 to 2022")+
+  theme(plot.title = element_text(family = "mono", hjust = .5, size = 25),
+        plot.subtitle = element_text(family = "mono", hjust = .5, size = 15))
+```
+```{r}
+summary(split_male$Number)
+```
+
+```{r}
+top10_male_after_1975 <- data|> as.data.frame()|>
+  filter(Gender == "M", Year >= 1975)|>
+  group_by(Name)|>
+  summarize(Number = sum(Number))|>
+  slice_max(order_by = Number, n = top10)|>
+  select(Name)|> as.vector()
+```
+
+```{r}
+split_male_after_1975 <- data |>
+  as.data.frame()|>
+  filter(Gender == "M")|>
+  group_by(Name, Year)|>
+  summarize(Number = sum(Number))|>
+  filter(Name %in% top10_male_after_1975$Name)
+```
+
+```{r}
+theme_set(theme_bw())
+ggplot(split_male_after_1975, aes(x = Year, y = Number, color = Name))+
+  geom_line(linewidth = 1.5) +
+  labs(y = "Number of Births",
+       title = "Male Names",
+       subtitle = "Top 10 Birth Names from 1975 to 2022")+
+  theme(plot.title = element_text(family = "mono", hjust = .5, size = 25),
+        plot.subtitle = element_text(family = "mono", hjust = .5, size = 15))
+```
+Девочки
+```{r}
+top10_female <- data_by_gender|> as.data.frame()|>
+  filter(Gender == "F")|>
+  slice_max(order_by = Number, n = top10)|>
+  select(Name)|> as.vector()
+```
+
+```{r}
+split_female <- data |>
+  as.data.frame()|>
+  filter(Gender == "F")|>
+  group_by(Name, Year)|>
+  summarize(Number = sum(Number))|>
+  filter(Name %in% top10_female$Name)
+```
+
+```{r}
+ggplot(split_female, aes(x = Year, y = Number, color = Name))+
+  geom_line(linewidth = 1.5) +
+  labs(y = "Number of Births",
+       title = "Female Names",
+       subtitle = "Top 10 Birth Names from 1910 to 2022")+
+  theme(plot.title = element_text(family = "mono", hjust = .5, size = 25),
+        plot.subtitle = element_text(family = "mono", hjust = .5, size = 15))
+```
+```{r}
+summary(split_female$Number)
+```
+## Интересный спад с 1975
+А какие имена были популярны тогда?
+```{r}
+top10_female_after_1975 <- data|> as.data.frame()|>
+  filter(Gender == "F", Year >= 1975)|>
+  group_by(Name)|>
+  summarize(Number = sum(Number))|>
+  slice_max(order_by = Number, n = top10)|>
+    select(Name)|> as.vector()
+```
+
+```{r}
+split_female_after_1975 <- data |>
+  as.data.frame()|>
+  filter(Gender == "F", Year >= 1975)|>
+  group_by(Name, Year)|>
+  summarize(Number = sum(Number))|>
+  filter(Name %in% top10_female_after_1975$Name)
+```
+
+```{r}
+theme_set(theme_bw())
+ggplot(split_female_after_1975, aes(x = Year, y = Number, color = Name))+
+  geom_line(linewidth = 1.5) +
+  labs(y = "Number of Births",
+       title = "Female Names",
+       subtitle = "Top 10 Birth Names from 1975 to 2022")+
+  theme(plot.title = element_text(family = "mono", hjust = .5, size = 25),
+        plot.subtitle = element_text(family = "mono", hjust = .5, size = 15))
+```
+Рассмотрим самые популярные имена в период с 1948 по 1970 (пиковый момент):
+
+```{r}
+data_boom <- data|>as.data.frame()|>
+  filter(Year <= 1970, Year >= 1948) |>
+  group_by(Name, Gender) |>
+  summarize(Number = sum(Number))|>
+  arrange(desc(Number))
+
+rmarkdown::paged_table(data_boom)
+```
+
+```{r}
+summary(data_boom$Number)
+```
+Выводы:
+1. У девушек большая часть имён изменилась по популярности с 1975 в топе.
+2. У мальчиков примерно половина.
+
+```{r}
+top10_female$Name
+top10_female_after_1975$Name
+top10_male$Name
+top10_male_after_1975$Name
+```
+
+```{r}
+data_2022 <- data|>
+  as.data.frame()|>
+  filter(Year == 2022)|>
+  group_by(Name, Gender)|>
+  summarize(Number = sum(Number))|>
+  arrange(desc(Number))
+
+rmarkdown::paged_table(data_2022)
+```
+
+```{r}
+rmarkdown::paged_table(data_2022|>
+                         filter(Gender == "M"))
+```
+```{r}
+rmarkdown::paged_table(data_2022|>
+                         filter(Gender == "F"))
+```
+### На будущее:
+Можно взглянуть на изменение числа имён каждый год;
+
+```{r}
+data_name_uniqueness <- data |>
+  group_by(Name, Year)|>
+  summarize()|>
+  group_by(Year)|>
+  summarize(Name.number = n())
+```
+
+```{r}
+ggplot(data_name_uniqueness, aes(x = Year, y = Name.number))+
+  geom_line(linewidth = 1.5) +
+  labs(y = "Name Number",
+       title = "Total Recorded Name Number",
+       subtitle = "from 1910 to 2022")+
+  theme(plot.title = element_text(family = "mono", hjust = .5, size = 25),
+        plot.subtitle = element_text(family = "mono", hjust = .5, size = 15))+
+  theme_bw()
+```
+Видно, что график не монотонен. Значит, какие-то имена теряли релевантность в
+определённые временные промежутки. Рассмотрим два из них: спад c 1920 по конец 1950
+и с середины 2000-х по настоящее время.
+```{r}
+1919 + which.max(data_name_uniqueness|>
+            filter(Year >= 1920, Year <= 1950)|>
+            select(Name.number)|>unlist()|>as.double())
+```
+
+```{r}
+1919 + which.min(data_name_uniqueness|>
+            filter(Year >= 1920, Year <= 1950)|>
+            select(Name.number)|>unlist()|>as.double())
+```
+
+```{r}
+data_1936_names <- data |>
+  filter(Year == 1936)|>
+  group_by(Name)|>
+  summarize()|>pull(Name)
+
+data_1922_names <- data|>
+  filter(Year == 1922)|>
+  group_by(Name)|>
+  summarize()|>pull(Name)
+```
+
+"Потерянные" имена (1922-1936):
+```{r}
+data_1936_names[!(data_1936_names %in% data_1922_names)]|>as.data.frame()|>
+  rmarkdown::paged_table()
+```
+```{r}
+data_1922_names[!(data_1922_names %in% data_1936_names)]|>as.data.frame()|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+2003 + which.max(data_name_uniqueness|>
+            filter(Year >= 2004)|>
+            select(Name.number)|>unlist()|>as.double())
+```
+
+```{r}
+2003 + which.min(data_name_uniqueness|>
+            filter(Year >= 2004)|>
+            select(Name.number)|>unlist()|>as.double())
+```
+
+```{r}
+data_2007_names <- data |>
+  filter(Year == 2007)|>
+  group_by(Name)|>
+  summarize()|>pull(Name)
+
+data_2020_names <- data|>
+  filter(Year == 2020)|>
+  group_by(Name)|>
+  summarize()|>pull(Name)
+```
+
+"Потерянные" имена (2007-2020):
+```{r}
+data_2007_names[!(data_2007_names %in% data_2020_names)]|>as.data.frame()|>
+  rmarkdown::paged_table()
+```
+и наоборот:
+```{r}
+data_2020_names[!(data_2020_names %in% data_2007_names)]|>as.data.frame()|>
+  rmarkdown::paged_table()
+```

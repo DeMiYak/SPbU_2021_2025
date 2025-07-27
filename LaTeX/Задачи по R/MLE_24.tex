@@ -1,0 +1,100 @@
+\documentclass{article}
+
+\usepackage[a4paper,
+mag=1000, includefoot,
+left=3cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[english, main=russian]{babel}
+\ifpdf\usepackage{epstopdf}\fi
+
+\usepackage{amsmath,amssymb,amsthm,amscd,amsfonts}
+\usepackage{mathdots}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{bbm}
+\usepackage{hyperref}
+
+\newcommand\norm[1]{\left\|#1\right\|}
+\DeclareMathOperator\R{\mathbb{R}}
+\DeclareMathOperator\N{\mathbb{N}}
+\DeclareMathOperator\rank{\textrm{rank}\,}
+
+
+\title{Оценка метода максимального правдоподобия.\\
+	Решение задачи 24}
+\author{\emph{Яковлев Д.М.}\\\textsc{st095998@student.spbu.ru}}
+\date{\today}
+
+
+\begin{document}
+	\maketitle
+	\nocite{RomGu}
+	Постановка задачи об интервальном цензурировании смешанного типа \cite{ankorMLE}.
+ 
+ 	(Интервальное цензурирование смешанного типа) Пусть
+ 	\begin{itemize}
+ 		\item $K:(\Omega, \mathcal{F}, P)\rightarrow(\mathbb{Z}, \mathcal{B}_{\R})$ --- положительная целочисленная случайная величина;
+ 		\item $T$ --- набор случайных величин $\{T_{k,j},~j=1,\dots, k;~ k=1,\dots,+\infty\}$ таких, что $0=T_{k,0}<T_{k,1}<\dots<T_{k,k}<T_{k,k+1}=+\infty$;
+ 		\item $X,~(K,T)$ --- независимы;
+ 		\item $Y=(\Delta_K,T_K,K)$, где $T_k$ --- $k$-я строка треугольного массива $T$, $\Delta_k=(\Delta_{k,1},\dots,\Delta_{k, k+1})$ и $\Delta_{k,j}$ --- индикатор события $X\in(T_{k,j-1},T_{k, j}]$;
+ 		\item Случайная величина $X$ имеет распределение Вейбулла:
+ 		\begin{equation*}
+ 			X\sim W(k, \lambda) \leftrightarrow p_X(x)=\begin{cases}
+ 				\dfrac{k}{\lambda}\left(\dfrac{x}{\lambda}\right)^{k-1}e^{-\left(\dfrac{x}{\lambda}\right)^k},&x\geqslant0\\
+ 				0,&x<0
+ 			\end{cases}
+ 		\end{equation*}
+ 	\end{itemize}
+ 	
+	Исследуйте зависимость ширины доверительного интервала для оценок параметров от объёма выборок.
+	
+	Задание можно разделить на несколько частей:
+	\begin{enumerate}
+		\item Моделирование выборки из $n$ независимых реализаций $Y$;
+		\item Написание функции правдоподобия;
+		\item Написание процедуры оценивания параметров (с учётом естественных ограничений на области допустимых значений параметров);
+		\item Исследование указанных свойств оценок параметров.
+	\end{enumerate}
+	
+	\section{Моделирование $Y$}
+	Итак, мы знаем вид случайной величины $Y$. В условиях задачи было сказано, что можно положить
+	\begin{equation*}
+		T_{k,j}=\sum_{i=1}^jZ_i,\quad K=\sup_{j\geqslant1}\left\{\sum_{i=1}^jZ_i<T\right\},
+	\end{equation*}
+	где $T$ --- константа, а $\{Z_i\}$ --- независимые одинаково распределённые случайные величины. Поскольку в $Y$ также имеются $\Delta_k$, то $\{Z_i\}$ должны быть неотрицательными.
+	
+	Естественный пример, который приходит в голову --- моделлирование пуассоновского процесса. Известно, что если
+	\begin{equation*}
+		Z_i\sim U(0,T)\leftrightarrow Z_{(1)},\dots,Z_{(k)},
+	\end{equation*} 
+	где $Z_i$ упорядочены в порядке возрастания равносильны пуассоновскому процессу с $k$ скачками в интервале $(0, T)$. Таким образом, случайная величина $Y$ --- распределение пуассоновского процесса при фиксированном времени $t = T$:
+	\begin{equation*}
+		K\sim\Pi(\lambda T)\leftrightarrow P(K=k)=\dfrac{(\lambda T)^k}{k!}e^{-\lambda T}.
+	\end{equation*}
+	
+	Поскольку $K$ принимает значения от 0, имеет смысл рассматривать случайную величину $K+1$. Пришли к следующему моделированию выборки:
+	\begin{algorithmic}[1]
+		\For{$i=1 \to n$}
+		\State $k \gets K(\cdot)$
+		\State $Z\gets U(0, T; k)$
+		\State Сортировка по возрастанию $Z$
+		\State Сохранение выборки с учётом $k$ и $Z$
+		\EndFor
+	\end{algorithmic}
+%	Проблемой в дальнейшем оказывается построения функции правдоподобия в этих условиях. Поэтому вместо равномерного распределения $U(0, L)$ будем рассматривать моделирование методом особых моментов. Тогда проблемой станет определение $K$, необходимого для выделения моментов.
+	\section{Функция правдоподобия $L$}
+	Для построения будем пользоваться материалами \cite{RomGu}. Функция правдоподобия будет выглядеть следующим образом
+	\begin{align*}
+		L(k, \lambda|Y_1,...,Y_n)=\prod_{i=1}^nP(X_i\in\Delta_{K_i, j_i})=\prod_{i=1}^n\left(\exp\left[-\left(\frac{T_{K_i,j_i-1}}{\lambda}\right)^k\right]-\exp\left[-\left(\frac{T_{K_i,j_i}}{\lambda}\right)^k\right]\right),
+	\end{align*} 
+	То есть, у нас есть информация о том, какие интервалы цензурирования есть у $Y_i$ и то, в какой из интервалов попадает $X_i$. Поэтому можно генерировать двойки $(Y_i, X_i)$, а сохранять то, в какой интервал попадает $i$-ое значение выборки. 
+	\section{Процедура оценивания параметров}
+	Использование встроенной функции optim с методом Nelder-Mead (так как я его реализовывал в прошлом семестре).
+	\section{Исследование свойств оценки параметров}
+	Исследуйте зависимость ширины доверительного интервала для оценок параметров от объёма выборок.
+	\bibliographystyle{ugost2008}
+	\bibliography{MLE}
+\end{document}

@@ -1,0 +1,239 @@
+\documentclass[specialist,
+substylefile = spbu_report.rtx,
+subf,href,colorlinks=true, 12pt]{disser}
+
+\usepackage[a4paper,
+mag=1000, includefoot,
+left=3cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\ifpdf\usepackage{epstopdf}\fi
+
+\usepackage{bbm}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{amsmath,amssymb,amsthm,amscd,amsfonts}
+\usepackage{cmap}
+\usepackage{euscript}
+\usepackage{mathdots}
+\usepackage{graphicx}
+\usepackage[russian]{cleveref}
+
+% Нумерация подсекций в оглавлении
+\setcounter{secnumdepth}{2}
+
+% Включать подсекции в оглавление
+\setcounter{tocdepth}{3}
+
+\newcommand{\R}{\mathbb{R}}
+\begin{document}
+	
+	% Название организации
+	\institution{%
+		Санкт-Петербургский государственный университет \\
+		Прикладная математика и информатика \\
+		Вычислительная стохастика и статистические модели
+	}
+	
+	% Тема
+	\topic{\normalfont\scshape Отчёт по задачам на тему\\«Моделирование распределений»}
+	
+	% Автор
+	\author{Яковлев Денис Михайлович\\
+		Группа 21.Б04-мм\\
+		\textsc{095998@student.spbu.ru}}
+	
+	% Город и год
+	\city{Санкт-Петербург}
+	\date{\today}
+	
+	\maketitle
+	\newpage
+	\thispagestyle{empty}
+	\tableofcontents
+	\newpage
+	\pagenumbering{arabic}
+	\section{Задача. Формулировка}
+	\textit{\textbf{(МСВ 309)} Промоделировать 3-мя способами распределение с плотностью:}
+	\begin{equation*}
+		\rho(x)=C
+		\begin{cases}
+			2-x, & 0 < x \leqslant 1;\\
+			1+x, & 1 < x \leqslant 2;\\
+			2e^{-x}, & x > 2;\\
+			0, & \textit{иначе}.	
+		\end{cases}
+	\end{equation*}
+	\subsection{Метод обратных функций}
+	Найдём функцию распределения $F(x)$:
+	\begin{equation*}
+		F(x) =C
+		\begin{cases}
+			0, & x \leqslant 0;\\
+			2x - \dfrac{x^2}{2}, & 0 < x \leqslant 1;\\
+			x + \dfrac{x^2}{2},&1<x\leqslant 2;\\
+			4 + 2e^{-2}- 2e^{-x},&x>2.
+		\end{cases}
+	\end{equation*}
+	Определим, чему равна константа $C$:
+	\begin{equation*}
+		\lim_{x\rightarrow+\infty}F(x) = C(4+2e^{-2})= 1 \Rightarrow C=\dfrac{1}{4+2e^{-2}}. 
+	\end{equation*}
+%	Теперь определим обратную функцию распределения, предварительно вычислив обратную плотность распределения $p^{-1}(y)$:
+%	\begin{equation*}
+%		p^{-1}(y)=
+%		\begin{cases}
+%			0,& y \leqslant C;\\
+%			2 - \dfrac{y}{C},& C<y\leqslant2C;\\
+%			\dfrac{y}{C}-1,& 2C<y\leqslant3C;\\
+%			-\log\left(\dfrac{y}{2C}\right),& 2Ce^{-2} < y.
+%		\end{cases}
+%	\end{equation*}
+	При $y\in(0,1)$ решим уравнение $y=F(x)$ относительно $x$, чтобы получить обратную функцию $x = F^{-1}(y)$.
+	\\ Решим уравнение $C(2x-\dfrac{x^2}{2})=y$ при условии, что $0 < x \leqslant 1$:
+	\begin{align*}
+			C\left(2x-\dfrac{x^2}{2}\right)=y \Leftrightarrow x_{\pm}=\dfrac{4\pm2\sqrt{2}\sqrt{2 - \dfrac{y}{C}}}{2}\\
+			\stackrel{x_+\geqslant2}{\Rightarrow}x_-=2-\sqrt{4 - \dfrac{2y}{C}}\Rightarrow y=C\left(2-\dfrac{(4-2x_-)^2}{8}\right).
+	\end{align*}
+	Подставляя $x_-=0,~x_-=1$, получаем $y = 0,~ y = \dfrac{3}{2}C$ соответственно.
+	\\Далее решим $C(x+\dfrac{x^2}{2}) = y$ и получим:
+	\begin{equation*}
+		x =-1+\sqrt{1+\dfrac{2y}{C}}.
+	\end{equation*}
+	При $x=1, ~x=2$ получим $y=\dfrac{3}{2}C,~y=4C$ соответственно.\\
+	Осталось решить $C(4+2e^{-2}-2e^{-x})=C(C^{-1}-2e^{-x})=y$ относительно $x$. Получим:
+	\begin{equation*}
+		x = -\log\left(\dfrac{1-y}{2C}\right)
+	\end{equation*}
+	при $4C<y<1$. Таким образом, обратная функция распределения:
+	\begin{equation*}
+		F^{-1}(y) =
+		\begin{cases}
+			2-\sqrt{4 - \dfrac{2y}{C}},&0<y\leqslant\dfrac{3}{2}C;\\
+			-1+\sqrt{1+\dfrac{2y}{C}},&\dfrac{3}{2}C<y\leqslant4C;\\
+			-\log\left(\dfrac{1-y}{2C}\right),&4C<y<1
+		\end{cases}
+	\end{equation*}
+	\begin{algorithm}[h]
+		\caption{Метод обратных функций}
+	\begin{algorithmic}[1]
+		\State $\mathrm{Get}(\alpha);~C\gets\frac{1}{4+2e^{-2}}$
+		\State $d[0]\gets\frac{3}{2}C;~d[1]\gets4C$
+		\If{$\alpha < d[0]$}
+			\State $\xi\gets2-\sqrt{2}\sqrt{2 - \dfrac{\alpha}{C}}$
+		\ElsIf{$\alpha<d[1]$}
+			\State $\xi\gets-1+\sqrt{1+\dfrac{2\alpha}{C}}$
+		\Else
+			\State $\xi\gets-\log\left(\dfrac{1-\alpha}{2C}\right)$
+		\EndIf
+	\end{algorithmic}
+	\end{algorithm}
+	\subsection{Метод декомпозиции}
+	Разложим плотность распределения
+	\begin{align*}
+		\rho(x)=C(2-x)\mathbbm{1}_{(0,1]} + C(1+x)\mathbbm{1}_{(1,2]} + 2Ce^{-x}\mathbbm{1}_{(2,+\infty)}
+	\end{align*}
+	и представим в виде смеси плотностей:
+	\begin{align*}
+		\rho_1(x)=\dfrac{2}{3}(2-x)\mathbbm{1}_{(0,1]},\\
+		\rho_2(x)=\dfrac{2}{5}(1+x)\mathbbm{1}_{(1,2]},\\
+		\rho_3(x)=\dfrac{1}{e^{-2}}~e^{-x}\mathbbm{1}_{(2,+\infty)}
+	\end{align*}
+	Тогда представим плотность через смесь плотностей $\rho(x)=q_1\rho_1(x)+q_2\rho_2(x)+q_3\rho_3(x)$ такую, что:
+	\begin{align*}
+		q_1=\dfrac{3}{2}C;\\
+		q_2=\dfrac{5}{2}C;\\
+		q_3=2e^{-2}C.
+	\end{align*}
+	При этом $q_1 + q_2 + q_3 = \dfrac{4+2e^{-2}}{4+2e^{-2}}=1$. Для $\rho_1(x),\rho_2(x),\rho_3(x)$ найдём соответствующие им обратные функции распределения:
+	\begin{align*}
+		F_1(x)=\dfrac{2}{3}(2x-\dfrac{x^2}{2}),~F_1^{-1}(y)=2-\sqrt{2}\sqrt{2 - \dfrac{3y}{2}};\\
+		F_2(x)=\dfrac{2}{5}(x+\dfrac{x^2}{2}-\dfrac{3}{2}),~F_2^{-1}(y)=-1+\sqrt{4+5y};\\
+		F_3(x)=\dfrac{e^{-2}-e^{-x}}{e^{-2}},~F_3^{-1}(y)=2 -\log(1-y),
+	\end{align*}
+	где $y\in(0,1)$.
+	\begin{algorithm}[h]
+		\caption{Метод декомпозиции}
+	\begin{algorithmic}[1]
+		\State $\mathrm{Get}(\alpha_1, \alpha_2);~C\gets\frac{1}{4+2e^{-2}}$
+		\State $q[0]\gets\frac{3}{2}C;~q[1]\gets4C$
+		\If{$\alpha_1<q[0]$}
+		\State $\xi\gets2-\sqrt{4 - 3\alpha_2}$
+		\ElsIf{$\alpha_1<q[1]$}
+		\State $\xi\gets-1+\sqrt{4+5\alpha_2}$
+		\Else
+		\State $\xi\gets2 -\log(1-\alpha_2)$
+		\EndIf
+	\end{algorithmic}
+	\end{algorithm}
+	\subsection{Метод отбора}
+	В качестве мажорирующего распределения возьмём $q(x) = e^{-x}\mathbbm{1}_{(0,+\infty)},~q\sim\mathrm{EXP}(1)$. Его распределение можно промоделировать следующим образом: $\eta = -\log(\alpha_1)$.
+	\\Производная Радона-Никодима $r(x)$:
+	\begin{align*}
+		r(x)=p(x)/q(x)=C
+		\begin{cases}
+			0,& x\leqslant0;\\
+			(2-x)e^{x},& 0<x\leqslant 1;\\
+			(1+x)e^{x},& 1<x\leqslant 2;\\
+			2,& 2<x.
+		\end{cases}
+		\\M = 3Ce^2\approx5.19,~C=(4+2e^{-2})^{-1}\approx0.234,
+	\end{align*}
+	где $M$ --- мажоранта. Так как проверяем неравенство $r(\eta)<M\alpha_2$, то как $r(x)$, так и $M$ можно разделить на общий множитель $C$. Тогда $M = 3e^2 \approx 22.167$.\\
+	Далее, неравенство $r(\eta)<M\alpha_2$ выполняется тогда и только тогда, когда либо
+	\begin{equation*}
+		0<\eta\leqslant1,~(2-\eta)e^\eta < 3e^2\alpha_2
+	\end{equation*}
+	либо
+	\begin{equation*}
+		1<\eta\leqslant2,~(1+\eta)e^\eta < 3e^2\alpha_2
+	\end{equation*}
+	либо
+	\begin{equation*}
+		2<\eta,~2<3e^2\alpha_2
+	\end{equation*}
+	Откуда выходят следующие условия:
+	\begin{align}
+		\alpha_2&>\dfrac{1}{3}(2-\eta)e^{\eta-2},~0<\eta\leqslant1;\label{eq:1}\\
+		\alpha_2&>\dfrac{1}{3}(1+\eta)e^{\eta-2},~1<\eta\leqslant2;\label{eq:2}\\
+		\alpha_2&>\dfrac{2}{3e^2},~2<\eta;\label{eq:3}
+	\end{align}
+%	Складывая \eqref{eq:1} и \eqref{eq:2}, получим:
+%	\begin{equation*}
+%		2\alpha_2>e^{\eta-2}\Rightarrow\alpha_1\alpha_2>\dfrac{1}{2}e^{-2}
+%	\end{equation*}
+	Тогда $r(\eta) < M\alpha_2$ совпадает с этими условиями:
+	\begin{align}
+		e^{-1}&<\alpha_1,~\alpha_2\alpha_1>(2+\log(\alpha_1))M^{-1}\tag{1}
+		\\e^{-2}&<\alpha_1\leqslant e^{-1},~\alpha_2\alpha_1>(1-\log(\alpha_1))M^{-1}\tag{2}
+		\\0&<\alpha_1\leqslant e^{-2},~\alpha_2>2M^{-1}\tag{3}
+	\end{align}
+	Поскольку условия получились слишком объёмными, в описанном ниже алгоритме рассматривается случай $r(\eta) \geqslant M\alpha_2$, что соответствует следующим условиям:
+	\begin{align*}
+		e^{-1}&<\alpha_1,~\alpha_2\alpha_1\leqslant(2+\log(\alpha_1))M^{-1}
+		\\e^{-2}&<\alpha_1\leqslant e^{-1},~\alpha_2\alpha_1\leqslant(1-\log(\alpha_1))M^{-1}
+		\\0&<\alpha_1\leqslant e^{-2},~\alpha_2\leqslant2M^{-1}
+	\end{align*}
+	\begin{algorithm}[h]
+		\caption{Метод отбора}
+		\begin{algorithmic}[1]
+			\State $M_1\gets\frac{1}{3e^2};~M_2\gets2M_1;~b_1\gets e^{-1};~b_2\gets b_1*b_1$
+			\While {TRUE}
+			\State $\mathrm{Get}(\alpha_1,\alpha_2)$
+			\If{$b_1 < \alpha_1 ~\mathrm{and}~ \alpha_2\alpha_1\leqslant(2+\log(\alpha_1))M_1$}
+			\State $\xi\gets-\log(\alpha_1)$
+			\EndIf
+			\If{$b_2 < \alpha_1 \leqslant b_1~\mathrm{and}~\alpha_1\alpha_2\leqslant(1-\log(\alpha_1))M_1$}
+			\State $\xi\gets-\log(\alpha_1)$
+			\State break
+			\EndIf
+			\If{$\alpha_1\leqslant b_2~\mathrm{and}~\alpha_2\leqslant M_2$}
+			\State $\xi\gets-\log(\alpha_1)$
+			\State break
+			\EndIf
+			\EndWhile
+		\end{algorithmic}
+	\end{algorithm}
+\end{document}

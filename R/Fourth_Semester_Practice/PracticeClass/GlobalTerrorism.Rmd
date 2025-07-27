@@ -1,0 +1,781 @@
+---
+title: "GlobalTerrorism"
+author: "Yakovlev D.M."
+date: "2024-01-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Criterion 1 The act must be aimed at attaining a political, economic, religious, or social goal. In terms of economic goals, the exclusive pursuit of profit does not satisfy this criterion. It must involve the pursuit of more profound, systemic economic change.
+
+Criterion 2 There must be evidence of an intention to coerce, intimidate, or convey some other message to a larger audience (or audiences) than the immediate victims. It is the act taken as a totality that is considered, irrespective if every individual involved in carrying out the act was aware of this intention. As long as any of the planners or decision-makers behind the attack intended to coerce, intimidate or publicize, the intentionality criterion is met.
+
+Criterion 3 The action must be outside the context of legitimate warfare activities. That is, the act must be outside the parameters permitted by international humanitarian law (particularly the prohibition against deliberately targeting civilians or non-combatants.
+
+Doubt Terrorism Proper The existence of a "Yes" for "Doubt Terrorism Proper?" records reservation, in the eyes of GTD analysts, that the incident in question is truly terrorism. Such uncertainty, however, was not deemed to be sufficient to disqualify the incident from inclusion into the GTD. Furthermore, such a determination of doubt is subsequently coded by GTD analysts as conforming to one of four possible alternative designations: 1) Insurgency/Guerilla Action; 2) Internecine Conflict Action; 3) Mass Murder; or 4) Purely Criminal Act.
+
+#Исследование базы данных о глобальном терроризме:
+
+##Цели исследования: На заметку: сделать по график стран мира и числа терактов в них
+
+Разобьём задачи на подзадачи: Интересующие подзадачи: Страны: Число преступлений в странах/их процентное соотношение Характер преступления в каждой стране Преступления: Характер и успешность преступления Зависимость преступления от страны Характер суицидальных атак Даты: Криминальные годы Продолжительные преступления Локация: Поквадратное исследование
+
+Важное замечание: База данных образована таким образом, что некоторые столбцы пусты или неправильно заполнены вплоть до 1997-го года
+
+```{r}
+library("tidyverse")
+library("ggplot2")
+library("gganimate")
+library("rworldmap")
+library("leaflet")
+GT <- read.csv("globalterrorism.csv")
+```
+
+dateIssues.step Наблюдение 1: Не все даты соответствуют описанию из Codebook’а. Так eventid состоит из 12 цифр. Первые 8 — год (4 цифры), месяц (2 цифры)и день (2 цифры); последние 4 — порядковый номер для даты. При этом существуют несоответствия между датами и eventid и есть нулевой месяц и нулевой день (?) В целях экономии сил и времени будет пользоваться исходными данными.
+
+Ошибочное наблюдение: в Codebook указано, что 0 - неопределённая дата
+```{r}
+GT <- GT|>
+  mutate(year = as.integer(str_sub(eventid, start=1, end=4)),
+         month = as.integer(str_sub(eventid, start=5, end=6)),
+         day = as.integer(str_sub(eventid, start=7,end=8)),
+         .after=eventid)
+```
+
+```{r}
+GT <- GT|>
+  mutate(date=as.Date(with(GT, paste(year, month, day, sep="-")), "%Y-%m-%d"),
+         .after=day)|>
+  mutate(idate=as.Date(with(GT, paste(iyear, imonth, iday, sep="-")), "%Y-%m-%d"),
+         .after=iday)
+```
+
+```{r}
+dateValidator <- if_else(GT$date == GT$idate, T, F, NA)
+length(dateValidator)
+length(dateValidator[dateValidator == T])
+length(dateValidator[dateValidator == F])
+length(dateValidator[is.na(dateValidator)])
+```
+
+Конец наблюдения 1.
+
+Наблюдения 2: Даты
+
+```{r}
+GTO <- GT|>
+  select(!c(year, month, day, date))
+```
+
+Год
+
+```{r}
+GTOY <- GTO|>
+  group_by(iyear)|>
+  summarize(yearNum = n())
+
+rmarkdown::paged_table(GTOY|>arrange(desc(iyear)))
+plot(GTOY$iyear, GTOY$yearNum, type="l",
+     xlab = "Year", ylab = "Number of Crimes")
+summary(GTOY$yearNum)
+```
+
+Месяц
+
+```{r}
+GTOY <- GTO|>
+  group_by(imonth)|>
+  summarize(monthNum = n())
+barplot(height = GTOY$monthNum, 
+        names.arg=GTOY$imonth,
+        xlab = "Month",
+        ylab = "Number of Crimes")
+summary(GTOY$monthNum)
+```
+
+День
+
+```{r}
+GTOY <- GTO|>
+  group_by(iday)|>
+  summarize(dayNum = n())
+
+barplot(GTOY$dayNum, 
+        names.arg=GTOY$iday,
+        xlab = "Day",
+        ylab = "Number of Crimes")
+summary(GTOY$dayNum)
+```
+
+Длительность Для всех случаев, когда точная дата неизвестна, длительность события < 24 часов (одного дня)
+
+Выводы: Присутствуют даты для которых extended = 1, но resolution = NA; Имеются данные с отрицательными временными промежутками (Ошибочные данные или запоздалое событие?) Самое длинное событие длилось 7324 дня (к сожалению, опечатка в базе данных)(индекс 4808) Событие:
+
+```{r}
+GTO|>
+  select(idate, extended)|>
+  filter(is.na(idate) && extended == 1)
+```
+
+```{r}
+GTD <- GTO|>
+  select(eventid,idate, extended, resolution)|>
+  group_by(idate)|>
+  mutate(resNum=as.numeric(as.Date(resolution, format="%m/%d/%Y")),
+         idateNum=as.numeric(idate))|>
+  # mutate(resolution=ifelse(is.na(resolution),0,resolution),
+  #        idateNum=ifelse(is.na(idate),0,idateNum))|>
+  mutate(duration = ifelse(extended==0,0, resNum-idateNum))|>group_by(duration)
+
+```
+
+```{r}
+rmarkdown::paged_table(GTD|>summarize(durationNum=n()))
+```
+
+```{r}
+rmarkdown::paged_table(GTO[GTD$duration>=1000&!is.na(GTD$duration),])
+```
+
+Страны: Исходя из карты, можно увидеть, какие страны и в каком числе имеют теракты
+
+```{r}
+library("rworldmap")
+GTV <- GTO|>
+  select(country_txt)|>
+  group_by(country_txt)|>
+  summarize(country_terror_num=n(), country_terror_per=100*n()/nrow(GTO))
+spdf<-joinCountryData2Map(GTV, joinCode = "NAME", nameJoinColumn = "country_txt")
+mapCountryData(spdf, nameColumnToPlot="country_terror_num",catMethod="fixedWidth",
+               missingCountryCol=gray(.8),colourPalette = "topo",mapRegion="world")
+rmarkdown::paged_table(GTV|>arrange(desc(country_terror_num)))
+barplot(GTV$country_terror_num, names.arg=GTV$country_txt)
+```
+
+Формы терроризма:
+
+```{r}
+GTD <- GTO|>
+  select(eventid,doubtterr, alternative_txt, attacktype1_txt, attacktype2_txt,
+         attacktype3_txt)|>
+  mutate(alternative_txt = ifelse(doubtterr==0, "Terrorism", alternative_txt))|>
+  mutate(alternative_txt = ifelse(doubtterr==-9, "Not Included", alternative_txt))
+
+GTDdterr <- GTD|>group_by(alternative_txt)|>
+  summarize(terrtype_num = n(), terrtype_per = 100*n()/nrow(GTO))|>arrange(desc(terrtype_num))
+rmarkdown::paged_table(GTDdterr)
+barplot(GTDdterr$terrtype_num, names.arg = GTDdterr$alternative_txt)
+```
+
+attacktype:
+
+```{r}
+GTD|>ungroup()|>group_by(alternative_txt, attacktype1_txt, attacktype2_txt, attacktype3_txt)|>
+  summarize(total_num = n(), total_per=100*n()/nrow(GTD))|>as.data.frame()|>
+  arrange(desc(total_num))|>
+  rmarkdown::paged_table()
+```
+
+region: В топ 5 узнать, какие теракты происходили
+
+```{r}
+GTO|>
+  group_by(country_txt, region_txt, provstate, city, latitude, longitude, specificity, vicinity)|>
+  summarize(terr_num = n(), terr_per=100*n()/nrow(GTO))|>
+  arrange(desc(terr_num))|>
+  rmarkdown::paged_table()
+```
+
+multiple:
+
+```{r}
+GTO|>select(multiple)|>group_by(multiple)|>
+  summarize(mult_num=n(),mult_per=100*n()/nrow(GTO))|>as.data.frame()|>
+  rmarkdown::paged_table()
+```
+
+success:
+
+```{r}
+GTO|>select(success)|>group_by(success)|>
+  summarize(suc_num = n(), suc_per = 100*n()/nrow(GTO))|>as.data.frame()|>
+  rmarkdown::paged_table()
+```
+
+suicide:
+
+```{r}
+GTO|>select(suicide)|>group_by(suicide)|>
+  summarize(su_num = n(), su_per=100*n()/nrow(GTO))|>as.data.frame()|>
+  rmarkdown::paged_table()
+```
+
+motive:
+
+```{r}
+GTO|>group_by(motive)|>
+  summarize(mot_num=n(), mot_per=100*n()/nrow(GTO))|>
+  arrange(desc(mot_num))|>
+  rmarkdown::paged_table()
+```
+
+targtype:
+
+```{r}
+GTO|>group_by(targtype1_txt, targsubtype1_txt, targtype2_txt, targsubtype2_txt, 
+              targtype3_txt, targsubtype3_txt)|>
+  summarize(targ_num = n(), targ_per = 100*n()/nrow(GTO))|>
+  arrange(desc(targ_num))|>
+  rmarkdown::paged_table()
+```
+
+corp:
+
+```{r}
+GTO|>group_by(corp1, corp2)|>
+  summarize(corp_num = n(), corp_per=100*n()/nrow(GTO))|>
+  arrange(desc(corp_num))|>
+  rmarkdown::paged_table()
+```
+
+target/natlty:
+
+```{r}
+GTO|>group_by(target1, natlty1_txt, target2, natlty2_txt, target3, natlty3_txt)|>
+  summarize(targ_num=n(),targ_per=100*n()/nrow(GTO))|>
+  arrange(desc(targ_num))|>
+  rmarkdown::paged_table()
+```
+
+perpetrator group:
+
+```{r}
+GTO|>group_by(gname,gsubname,guncertain1, gname2,gsubname2,guncertain2,
+              gname3,gsubname3,guncertain3)|>
+  summarize(g_num=n(),g_per=100*n()/nrow(GTO))|>
+  arrange(desc(g_num))|>
+  rmarkdown::paged_table()
+```
+
+nperps:
+
+```{r}
+GTO|>group_by(nperps)|>
+  summarize(np_num=n(),np_per=100*n()/nrow(GTO))|>
+  arrange(desc(np_num))|>
+  rmarkdown::paged_table()
+```
+
+nperpcap:
+
+```{r}
+GTO|>group_by(nperpcap)|>
+  summarize(np_num=n(),np_per=100*n()/nrow(GTO))|>
+  arrange(desc(nperpcap))|>
+  rmarkdown::paged_table()
+```
+
+claims:
+
+```{r}
+GTO|>group_by(claimed, claimmode_txt, claim2, claimmode2_txt,
+              claim3, claimmode3_txt)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+nkill:
+
+```{r}
+temp <- GTO|>group_by(nkill)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))
+
+rmarkdown::paged_table(temp)
+plot(y=log10(temp$nkill), x=log10(temp$uni_num), type='l', ylab="Kill Count", xlab="Number of Incidents")
+```
+
+Общее число жертв:
+
+```{r}
+sum(GTO$nkill, na.rm=T)
+sum(GTO$nwound, na.rm=T)
+sum(GTO$nkillter, na.rm=T)
+sum(GTO$nwoundte,na.rm=T)
+sum(GTO$nkillus, na.rm=T)
+sum(GTO$nwoundus, na.rm=T)
+```
+
+nkillus:
+
+```{r}
+GTO|>group_by(nkillus)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+nkillter:
+
+```{r}
+GTO|>group_by(nkillter)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+nwound:
+
+```{r}
+GTO|>group_by(nwound)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+nwoundus:
+
+```{r}
+GTO|>group_by(nwoundus)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+nwoundte:
+
+```{r}
+GTO|>group_by(nwoundte)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+propertydamage:
+
+```{r}
+GTO|>group_by(property, propextent_txt, propcomment, propvalue)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+nhostkid:
+
+```{r}
+GTO|>group_by(ishostkid, nhostkid, nhours, ndays)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+divert:
+
+```{r}
+GTO|>group_by(divert, kidhijcountry)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+international:
+
+```{r}
+GTO|>group_by(INT_LOG, INT_IDEO, INT_MISC)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+hostkidoutcome:
+
+```{r}
+GTO|>group_by(hostkidoutcome_txt)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+ransom:
+
+```{r}
+GTO|>group_by(ransomamt, ransompaid)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(dbsource)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+location:
+
+```{r}
+GTO|>group_by(location)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+weapdet:
+
+```{r}
+GTO|>group_by(weaptype1_txt, weapsubtype1_txt, weaptype2_txt, weapsubtype2_txt,
+              weaptype3_txt, weapsubtype3_txt, weaptype4_txt, weapsubtype4_txt,
+              weapdetail)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+range_coord <- function(param){
+  return(paste(param-param%%10, param-param%%10+10,sep="-"))
+}
+GTD <- GTO|>
+  group_by(latitude, longitude)|>
+  mutate(latitude = sapply(latitude, range_coord),
+         longitude = sapply(longitude, range_coord))|>
+  summarize(block_num=n(),block_per=100*n()/nrow(GTO))|>
+  arrange(desc(block_num))
+```
+
+```{r}
+rmarkdown::paged_table(GTD)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(maps)
+library(leaflet)
+```
+
+```{r}
+GTO1970 <- GTO|>filter(iyear==1970)
+map <- leaflet(GTO1970)|>
+  addTiles()|>
+  addCircleMarkers(popup=GTO1970$summary, label=GTO1970$summary)
+```
+
+```{r}
+map
+```
+
+```{r}
+rmarkdown::paged_table(GTD)
+```
+
+```{r}
+leaf <- leaflet() %>%
+  addTiles() %>%
+  addSimpleGraticule(interval=10)
+leaf
+```
+
+specificity/vicinity (Про точность данных):
+
+```{r}
+GTO|>group_by(specificity, vicinity)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+weaptype:
+
+```{r}
+GTO|>group_by(weaptype1_txt, weapsubtype1_txt)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+targtype:
+
+```{r}
+GTO|>group_by(targtype1_txt)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(target1)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+Complex Analysis 1:
+
+```{r}
+GTO|>group_by(country_txt, attacktype1_txt)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(country_txt, desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+total bombing/explosion in each country
+
+```{r}
+GTO|>filter(attacktype1_txt=="Bombing/Explosion")|>group_by(country_txt)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+attacktype/success:
+```{r}
+GTO|>group_by(attacktype1_txt, attacktype2_txt, attacktype3_txt, success)|>
+  summarize(succ_num=n(), succ_per=100*n()/nrow(GTO))|>
+  arrange(attacktype1_txt,attacktype2_txt,attacktype3_txt,desc(success))|>
+  rmarkdown::paged_table()
+
+```
+
+
+attacktypes:
+```{r}
+GTO|>select(iyear, attacktype1_txt,attacktype2_txt,attacktype3_txt)|>
+  gather(key="iyear", value="attacktype", -iyear)|>
+  filter(attacktype!="")|>
+  count(iyear, attacktype)|>as.data.frame()|>
+  rmarkdown::paged_table()
+```
+targets
+```{r}
+GTO|>select(iyear, target1, target2, target3)|>
+  gather(key="iyear", value="target", -iyear)|>
+  filter(target!="")|>
+  count(iyear, target)|>as.data.frame()|>
+  arrange(iyear, desc(n))|>
+  rmarkdown::paged_table()
+```
+
+targtype
+```{r}
+GTO|>select(iyear, targtype1_txt,targtype2_txt,targtype3_txt)|>
+  gather(key="iyear", value="target", -iyear)|>
+  filter(target!="")|>
+  count(iyear, target)|>as.data.frame()|>
+  arrange(iyear, desc(n))|>
+  rmarkdown::paged_table()
+```
+
+year/attacktype:
+```{r}
+library(ggplot2)
+library(gganimate)
+library(gapminder)
+library(gifski)
+GTA <- GTO|>select(iyear, attacktype1_txt,attacktype2_txt,attacktype3_txt)|>
+  gather(key="year", value="attacktype", -iyear)|>
+  filter(attacktype!="")|>
+  count(iyear, attacktype)|>as.data.frame()|>
+  rename(num=n)|>
+  group_by(iyear)|>
+  mutate(rank=min_rank(-num)*1)|>
+  filter(rank<=5)|>
+  ungroup()
+
+p <- ggplot(GTA, aes(rank, group = attacktype, 
+                     fill = as.factor(attacktype), color = as.factor(attacktype))) +
+  geom_tile(aes(y = num/2,
+                height = num,
+                width = 0.9), alpha = 0.8, color = NA) +
+
+  # text in x-axis (requires clip = "off" in coord_*)
+  # paste(country, " ")  is a hack to make pretty spacing, since hjust > 1 
+  #   leads to weird artifacts in text spacing.
+  geom_text(aes(y = 0, label = paste(attacktype, " ")), vjust = 0.2, hjust = 1) +
+
+  coord_flip(clip = "off", expand = FALSE) +
+  scale_y_continuous(labels = scales::comma) +
+  scale_x_reverse() +
+  guides(color = FALSE, fill = FALSE) +
+
+  labs(title='{closest_state}', x = "", y = "Number of Attack Type") +
+  theme(plot.title = element_text(hjust = 0, size = 22),
+        axis.ticks.y = element_blank(),  # These relate to the axes post-flip
+        axis.text.y  = element_blank(),  # These relate to the axes post-flip
+        plot.margin = margin(1,1,1,4, "cm")) +
+
+  transition_states(iyear, transition_length = 4, state_length = 1) +
+  ease_aes('cubic-in-out')
+
+animate(p, 200, fps = 10, duration = 47, width = 1000, height = 800, renderer=gifski_renderer("attacktype.gif"))
+```
+
+Наблюдения по группировкам: число раненых/убитых
+
+```{r}
+GTO|>group_by(gname)|>
+  summarize(uni_num_kill=sum(nkill), uni_num_wound=sum(nwound),
+            uni_num_kill_ter=sum(nkillter), uni_num_wound_ter=sum(nwoundte))|>
+  arrange(desc(uni_num_kill))|>
+  rmarkdown::paged_table()
+```
+
+Среднее местоположение терактов группировок. Знание региона разбивает действия группировок
+
+```{r}
+GTO|>group_by(gname, region_txt)|>
+  summarize(uni_long=mean(longitude),uni_lat=mean(latitude))|>
+  arrange(gname)|>
+  rmarkdown::paged_table()
+```
+
+Самый распространённый тип атаки у группировок:
+
+```{r}
+GTO|>group_by(gname, attacktype1_txt)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  group_by(gname)|>
+  summarize(frequent_method=attacktype1_txt[which.max(uni_num)])|>
+  arrange(gname)|>
+  rmarkdown::paged_table()
+```
+
+Самая распространённая цель у группировок:
+
+```{r}
+GTO|>group_by(gname, target1)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  group_by(gname)|>
+  summarize(frequent_target=target1[which.max(uni_num)])|>
+  arrange(gname)|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(gname, target1)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  arrange(desc(uni_num))|>
+  rmarkdown::paged_table()
+```
+
+Самые разнообразные цели у группировок:
+
+```{r}
+GTO|>group_by(gname, target1, target2, target3)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  group_by(gname)|>
+  summarize(target_num=n())|>
+  arrange(desc(target_num))|>
+  rmarkdown::paged_table()
+```
+
+Сколько убитых/раненых каждым типом атаки:
+
+```{r}
+GTO|>group_by(gname, target1)|>
+  summarize(uni_num=n(),uni_per=100*n()/nrow(GTO))|>
+  group_by(gname)|>
+  summarize(frequent_target=target1[which.max(uni_num)])|>
+  arrange(gname)|>
+  rmarkdown::paged_table()
+```
+
+
+GIF со странами
+```{r}
+GTA <- GTO|>group_by(iyear, country_txt)|>
+  summarize(terr_num=n(),terr_per=100*n()/nrow(GTO))|>
+  arrange(iyear, desc(terr_num))|>
+  rmarkdown::paged_table()
+```
+
+
+```{r}
+library(ggplot2)
+library(gganimate)
+library(gapminder)
+library(gifski)
+theme_set(theme_classic())
+GTA <- GTA|>
+  group_by(iyear)|>
+  mutate(rank = min_rank(-terr_num)*1)|>
+  filter(rank<=10)|>
+  ungroup()
+```
+
+```{r}
+p <- ggplot(GTA, aes(rank, group = country_txt, 
+                     fill = as.factor(country_txt), color = as.factor(country_txt))) +
+  geom_tile(aes(y = terr_num/2,
+                height = terr_num,
+                width = 0.9), alpha = 0.8, color = NA) +
+
+  # text in x-axis (requires clip = "off" in coord_*)
+  # paste(country, " ")  is a hack to make pretty spacing, since hjust > 1 
+  #   leads to weird artifacts in text spacing.
+  geom_text(aes(y = 0, label = paste(country_txt, " ")), vjust = 0.2, hjust = 1) +
+
+  coord_flip(clip = "off", expand = FALSE) +
+  scale_y_continuous(labels = scales::comma) +
+  scale_x_reverse() +
+  guides(color = FALSE, fill = FALSE) +
+
+  labs(title='{closest_state}', x = "", y = "Number of Terrorist Acts") +
+  theme(plot.title = element_text(hjust = 0, size = 22),
+        axis.ticks.y = element_blank(),  # These relate to the axes post-flip
+        axis.text.y  = element_blank(),  # These relate to the axes post-flip
+        plot.margin = margin(1,1,1,4, "cm")) +
+
+  transition_states(iyear, transition_length = 4, state_length = 1) +
+  ease_aes('cubic-in-out')
+
+animate(p, 200, fps = 10, duration = 47, width = 800, height = 600, renderer=gifski_renderer("terract.gif"))
+```
+
+
+individual:
+
+```{r}
+GTO|>group_by(individual)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(INT_LOG)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  rmarkdown::paged_table()
+```
+
+
+```{r}
+GTO|>group_by(INT_IDEO)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  rmarkdown::paged_table()
+```
+
+```{r}
+GTO|>group_by(INT_MISC)|>
+  summarize(num = n(), per = 100*n()/nrow(GTO))|>
+  rmarkdown::paged_table()
+```
+
+Число зависимость числа жертв от длительности теракта.
+Утверждение: чем дольше конфликт, тем больше жертв
+```{r}
+GTO|>
+  group_by(idate)|>
+  mutate(resNum=as.numeric(as.Date(resolution, format="%m/%d/%Y")),
+         idateNum=as.numeric(idate))|>
+  # mutate(resolution=ifelse(is.na(resolution),0,resolution),
+  #        idateNum=ifelse(is.na(idate),0,idateNum))|>
+  mutate(duration = ifelse(extended==0,0, resNum-idateNum))|>group_by(duration)|>
+  summarize(casualties = mean(nkill, na.rm=T)+mean(nwound, na.rm=T))|>
+  arrange(desc(casualties))|>
+  rmarkdown::paged_table()
+```

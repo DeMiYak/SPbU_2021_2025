@@ -1,0 +1,119 @@
+---
+title: "Stats"
+author: "Yakovlev D.M."
+date: "2024-04-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+qchisq(p=0.025, df = 121)
+qchisq(p=0.975, df = 121)
+2*(1 - pchisq(q = 133.87, df = 121))
+```
+
+```{r}
+pchisq(q = 3.5576791139475505360433953743439, df = 1)
+(1 - pchisq(q = 3.5576791139475505360433953743439, df = 1))
+```
+
+```{r}
+1-exp(-3)-1
+2*(1-pchisq(11.4583,11))
+1 - sum(5/9*(4/9)^(0:3)) + 5/9*(4/9)^3
+```
+
+```{r}
+ni = c(60,10,20,10)
+npi = c(c(100*5/9*(4/9)^(0:2)), 100*(1 - sum(5/9*(4/9)^(0:2))))
+(ni - npi)^2/npi
+sum((ni - npi)^2/npi)
+1- pchisq(sum((ni - npi)^2/npi), 2)
+```
+```{r}
+c <- qnorm(0.05/2)
+n <- 100
+x <- 0.99
+q <- c*c
+d <- q*(q+4*n*x*(1-x))
+p <- (2*x*n + q - sqrt(d))/(2*(n+q))
+p
+```
+
+```{r}
+c <- qnorm(0.05/2)
+n <- 100
+x <- 0.99
+f <- c*c/n
+d = f*(4*x+f-4*x*x)
+p = (2*x+f-sqrt(d))/(2*(1+f))
+print(p)
+```
+
+```{r}
+x=c(0.5,0.65,0.75,0.8,0.9)
+2*x-x*x
+2/3*sqrt(50)
+```
+```{r}
+2*pnorm(-4.714045)
+qnorm(0.95)
+
+cg <- qnorm(0.95)
+x <- 0.1
+n <- 100
+ek <- sqrt(x/n)
+x + cg*ek
+```
+
+```{r}
+c <- qnorm(0.95)
+x <- 0.1
+n <- 100
+k <- c*c/n
+x + (k + sqrt(k*(4*x+k)))/2
+```
+
+```{r}
+1 - pchisq(16,1)
+```
+
+```{r}
+con <- c(30*(5/6)^(0:1)*exp(-5/6)/factorial(0:1), 30*(1- sum((5/6)^(0:1)*exp(-5/6)/factorial(0:1)))) 
+30*(1- sum((5/6)^(0:1)*exp(-5/6)/factorial(0:1)))
+30*(5/6)^(0:1)*exp(-5/6)/factorial(0:1)
+dt <- (c(10,15,5)-con)^2/con
+```
+
+```{r}
+1 - pchisq(sum(dt),1)
+```
+
+```{r}
+t <- -14/3
+n <- 50
+2*pt(t, n-1)
+```
+```{r}
+p<- 0.565
+c(pbinom(46, 54, p), pbinom(47, 54, p))
+c(pbinom(53, 62, p), pbinom(54, 62, p))
+c(pbinom(62, 75, p), pbinom(63, 75, p))
+c(pbinom(69, 85, p), pbinom(70, 85, p))
+c(pbinom(75, 95, p), pbinom(76, 95, p))
+c(pbinom(80, 102, p), pbinom(81, 102, p))
+c(pbinom(108, 151, p), pbinom(109, 151, p))
+c(pbinom(145, 236, p), pbinom(146, 236, p))
+c(pbinom(17, 19, p), pbinom(18, 19, p))
+c(pbinom(23, 25, p), pbinom(24, 25, p))
+c(pbinom(34, 39, p), pbinom(35, 39, p))
+c(pbinom(36, 41, p), pbinom(37, 41, p))
+c(pbinom(39, 44, p), pbinom(40, 44, p))
+c(pbinom(45, 52, p), pbinom(46, 52, p))
+c(pbinom(75, 94, p), pbinom(76, 94, p))
+```

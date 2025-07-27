@@ -1,0 +1,452 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1, T2A]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{russian}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdflang={russian},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\newcommand{\redline}{\hspace*{1cm}}
+\thispagestyle{empty}
+\begin{center}
+Санкт-Петербургский Государственный Университет\\
+Прикладная математика и информатика\\
+\vspace*{50mm} Отчёт по учебной практике 2 (научно-исследовательской работе)(семестр 4)\\
+«Метод SSA для временных рядов»
+\end{center}
+\vspace*{40mm}
+\begin{flushright}
+Выполнил:\\
+Яковлев Денис Михайлович\\
+группа 21.Б06-мм\\ \mbox{} \\
+Научный руководитель:\\
+К.ф-м.н., доцент\\
+Голяндина Нина Эдуардовна\\
+Кафедра статистического моделирования\\
+\end{flushright}
+\vspace*{30mm}
+\begin{center}
+\vspace*{30mm}
+Санкт-Петербург\\
+2022
+\end{center}
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{Введение}
+
+Метод SSA (Singular Spectrum Analysis - анализ сингулярного спектра),
+или «Гусеница»-SSA - один из методов анализа временных рядов,
+охаратеризованный широким спектром преимуществ \textbf{[1, с. 4]}. Так,
+например, при отсутствии предположений о:
+
+\begin{itemize}
+    \item Стационарности ряда;
+    \item Знаний модели тренда;
+    \item Сведений о наличии в ряде периодических составляющих и их периодах;
+\end{itemize}
+
+Метод SSA может решать различные задачи: выделение тренда, периодик,
+сглаживание ряда, построение полного разложения ряда в сумму тренда,
+периодик и шума, и так далее. \textbackslash{} Объясним суть базового
+алгоритма метода «Гусеница»-SSA \textbf{[1, с.5]}, выполняющегося в два
+этапа - разложение и восстановление:
+
+\subsection{Первый этап: разложение}
+
+Рассмотрим вещественнозначный временной ряд
+\(\textit{F} = (f_0, ..., f_{N-1})\) длины \(N > 2\). \textbackslash{}
+
+\subsubsection{Шаг 1: Вложение}
+
+Процедура переводит временной ряд в траекторную матрицу, построенную из
+последовательности векторов фиксированного размера. Пусть \(L\) -
+некоторое целое число \textit{(длина окна)}, \(1 < L < N\),
+\(K = N - L + 1 -\) число окон (векторов \(L\)-вложения) размерности
+\(L\) \[X_i = (f_{i-1},..., f_{i+L-2})^T, 1 \leq i \leq K.\]
+\(\textit{L}\)\textit{-траекторной матрицей} ряда \(\textit{F}\) назовём
+\begin{align}
+\textbf{X} = [X_1:...:X_K] = 
+\begin{pmatrix}
+    f_0 & f_1 & f_2 & ... & f_{K-1} \\
+    f_1 & f_2 & f_3 & ... & f_{K} \\
+    f_2 & f_3 & f_4 & ... & f_{K+1} \\
+    ... & ... & ... & \ddots & ... \\
+    f_{L-1} & f_{L} & f_{L+1} & ... & f_{N-1} 
+\end{pmatrix}
+\end{align} Откуда можно заметить, что траекторная матрица размерности
+\(L \times K\) является \textit{ганкелевой матрицей} - имеет одинаковые
+элементы на диагоналях \(i + j = const\)
+
+\newpage
+
+\subsubsection{Шаг 2: Сингулярное разложение}
+
+На втором шаге этапа разложения используем
+\textit{сингулярное разложение} (SVD - Singular Value Decomposition).
+Пусть
+\(\textbf{S} = \textbf{XX}^T, \lambda_1, ..., \lambda_L - \textit{собственные числа матрицы } \textbf{S}\);
+по построению, все собственные числа - неотрицательные, поэтому
+расположим их в порядке неубывания
+(\(\lambda_1 \geq ... \geq \lambda_L \geq 0\)) и \$U\_1, \ldots, U\_L -
+\$ ортонормированная система \textit{собственных векторов}
+(\textit{левых сингулярных векторов}) матрицы \(\textbf{S}\).
+\textbackslash{} Теперь, пусть \(d = max{i: \lambda_i > 0}\). Тогда,
+если обозначить
+\[V_i = \textbf{X}^TU_i/\sqrt{\lambda_i} - \textit{правый сингулярный (факторный) вектор}, i = 1, 2, ..., d\]
+то сингулярное разложение матрицы \(\textbf{X}\) можно записать как
+\begin{align}
+    \textbf{X} = \textbf{X}_1 + ... + \textbf{X}_d
+\end{align} где \(\textbf{X}_i = \lambda_iU_iV_i^T\) -
+\textit{элементарная матрица}, так как имеет ранг 1. \textbackslash{}
+Набор (\(\sqrt{\lambda_i}, U_i, V_i\)) -
+\(i\)\textit{-я собственная тройка} сингулярного разложения (2).
+
+\subsection{Второй этап: восстановление}
+\subsubsection{Шаг 1: Группировка}
+
+Процедура группировки делит множество индексов \(\{1, ..., d\}\) на
+\(m\) непересекающихся подмножеств \(I_1, ..., I_m\). \textbackslash{}
+Если положить, что
+\(I = {i_1, ..., i_p}, \forall k = 1, ...,p, i_k \in {1, ..., d}\), то
+\textit{результирующая матрица} \(\textbf{X}_I\) имеет вид
+\[\textbf{X}_I = \textbf{X}_{i_1} + ... + \textbf{X}_{i_p}\] Таким
+образом, разложение (2) можно представить в сгруппированном виде:
+\begin{align}
+    \textbf{X} = \textbf{X}_{I_1} + ... + \textbf{X}_{I_m}
+\end{align} \textit{Группировка собственных троек} --- процедура выбора
+множеств \(I_1, ..., I_m\).
+
+\subsubsection{Шаг 2: Диагональное усреднение}
+
+На последнем шаге алгоритма каждая сгруппированная матрица из разложения
+(3) переводится в новый ряд длины \(N\). \textbackslash{} Для этого
+рассмотрим полученную результирующую матрицу, например, \(\textbf{X}_I\)
+размера \(L \times K\) с элементами
+\(x_{ij}, 1 \leq i \leq L, 1 \leq j \leq K\). Для общности работы
+алгоритма транспонируем результирующую матрицу, если \(L > K\). В общем
+виде положим \(L^* = min(L, K), K^* = max(L, K)\) и
+\(x_{ij}^* = x_{ij} \ (L \leq K), x_{ij}^* = x_{ji} \ (L > K)\), где
+\(\textbf{X}^*_I =(x_{ij}^*)^{L^*,K^*}_{i,j=1}\).
+\newpage \textit{Диагональное усреднение} переводит матрицу
+\(\textbf{X}^*_I\) в ряд
+\(\tilde{F} = (\tilde{f}_0, ..., \tilde{f}_{N-1})\) по следующей
+формуле: \begin{align}
+    \Tilde{f}_k = 
+    \begin{cases}
+        \frac{1}{k+1}\sum\limits^{k+1}_{m=1}x^*_{m, k - m + 2}, & \textit{для } 0 \leq k < L^*-1, \\
+        \frac{1}{L^*}\sum\limits^{L^*}_{m=1}x^*_{m, k - m + 2}, & \textit{для } L^* - 1 \leq k < K^*, \\
+        \frac{1}{N-k}\sum\limits^{N-K^*+1}_{m=k-K^*+2}x^*_{m, k - m + 2}, & \textit{для } K^* \leq k < N,
+    \end{cases}
+\end{align} Применяя диагональное усреднение (4) к результирующим
+матрицам \(\textbf{X}_{I_k}\), получаем ряды
+\(\tilde{F}^{(k)} = (\tilde{f}^{(k)}_0, ..., \tilde{f}^{(k)}_{N-1}\).
+Следовательно, исходный ряд \((f_0, ..., f_{N-1})\) раскладывается в
+сумму \(m\) рядов: \begin{align}
+    f_n = \sum\limits^m_{k=1}\tilde{f}^{(k)}_n, n = 0, 2, ..., N-1.
+\end{align} Таким образом, в ходе исполнения базового алгоритма, на
+основе построенной траекторной матрицы после сингулярного разложения
+группируются наборы собственных троек, характеризующие тренд, периодику
+или шум. Поэтому, целью этого отчёта являются ознакомление с критериями
+группировки собственных троек, а также описание типов разделимости для
+произвольной траекторной матрицы на примерах.
+
+\newpage
+\section{Теоретические задачи}
+\subsection{Задача 1. Типы разделимости и их отсутствие.}
+
+\textit{Продемонстрируйте понятия сильной и/или слабой разделимости, а также их отсутствия, на разных рядах, с шумом и без.}
+
+\subsubsection{Пример 1. Сильная и слабая разделимость}
+
+Рассмотрим следующие последовательности: \begin{align}
+    f^{(1)}_n = \alpha cos(2\pi \omega n ), \ \alpha \not= 0, \ 0 \leq \omega \leq 1/2\tag{*} \\
+    f^{(2)}_n = \beta, \beta \ \not= 0 \tag{**}
+\end{align} Пусть длина ряда \(N = 7\), длина окна \(L = 4\), число окон
+(векторов вложения) \(K = N - L + 1 = 4\), ряды
+\(F_N^{(1)} = (f_0^{(1)}, ..., f_{N-1}^{(1)}), F_N^{(2)} = (f_0^{(2)}, ..., f_{N-1}^{(2)})\).
+Воспользуемся следующим предложением \textbf{[2, с.14]}:
+\textbackslash{}\redline \textbf{Предложение 1.}
+\textit{ Пусть }\(K = N-L+1.\) \textit{Ряды }\(F_N^{(1)}\) \textit{ и }
+\(F_N^{(2)}\) \textit{ слабо разделимы тогда и только тогда, когда}
+\[f_k^{(1)}f_m^{(2)} +\dots+f^{(1)}_{k+L-1}f^{(1)}_{m+L-1} = 0, \ 0 \leq k, m \leq K-1\]
+\[f_k^{(1)}f_m^{(2)} +\dots+f^{(1)}_{k+K-1}f^{(1)}_{m+K-1} = 0, \ 0 \leq k, m \leq L-1\]
+Для матриц \[F^{(1)}_N \longleftrightarrow \textbf{X}^{(1)} = 
+\begin{pmatrix}
+    \alpha & \alpha cos(2\pi \omega n) & \alpha cos(4\pi \omega n) & \alpha cos(6\pi \omega n) \\
+    \alpha cos(2\pi \omega n) & \alpha cos(4\pi \omega n) & \alpha cos(6\pi \omega n) & \alpha cos(8\pi \omega n) \\
+    \alpha cos(4\pi \omega n) & \alpha cos(6\pi \omega n) & \alpha cos(8\pi \omega n) & \alpha cos(10\pi \omega n) \\
+    \alpha cos(6\pi \omega n) & \alpha cos(8\pi \omega n) & \alpha cos(10\pi \omega n) & \alpha cos(12\pi \omega n) \\
+\end{pmatrix}
+\] \[
+    F^{(2)}_N \longleftrightarrow \textbf{X}^{(2)} = 
+\begin{pmatrix}
+    \beta & \beta & \beta & \beta \\
+    \beta & \beta & \beta & \beta \\
+    \beta & \beta & \beta & \beta \\
+    \beta & \beta & \beta & \beta \\
+\end{pmatrix}
+\] По предложению 1 ряды \(F_N^{(1)}, F_N^{(2)}\) слабо разделимы, если
+они удовлетворяют следующей системе уравнений:
+
+\begin{center}
+\begin{align}
+\begin{cases}
+    \alpha\beta(1 + cos(2\pi \omega n) + cos(4 \pi \omega n) + cos(6\pi \omega n)) = 0 \\
+    \alpha\beta(cos(2 \pi \omega n) + cos(4\pi \omega n) + cos(6 \pi \omega n) + cos(8\pi \omega n)) = 0 \\
+    \alpha\beta(cos(4 \pi \omega n) + cos(6\pi \omega n) + cos(8 \pi \omega n) + cos(10\pi \omega n)) = 0 \\
+    \alpha\beta(cos(6 \pi \omega n) + cos(8\pi \omega n) + cos(10 \pi \omega n) + cos(12\pi \omega n)) = 0 \\
+\end{cases}
+\end{align}
+\end{center}
+
+Это условие выполняется, если, например, положить \(\omega = 1/4\).
+\newpage Обратим внимание на выбор коэффициента \(\alpha\) для элемента
+периодического ряда. Всего у \(\textbf{X}^{(1)}\) одно сингулярное число
+\(\sqrt{\lambda^{(1)}} = 2\alpha\) кратности 2, в качестве левых и
+правых сингулярных векторов:
+\(U_1 = V_1 = (1, 0, 1, 0)^T/\sqrt{2}, U_2 = V_2 = (0, 1, 0, 1)^T/\sqrt{2}.\)
+У \(\textbf{X}^{(2)}\) одно сингулярное число \$\sqrt{\lambda^{(2)}} =
+\$ кратности 1, в качестве левых и правых сингулярных векторов:
+\(U_3 = V_3 = (1, 1, 1, 1)^T/2.\) Тогда
+
+\begin{align*}
+    \textbf{X} & = 
+    \begin{pmatrix}
+        \beta + \alpha & \beta & \beta - \alpha & \beta \\
+        \beta & \beta - \alpha & \beta & \beta + \alpha \\
+        \beta - \alpha & \beta & \beta + \alpha & \beta \\
+        \beta & \beta + \alpha & \beta & \beta - \alpha \\
+    \end{pmatrix}
+     \\ & = 2\alpha U_1V_1^T + 2\alpha U_2V_2^T + 4\beta U_3V_3^T = \textbf{X}^{(1)} + \textbf{X}^{(2)}
+\end{align*}
+
+По определению \textbf{[2, с.15]}, сильная разделимость достигается в
+том случае, когда
+\(\sqrt{\lambda^{(1)}} \not= \sqrt{\lambda^{(2)}} \ (\alpha \not = 2\beta).\)
+Это значит, что сингулярное разложение матрицы \(\textbf{X}\) однозначно
+определено (с точностью до сингулярных векторов кратных сингулярных
+чисел). Если же \(\alpha = 2\beta\), то
+
+\begin{align*}
+    \textbf{X} & =
+    \begin{pmatrix}
+        3\beta & \beta & -\beta & \beta \\
+        \beta & -\beta & \beta & 3\beta \\
+        -\beta & \beta & 3\beta & \beta \\
+        \beta & 3\beta & \beta & -\beta \\
+    \end{pmatrix}
+    \\ & = 4\beta U_1V_1^T + 4\beta U_2V_2^T + 4\beta U_3V_3^T
+\end{align*} \textbackslash{} Где \$U\_1, U\_2, U\_3 \$ ---
+ортонормированный набор векторов в
+\(\mathbb{R}^4, \ V_i = X^TU_i/4\beta, \ i = 1,2,3.\) Из всех возможных
+наборов подходящим является только одно множество наборов:
+\(U_3 = V_3 = (1, 1, 1, 1)^T/2, U_1, U_2 -\) произвольная пара
+ортонормированных векторов из сингулярного разложения
+\(\textbf{X}^{(1)}\). \textbackslash{} В то же время, показанный пример
+позволяет сформулировать и проверить на достоверность достаточные и
+необходимые условия отделимости произвольного ряда \(F^{(2)}_N\) от
+константного ряда \(F^{(1)}_N\) \textbf{[2, с.17]}:
+
+\begin{enumerate}
+    \item Ряд $F^{(2)}_N$ имеет целый период $T$; $L/T, K/T - $ целые;
+    \item $f_0^{(2)}+... + f_{T-1}^{(2)} = 0$
+\end{enumerate}
+
+Поясним, для чего нужно каждое из условий. \textbackslash{}
+\redlineПервое условие позволяет построить систему линейных уравнений
+вида (6), где число слагаемых у третьего множителя кратно \(T\).
+\textbackslash{} \redlineВторое условие приводит к выполнению слабой
+разделимости (при первом условии), так как из-за наличия периода в
+\(F^{(2)}, \forall i: 0 \leq i \leq N - T: f^{(2)}_{T+i}=f^{(2)}_i\)
+сумма в третьем множителе всегда будет равняться нулю.
+
+\subsubsection{Пример 2. Отсутствие разделимости}
+
+\redline Следует обратить внимание и на случаи, когда разделимость не
+имеет места. Приведём простой пример неотделимости двух рядов через
+константные ряды. Пусть имеется два константных ряда:
+\(F^{(1)}_N=(\alpha, \alpha, ..., \alpha), F^{(2)}_N=(\beta, \beta, ..., \beta), \ \alpha, \beta \not = 0\).
+По необходимому и достаточному условию слабой разделимости, приняв
+\(1 < L < N, K = N - L + 1\), проверим, чему равно скалярное
+произведение отрезков длины L, K от рядов \(F^{(1)}_N, F^{(2)}_N\).
+Тогда \begin{align*}
+    f^{(1)}_kf^{(2)}_m + ... + f^{(1)}_{k+L-1}f^{(2)}_{m+L-1} = \alpha \beta + ... + \alpha \beta = \alpha \beta L \ (1 \leq k, m \leq K-1)
+    \\
+    f^{(1)}_kf^{(2)}_m +... + f^{(1)}_{k+K-1}f^{(2)}_{m+K-1} = \alpha \beta + ... + \alpha \beta = \alpha \beta K \ (1 \leq k, m \leq L-1)
+\end{align*} Отсюда следует, что между константными рядами не существует
+слабой разделимости, а, значит, сингулярное разложение произвольной
+траекторной матрицы в виде суммы от двух константных рядов.
+
+\subsubsection{Пример 3. Разделимость с шумом}
+
+Покажем визуально на основе первого примера. Возьмём тот случай из
+примера 1, когда сингулярные числа периодического \((F^{(1)}_N)\) и
+константного \((F^{(2)}_N)\) рядов совпадают. Выпишем явно: \[
+F^{(1)}_N \longleftrightarrow X^{(1)}=
+\begin{pmatrix}
+    2 & 0 & -2& 0 \\
+    0 & -2 & 0 & 2 \\
+    -2& 0 & 2 & 0 \\
+    0 & 2& 0 & -2 \\
+\end{pmatrix}
+\] \[
+F^{(2)}_N \longleftrightarrow X^{(2)} =
+\begin{pmatrix}
+    1 & 1 & 1 & 1 \\
+    1 & 1 & 1 & 1 \\
+    1 & 1 & 1 & 1 \\
+    1 & 1 & 1 & 1 \\
+\end{pmatrix}
+\] Объединив их в единую траекторную матрицу \(\textbf{X}\), рассмотрим
+её собственные тройки \newpage Можно заметить, что на первом рисунке три
+сингулярных числа имеют одинаковые значения, из-за чего невозможно точно
+интерпретировать их, а также определить периодический и константный
+ряды, входящие в него. \textbackslash{} На втором рисунке найти
+закономерности стало проще: первое сингулярное число выделяется среди
+других и может восприниматься как тренд этой траекторной матрицы. В то
+же время, следующие два сингулярных числа близки друг к другу, что даёт
+возможность воспринимать их как периодику.
+
+\section{Практическое применение}
+\subsection{Формулировка}
+
+В качестве одной из задач прикладного характера предлагается исследовать
+ежемесячное измерение средней температуры в Санкт-Петербурге с 1805 по
+2021 при помощи метода SSA. Поступившая на вход таблица данных - матрица
+с датами в первом столбце и средними температурными измерениями для
+каждого месяца (начиная с января) в следующих двенадцати столбцах
+соответственно. Тогда полученную матрицу без столбца дат можно
+представить как ряд, в котором последовательно записаны изменения
+слева-направо, сверху-вниз. Назовём временной ряд \(F\).
+\textbackslash{} Перед тем, как приступать к следующей части, приведём
+несколько предложений и практических замечаний, которые помогут при
+интерпретации полученных результатов:
+
+\begin{itemize}
+    \item При выборе длины окна [4.2.2, с.42], хотя и число ненулевых сингулярных значений, скорее всего будет небольшим в сравнение с самой длиной временного ряда, следует брать L как можно ближе к половине, чтобы достигнуть лучшей разделимости (на основе асимптотической разделимости) \textbf{[2, с.19]};
+    \item Чтобы извлечь тренд из ряда, нужно собрать все собственные тройки с медленно меняющимися сингулярными векторами;
+    \item В общем случае выделения периодической компоненты $F^{(1)}$ такого, что
+    \begin{align}
+        f_n^{(1)} = \sum\limits^{|T/2|}_{k=1}\sqrt{a^2_k + b^2_k}cos(2\pi k n /T + \psi_k)
+    \end{align}
+    из ряда $F$, чтобы определить все его собственные тройки, должны выполняться следующие условия
+    \begin{enumerate}[(a)]
+        \item Ряд $F^{(1)} -$ (приближённо) строго отделим от $F^{(2)}$ в сумме $F = F^{(1)} + F^{(2)}$ при длине окна $L$ 
+        \item Все ненулевый мощности $a^2_k+b^2_k$ в разложении (7) различны
+        \item $L \gg T$ 
+    \end{enumerate}
+\newpage
+    \item Для выделения компоненты шума, как и любой другой компоненты, можно воспользоваться сингулярными числами, учитывая поведение сингулярных чисел для определённых типов рядов. Например, периодическая компонента порождается двумя собственные тройки с близкими друг к другу сингулярными числами, только если частота не равняется 0 или 1/2.
+\end{itemize}
+
+\subsection{Анализ результатов}
+
+Исходя из значений норм компонентов, можно предположить, что у
+рассматриваемого временного ряда в качестве тренда выступают
+экспоненциально-модулированный гармонический ряд (ET1,2) и
+экспоненциальный ряд (ET3). \textbackslash{} В качестве периодик можно
+выделить следующие: ET(4,5) ET(6,7), ET(8,9), ET(10,11), ET(12,13),
+ET(14,15), ET(16,17), ET(18,19), ET(20,21), ET(22,23), ET(24,25),
+ET(26), ET(27, 28), ET(29), ET(30, 31). То есть, (ET4-31). В этих
+случаях ссылаемся на близость сингулярных чисел друг к другу. То же
+самое видно и относительно других, более низких по своему вкладу
+собственных троек. Например, ET(32,33), ET(34,35), ET(37,38). Однако эти
+собственные тройки, исходя из доли вклада, будут относиться к шуму.
+\textbackslash{} Таким образом,
+
+\begin{itemize}
+    \item Тренд - ET(1,2), ET(3);
+    \item Периодика - ET(4-31);
+    \item Шумы - ET(32-50);
+\end{itemize}
+\newpage
+\section{Заключение}
+
+В ходе проведённых работ на языке R был продемонстрирован метод SSA для
+временных рядов на основе теоретических и практических задач. При
+решении теоретических задач были изучены случаи сильной, слабой
+разделимости и её отсутствия. При решении практических задач были
+изучены особенности разделения траекторной матрицы на составляющие:
+тренды, периодики, шумы.
+
+\newpage
+\section{Список литературы}
+\begin{enumerate}
+    \item \textbf{Метод Гусеница-SSA: анализ временных рядов: Учеб. пособие. / Голяндина Н.Э. - СПб., 2004. - 76 с.}
+\end{enumerate}
+
+\end{document}
