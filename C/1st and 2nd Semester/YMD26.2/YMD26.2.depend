@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1650628568 source:c:\users\st095998\desktop\codeblocks\ymd26.2\26.2.c
+	<stdio.h>
+	<stddef.h>
+	"deque.h"
+	<stdlib.h>
+
+1650630909 c:\users\st095998\desktop\codeblocks\ymd26.2\deque.h
+
+1651154170 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd26.2\26.2.c
+	<stdio.h>
+	<stddef.h>
+	"deque.h"
+	<stdlib.h>
+
+1650808526 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd26.2\deque.h
+
+1651076745 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd26.2\26.2sup.c
+	<stdio.h>
+	"deque.h"
+	<stdlib.h>
+	<stddef.h>
+

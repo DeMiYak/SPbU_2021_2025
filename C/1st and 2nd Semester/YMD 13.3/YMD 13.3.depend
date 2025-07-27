@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1639750468 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 13.3\fi.c
+	<stdio.h>
+	<math.h>
+	"integrals.h"
+
+1639750540 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 13.3\integrals.h
+
+1648798428 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 13.3\13.3.c
+	<stdio.h>
+	"functions.h"
+	"integrals.h"
+
+1648798387 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 13.3\functions.h
+
+1648798407 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 13.3\ff.c
+	<stdio.h>
+	<math.h>
+	"functions.h"
+
+1639750405 source:c:\users\st095998\desktop\codeblocks\ymd 13.3\13.3.c
+	<stdio.h>
+	"functions.h"
+	"integrals.h"
+
+1639750352 c:\users\st095998\desktop\codeblocks\ymd 13.3\functions.h
+
+1639750538 c:\users\st095998\desktop\codeblocks\ymd 13.3\integrals.h
+
+1639748783 source:c:\users\st095998\desktop\codeblocks\ymd 13.3\ff.c
+	<stdio.h>
+	<math.h>
+	"functions.h"
+
+1639750466 source:c:\users\st095998\desktop\codeblocks\ymd 13.3\fi.c
+	<stdio.h>
+	<math.h>
+	"integrals.h"
+

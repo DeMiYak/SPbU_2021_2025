@@ -1,0 +1,55 @@
+# depslib dependency file v1.0
+1650980010 source:f:\лабы\database\data_base.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<malloc.h>
+	<graphics.h>
+	<conio.h>
+	"data_base.h"
+	"sort.h"
+
+1650831090 f:\лабы\database\data_base.h
+
+1650580352 f:\лабы\database\sort.h
+
+1650978972 source:f:\лабы\database\main.c
+	<stdio.h>
+	<stdlib.h>
+	<graphics.h>
+	"data_base.h"
+	"sort.h"
+
+1650819340 source:f:\лабы\database\sort.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"sort.h"
+
+1650994410 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\database\data_base.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<malloc.h>
+	<graphics.h>
+	<conio.h>
+	"data_base.h"
+	"sort.h"
+
+1650845490 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\database\data_base.h
+
+1650594752 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\database\sort.h
+
+1650993372 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\database\main.c
+	<stdio.h>
+	<stdlib.h>
+	<graphics.h>
+	"data_base.h"
+	"sort.h"
+
+1650833740 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\database\sort.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"sort.h"
+

@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1616142780 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\sq\queue_list.c
+	<stdlib.h>
+	"queue_list.h"
+
+1615541880 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\sq\queue_list.h
+
+1616143920 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\sq\sq_classic_list.c
+	<stdlib.h>
+	"sq_classic_list.h"
+
+1616143080 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\sq\sq_classic_list.h
+
+1616142840 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\sq\stack_array.c
+	"array.h"
+
+1616142840 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\sq\array.h
+	<stddef.h>
+
+1616142900 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\sq\stack_list.c
+	<stdlib.h>
+	"stack_list.h"
+
+1616142900 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\sq\stack_list.h
+

@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1636895160 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 12.2\rip.c
+	<stdio.h>
+
+1636894936 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 12.2\12.2.c
+	<stdio.h>
+	<locale.h>
+	"sip.h"
+
+1636894680 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 12.2\sip.h
+
+1637932117 source:c:\users\st095998\desktop\codeblocks\ymd 12.2\rip.c
+	<stdio.h>
+
+1637932125 source:c:\users\st095998\desktop\codeblocks\ymd 12.2\12.2.c
+	<stdio.h>
+	"sip.h"
+
+1637931860 c:\users\st095998\desktop\codeblocks\ymd 12.2\sip.h
+

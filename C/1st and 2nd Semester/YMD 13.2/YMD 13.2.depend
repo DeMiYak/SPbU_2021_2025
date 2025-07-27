@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1639463587 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 13.2\13.2.c
+	<stdio.h>
+	"h.h"
+
+1639463651 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 13.2\h.h
+
+1638771823 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 13.2\rs.c
+	<stdio.h>
+	<math.h>
+	"h.h"
+
+1639749802 source:c:\users\st095998\desktop\codeblocks\ymd 13.2\13.2.c
+	<stdio.h>
+	"h.h"
+
+1639749981 c:\users\st095998\desktop\codeblocks\ymd 13.2\h.h
+
+1639750042 source:c:\users\st095998\desktop\codeblocks\ymd 13.2\rs.c
+	<stdio.h>
+	<math.h>
+	"h.h"
+

@@ -1,0 +1,3 @@
+Исправления:
+(main.c:229) - добавлена строка для освобождения matrixLine_free(mClone)
+(matrixSolve.c:198) - добавлена функция fabs к cfnt  

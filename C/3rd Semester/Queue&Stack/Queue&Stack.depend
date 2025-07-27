@@ -1,0 +1,49 @@
+# depslib dependency file v1.0
+1667032280 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\queue&stack\main.cpp
+	<iostream>
+	<cmath>
+	"Queue.h"
+	"Stack.h"
+
+1665145428 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\queue&stack\queue.cpp
+	"Queue.h"
+	<cmath>
+
+1665145756 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\queue&stack\stack.cpp
+	"stack.h"
+	<cmath>
+
+1665145610 source:c:\users\st095998\desktop\codeblocks\queue&stack\main.cpp
+	<iostream>
+	<cmath>
+	"Queue.h"
+	"Stack.h"
+
+1665145559 source:c:\users\st095998\desktop\codeblocks\queue&stack\stack.cpp
+	"stack.h"
+	<cmath>
+
+1665145427 source:c:\users\st095998\desktop\codeblocks\queue&stack\queue.cpp
+	"Queue.h"
+	<cmath>
+
+1665145596 c:\users\st095998\desktop\codeblocks\queue&stack\queue.h
+	"Node.h"
+	<iostream>
+
+1668167020 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\queue&stack\queue.h
+	"Node.h"
+	<iostream>
+
+1664701012 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\queue&stack\node.h
+
+1667032546 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\queue&stack\stack.h
+	"node.h"
+	<iostream>
+
+1664701012 c:\users\st095998\desktop\codeblocks\queue&stack\node.h
+
+1665145558 c:\users\st095998\desktop\codeblocks\queue&stack\stack.h
+	"node.h"
+	<iostream>
+

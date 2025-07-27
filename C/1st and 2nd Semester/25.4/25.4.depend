@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1650829187 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\25.4\revpolnot.c
+	<math.h>
+	<string.h>
+	"stack.h"
+	"revPolNot.h"
+	"integrals.h"
+	"functions.h"
+
+1650825842 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\25.4\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<string.h>
+	"stack.h"
+	"revPolNot.h"
+
+1650829142 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\25.4\stack.h
+
+1650826959 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\25.4\25.4sup.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	"stack.h"
+
+1650818731 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\25.4\revpolnot.h
+
+1648798407 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\25.4\ff.c
+	<stdio.h>
+	<math.h>
+	"functions.h"
+
+1648798387 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\25.4\functions.h
+
+1639750468 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\25.4\fi.c
+	<stdio.h>
+	<math.h>
+	"integrals.h"
+
+1639750540 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\25.4\integrals.h
+

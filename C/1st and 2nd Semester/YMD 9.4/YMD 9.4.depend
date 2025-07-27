@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1635269686 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 9.4\9.4.c
+	<stdio.h>
+	<math.h>
+	<locale.h>
+

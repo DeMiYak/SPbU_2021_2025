@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1636118917 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 11.1\solution.c
+	<stdio.h>
+	<math.h>
+
+1636116938 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 11.1\11.1.c
+	<stdio.h>
+	<math.h>
+	"support.h"
+
+1636116919 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 11.1\support.h
+

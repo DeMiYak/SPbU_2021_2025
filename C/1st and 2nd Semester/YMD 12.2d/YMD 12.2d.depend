@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1636908643 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 12.2d\rq.c
+	<stdio.h>
+
+1636908659 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 12.2d\12.2d.c
+	<stdio.h>
+	<locale.h>
+	"qr.h"
+
+1636908417 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 12.2d\qr.h
+
+1637933342 source:c:\users\st095998\desktop\codeblocks\ymd 12.2d\rq.c
+	<stdio.h>
+
+1637935897 source:c:\users\st095998\desktop\codeblocks\ymd 12.2d\12.2d.c
+	<stdio.h>
+	"qr.h"
+
+1637932624 c:\users\st095998\desktop\codeblocks\ymd 12.2d\qr.h
+

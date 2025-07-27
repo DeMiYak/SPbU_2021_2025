@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1646564661 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab17.1\deletespace.c
+	"DeleteSpace.h"
+
+1646407630 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab17.1\deletespace.h
+
+1646407630 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab17.1\main.c
+	<stdio.h>
+	"DeleteSpace.h"
+

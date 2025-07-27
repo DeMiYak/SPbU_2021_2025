@@ -1,0 +1,42 @@
+# depslib dependency file v1.0
+1651848095 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbt-ymd\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<assert.h>
+	<string.h>
+	"rbt.h"
+	"graph.h"
+
+1651658337 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbt-ymd\rbt.h
+
+1651848207 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbt-ymd\rbt.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"rbt.h"
+	"graph.h"
+
+1651421046 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbt-ymd\rbt2.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<malloc.h>
+	<assert.h>
+	"rbt2.h"
+
+1651421059 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbt-ymd\rbt2.h
+
+1651831727 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbt-ymd\graph.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	"rbt.h"
+	"graph.h"
+	<graphics.h>
+	<conio.h>
+
+1651656951 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbt-ymd\graph.h
+	"rbt.h"
+

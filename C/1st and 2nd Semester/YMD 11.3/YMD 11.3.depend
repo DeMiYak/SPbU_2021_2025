@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1635429154 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\labs-master\lab11.3\main.c
+	<stdio.h>
+	"nums.h"
+
+1635429154 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\labs-master\lab11.3\nums.h
+
+1635429154 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\labs-master\lab11.3\printnums.c
+	<stdio.h>
+	"nums.h"
+
+1636123236 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 11.3\11.3.c
+	<stdio.h>
+
+1636123232 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 11.3\11space.c
+	<stdio.h>
+

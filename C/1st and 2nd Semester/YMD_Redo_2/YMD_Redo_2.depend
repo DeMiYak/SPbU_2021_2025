@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1653050222 source:c:\users\st095998\desktop\codeblocks\ymd_redo_2\main.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	"read.h"
+
+1653049202 c:\users\st095998\desktop\codeblocks\ymd_redo_2\read.h
+
+1653050211 source:c:\users\st095998\desktop\codeblocks\ymd_redo_2\read.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+

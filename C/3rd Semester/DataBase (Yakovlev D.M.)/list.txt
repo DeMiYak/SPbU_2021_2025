@@ -1,0 +1,12 @@
+Sergey 4 13.500000
+Stepan 6 17.000000
+Alexsander 12 41.000000
+Sergey 4 13.500000
+Stepan 6 17.000000
+Alexsander 12 41.000000
+Sergey 4 13.500000
+Stepan 6 17.000000
+Alexsander 12 41.000000
+Sergey 4 13.500000
+Stepan 6 17.000000
+Alexsander 12 41.000000

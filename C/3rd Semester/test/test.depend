@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1668947877 source:c:\codeblocks\files\test\main.cpp
+	<iostream>
+	"math2_test.h"
+
+1668947877 c:\codeblocks\files\test\math2_test.h
+	<cmath>
+	<algorithm>
+	"math2.h"
+
+1668947877 c:\codeblocks\files\test\math2.h
+
+1668947877 source:c:\codeblocks\files\test\math2.cpp
+	"math2.h"
+	<cmath>
+
+1668947877 source:c:\codeblocks\files\test\math2_test.cpp
+	"math2_test.h"
+	<iostream>
+	<assert.h>
+

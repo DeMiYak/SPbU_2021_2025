@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1651218997 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\database (yakovlev d.m.)\main24.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	"head24.h"
+	"sort.h"
+
+1652376298 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\database (yakovlev d.m.)\head24.h
+
+1652376282 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\database (yakovlev d.m.)\sup24.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	"head24.h"
+	"sort.h"
+
+1651220270 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\database (yakovlev d.m.)\sort.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	"sort.h"
+	"head24.h"
+
+1651213195 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\database (yakovlev d.m.)\sort.h
+	"head24.h"
+

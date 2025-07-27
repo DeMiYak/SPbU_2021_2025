@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1649397184 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\25.4(example)\main.c
+	<errno.h>
+	<stdio.h>
+	<stdlib.h>
+

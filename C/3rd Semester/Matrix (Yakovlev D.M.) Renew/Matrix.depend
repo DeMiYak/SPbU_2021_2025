@@ -1,0 +1,191 @@
+# depslib dependency file v1.0
+1648393447 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray-2\matrix\main.c
+
+1648393587 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray-2\matrix\matrixinitfunc.c
+
+1648393668 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray-2\matrix\matrixoper.c
+
+1648393709 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray-2\matrix\matrixsolve.c
+
+1648395071 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray-2\matrix\matrixstruct.c
+	<stdio.h>
+
+1650795493 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix\matrixinitfunc.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+
+1650795373 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix\matrixsolve.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+	"matrixOper.h"
+
+1650797618 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix\main.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+	"matrixOper.h"
+	"matrixSolve.h"
+
+1650795469 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix\matrixoper.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+
+1650795416 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix\matrixstruct.h
+	<stddef.h>
+
+1648395114 source:c:\users\st095998\desktop\codeblocks\matrix\main.c
+	<stdio.h>
+
+1650025917 source:c:\users\st095998\desktop\codeblocks\matrix\matrixoper.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+
+1649577272 c:\users\st095998\desktop\codeblocks\matrix\matrixstruct.h
+	<stddef.h>
+
+1650026400 source:c:\users\st095998\desktop\codeblocks\matrix\matrixsolve.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+	"matrixOper.h"
+
+1650795427 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix\matrixinitfunc.h
+	"matrixStruct.h"
+
+1650795392 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix\matrixstruct.c
+	<stdio.h>
+	<stdlib.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+	"matrixSolve.h"
+
+1650795439 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix\matrixoper.h
+
+1649832184 source:c:\users\st095998\desktop\codeblocks\matrix\matrixinitfunc.c
+	<stdio.h>
+	<stdlib.h>
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+
+1649613596 c:\users\st095998\desktop\codeblocks\matrix\matrixinitfunc.h
+	"matrixStruct.h"
+
+1649834366 source:c:\users\st095998\desktop\codeblocks\matrix\matrixstruct.c
+	<stdio.h>
+	<stdlib.h>
+	"matrixStruct.h"
+	<assert.h>
+
+1649613858 c:\users\st095998\desktop\codeblocks\matrix\matrixoper.h
+
+1650795399 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix\matrixsolve.h
+
+1650795493 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.)\matrixinitfunc.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+
+1650795427 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.)\matrixinitfunc.h
+	"matrixStruct.h"
+
+1650795416 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.)\matrixstruct.h
+	<stddef.h>
+
+1650795469 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.)\matrixoper.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+
+1650797925 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.)\matrixsolve.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+	"matrixOper.h"
+
+1650795439 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.)\matrixoper.h
+
+1650795392 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.)\matrixstruct.c
+	<stdio.h>
+	<stdlib.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+	"matrixSolve.h"
+
+1650795399 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.)\matrixsolve.h
+
+1652091607 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.) renew\matrixinitfunc.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+
+1650795427 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.) renew\matrixinitfunc.h
+	"matrixStruct.h"
+
+1650795416 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.) renew\matrixstruct.h
+	<stddef.h>
+
+1652091623 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.) renew\matrixoper.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+
+1650992944 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.) renew\matrixsolve.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+	"matrixOper.h"
+
+1650795439 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.) renew\matrixoper.h
+
+1652091648 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.) renew\matrixstruct.c
+	<stdio.h>
+	<stdlib.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+	"matrixSolve.h"
+
+1650795399 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.) renew\matrixsolve.h
+
+1650993047 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\matrix (yakovlev d.m.) renew\main.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+	"matrixOper.h"
+	"matrixSolve.h"
+

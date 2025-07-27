@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1663488488 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\constructors\constructor.cpp
+	"constructor.h"
+
+1663927354 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\constructors\constructor.h
+	<iostream>
+	<cmath>
+
+1663923820 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\constructors\main.cpp
+	<iostream>
+	"constructor.h"
+

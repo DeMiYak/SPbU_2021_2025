@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1653033196 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\bag\main.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	"help.h"
+
+1653041913 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\bag\eoka.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+
+1653032311 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\bag\help.h
+

@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1649396632 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab25.4\main.c
+	<stdio.h>
+	<malloc.h>
+	"stack.h"
+
+1648735016 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab25.4\stack.h
+
+1648735016 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab25.4\stack.c
+	<stddef.h>
+	<malloc.h>
+	<string.h>
+	<stdio.h>
+	"stack.h"
+

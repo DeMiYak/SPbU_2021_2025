@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1637521265 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course 1\course 1.c
+	<stdio.h>
+	<math.h>
+	"sup.h"
+
+1637520673 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course 1\sup.h
+
+1637521099 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course 1\supsup.c
+	<stdio.h>
+	<math.h>
+

@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1635515446 source:e:\ymd 10.2\10.2.c
+	<stdio.h>
+	"help.h"
+	<math.h>
+	<locale.h>
+
+1635515790 e:\ymd 10.2\help.h
+
+1635514976 source:e:\ymd 10.2\help-sequel.c
+	"help.h"
+	<math.h>
+	<stdio.h>
+

@@ -1,0 +1,63 @@
+# depslib dependency file v1.0
+1654408628 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\supsup.c
+	<stdio.h>
+	<math.h>
+
+1654433969 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\course.c
+	<stdio.h>
+	<math.h>
+	<stdlib.h>
+	<assert.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+	<time.h>
+	"sup.h"
+	"matrixSolve.h"
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+	"matrixOper.h"
+
+1654408617 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\sup.h
+
+1652099255 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\matrixinitfunc.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+
+1652099017 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\matrixinitfunc.h
+	"matrixStruct.h"
+
+1652091905 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\matrixstruct.h
+	<stddef.h>
+
+1652091789 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\matrixoper.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+
+1652091802 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\matrixsolve.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+	"matrixInitFunc.h"
+	"matrixStruct.h"
+	"matrixOper.h"
+
+1652091885 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\matrixoper.h
+
+1652091869 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\matrixstruct.c
+	<stdio.h>
+	<stdlib.h>
+	"matrixStruct.h"
+	"matrixInitFunc.h"
+	"matrixSolve.h"
+
+1652091891 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd course\matrixsolve.h
+	"matrixStruct.h"
+

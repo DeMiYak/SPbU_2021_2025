@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1648198355 source:c:\users\Пользователь\downloads\main.c
+	<stdio.h>
+	<string.h>
+	"StrToArr.h"
+
+1648198113 c:\users\Пользователь\downloads\strtoarr.h
+	<stddef.h>
+
+1648198452 source:c:\users\Пользователь\downloads\strtoarr.c
+	"StrToArr.h"
+	<string.h>
+

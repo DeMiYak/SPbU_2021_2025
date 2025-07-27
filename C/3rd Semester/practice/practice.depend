@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1652376343 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\practice\node_practice.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+
+1652553577 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\practice\file_practice.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+

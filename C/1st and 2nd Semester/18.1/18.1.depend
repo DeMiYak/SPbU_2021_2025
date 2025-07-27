@@ -1,0 +1,29 @@
+# depslib dependency file v1.0
+1648201575 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray-2\18.1\18.1sup.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"head.h"
+
+1648200996 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray-2\18.1\head.h
+
+1648202511 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray-2\18.1\18.1.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"head.h"
+
+1648752317 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\18.1\18.1sup.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"head.h"
+
+1648202634 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\18.1\head.h
+
+1648752380 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\18.1\18.1.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"head.h"
+

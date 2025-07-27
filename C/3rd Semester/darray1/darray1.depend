@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1615042380 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray1\main.c
+	"array.h"
+	<stdio.h>
+
+1615042500 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray1\array.h
+	<stddef.h>
+
+1646993602 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\darray1\array.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"array.h"
+

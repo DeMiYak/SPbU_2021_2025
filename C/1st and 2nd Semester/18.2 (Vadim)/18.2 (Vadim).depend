@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1648231980 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab18.2\main.c
+	<stdio.h>
+	<malloc.h>
+	"StrToArr.h"
+	"map.h"
+
+1648214668 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab18.2\strtoarr.h
+	<stddef.h>
+
+1648214668 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab18.2\map.h
+
+1648227238 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab18.2\map.c
+	<stddef.h>
+	<malloc.h>
+	<stdio.h>
+	"map.h"
+
+1648214668 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab18.2\strtoarr.c
+	"StrToArr.h"
+	<string.h>
+

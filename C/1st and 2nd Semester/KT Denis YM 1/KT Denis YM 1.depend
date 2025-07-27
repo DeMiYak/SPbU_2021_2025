@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1636726660 source:c:\users\st095998\desktop\codeblocks\kt denis ym 1\kt denis ym 1.c
+	<stdio.h>
+	<math.h>
+	"one.h"
+
+1636726636 c:\users\st095998\desktop\codeblocks\kt denis ym 1\one.h
+
+1636726691 source:c:\users\st095998\desktop\codeblocks\kt denis ym 1\oneone.c
+	<stdio.h>
+	<math.h>
+
+1639063448 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\kt denis ym 1\kt denis ym 1.c
+	<stdio.h>
+	"one.h"
+
+1639063460 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\kt denis ym 1\one.h
+
+1639063502 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\kt denis ym 1\oneone.c
+	<stdio.h>
+	<limits.h>
+	"one.h"
+

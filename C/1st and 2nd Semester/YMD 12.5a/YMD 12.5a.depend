@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1638538153 source:c:\users\st095998\desktop\codeblocks\ymd 12.5a\12.5a.c
+	<stdio.h>
+	"s.h"
+
+1638538733 source:c:\users\st095998\desktop\codeblocks\ymd 12.5a\rs.c
+	<stdio.h>
+
+1638538124 c:\users\st095998\desktop\codeblocks\ymd 12.5a\s.h
+

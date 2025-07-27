@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1636722952 source:c:\users\st095998\desktop\codeblocks\kt denis ym 2\kt denis ym 2.c
+	<stdio.h>
+	<math.h>
+
+1636723118 source:c:\users\st095998\desktop\codeblocks\kt denis ym 2\assist2.c
+	<stdio.h>
+	<math.h>
+
+1639066158 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\kt denis ym 2\assist2.c
+	<stdio.h>
+	<math.h>
+	"Assist.h"
+
+1639063886 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\kt denis ym 2\assist.h
+
+1636728320 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\kt denis ym 2\kt denis ym 2.c
+	<stdio.h>
+	<math.h>
+	"Assist.h"
+

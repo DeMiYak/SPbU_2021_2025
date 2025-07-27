@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1652439468 source:c:\users\st095998\desktop\codeblocks\ymd_control2_task2\main.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+

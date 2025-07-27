@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1653025012 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\dolbich\d1.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	"TR.h"
+
+1653025034 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\dolbich\tr.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+
+1652981902 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\dolbich\tr.h
+

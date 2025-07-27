@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1631449906 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\checkfile\3.2.c
+	<stdio.h>
+
+1632493530 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\checkfile\5.3.c
+	<stdio.h>
+	<locale.h>
+	<assert.h>
+
+1632501868 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\checkfile\5.7.c
+	<stdio.h>
+	<locale.h>
+	<math.h>
+
+1632333994 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\checkfile\5.9.c
+	<stdio.h>
+	<locale.h>
+	<math.h>
+

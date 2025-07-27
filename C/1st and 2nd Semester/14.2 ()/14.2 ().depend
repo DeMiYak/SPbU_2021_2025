@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1646302386 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\14.2 ()\14.2sup.c
+	<stdio.h>
+	"head.h"
+	<math.h>
+	<stddef.h>
+
+1646317495 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\14.2 ()\head.h
+
+1644824080 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\14.2 ()\14.2.c
+	<stdio.h>
+	"head.h"
+	<stdlib.h>
+	<math.h>
+	"head.h"
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<assert.h>
+	<stdio.h>
+	"head.h"
+	<stdlib.h>
+	<math.h>
+

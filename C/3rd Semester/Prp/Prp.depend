@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1651059081 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\prp\srt.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"srt.h"
+
+1651058999 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\prp\srt.h
+
+1651059358 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\prp\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<graphics.h>
+	"db.h"
+	"srt.h"
+
+1651059326 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\prp\db.h
+

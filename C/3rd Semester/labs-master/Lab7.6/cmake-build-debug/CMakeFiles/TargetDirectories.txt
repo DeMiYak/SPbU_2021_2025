@@ -1,0 +1,3 @@
+C:/cSosi/Lab7.6/cmake-build-debug/CMakeFiles/Lab7_6.dir
+C:/cSosi/Lab7.6/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/cSosi/Lab7.6/cmake-build-debug/CMakeFiles/rebuild_cache.dir

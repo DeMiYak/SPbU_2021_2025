@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1646407630 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab14.3\binfunc.c
+	<stdio.h>
+	"BinFunc.h"
+
+1646407630 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab14.3\binfunc.h
+
+1646546905 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\lab14.3\main.c
+	<stdio.h>
+	"BinFunc.h"
+

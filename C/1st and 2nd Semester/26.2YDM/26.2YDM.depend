@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1650388882 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\26.2ydm\26.2.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"Deque.h"
+
+1650389111 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\26.2ydm\deque.h
+
+1650390282 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\26.2ydm\deque.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	"Deque.h"
+

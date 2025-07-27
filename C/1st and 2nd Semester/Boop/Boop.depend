@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1653027956 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\boop\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<math.h>
+	"queue.h"
+
+1653027883 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\boop\queue.h
+
+1653027872 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\boop\queue.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<math.h>
+	"queue.h"
+

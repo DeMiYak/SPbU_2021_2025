@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1648816454 source:c:\users\st095998\desktop\codeblocks\ymd_control_task_2\main.c
+	<stdio.h>
+	<stdlib.h>
+	"sup.h"
+
+1648816732 c:\users\st095998\desktop\codeblocks\ymd_control_task_2\sup.h
+
+1648816450 source:c:\users\st095998\desktop\codeblocks\ymd_control_task_2\task2_sup.c
+	<stdio.h>
+	"sup.h"
+
+1648978832 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd_control_task_2\main.c
+	<stdio.h>
+	<stdlib.h>
+	"sup.h"
+
+1648977986 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd_control_task_2\sup.h
+
+1648977957 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd_control_task_2\task2_sup.c
+	<stdio.h>
+	"sup.h"
+

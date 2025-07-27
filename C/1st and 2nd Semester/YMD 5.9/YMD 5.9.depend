@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1633093740 source:e:\checkfile\5.9.c
+	<stdio.h>
+	<locale.h>
+	<math.h>
+

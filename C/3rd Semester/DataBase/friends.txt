@@ -1,0 +1,5 @@
+adam 0 0
+vasya 5 18.4
+danil 1 6
+tima 4 9
+dimon 5 10

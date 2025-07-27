@@ -1,0 +1,29 @@
+# depslib dependency file v1.0
+1651657076 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\test1\test.c
+	<stdio.h>
+	<stdlib.h>
+	"rrr.h"
+	"graph.h"
+
+1651428611 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\test1\rrr.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"rrr.h"
+	"graph.h"
+
+1651428504 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\test1\rrr.h
+
+1651428535 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\test1\graph.h
+	"rrr.h"
+
+1651429008 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\test1\graph.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	"rrr.h"
+	"graph.h"
+	<graphics.h>
+	<conio.h>
+

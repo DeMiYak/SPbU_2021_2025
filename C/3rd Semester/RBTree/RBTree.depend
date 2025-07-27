@@ -1,0 +1,57 @@
+# depslib dependency file v1.0
+1651424555 source:c:\users\vasil\documents\c\rbtree\graph_rbt.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	"rbt.h"
+	"graph_rbt.h"
+	<graphics.h>
+	<conio.h>
+
+1651423367 c:\users\vasil\documents\c\rbtree\rbt.h
+
+1651423666 source:c:\users\vasil\documents\c\rbtree\main.c
+	<stdio.h>
+	<stdlib.h>
+	"rbt.h"
+	"graph_rbt.h"
+
+1651423645 c:\users\vasil\documents\c\rbtree\graph_rbt.h
+	"rbt.h"
+
+1651424483 source:c:\users\vasil\documents\c\rbtree\rbt.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"rbt.h"
+	"graph_rbt.h"
+
+1651428069 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbtree\graph_rbt.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	"rbt.h"
+	"graph_rbt.h"
+	<graphics.h>
+	<conio.h>
+
+1651423367 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbtree\rbt.h
+
+1651423645 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbtree\graph_rbt.h
+	"rbt.h"
+
+1651423666 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbtree\main.c
+	<stdio.h>
+	<stdlib.h>
+	"rbt.h"
+	"graph_rbt.h"
+
+1651424483 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\rbtree\rbt.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"rbt.h"
+	"graph_rbt.h"
+

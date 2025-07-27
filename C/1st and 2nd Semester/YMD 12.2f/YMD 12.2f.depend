@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1636912955 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 12.2f\ff.c
+	<stdio.h>
+	<math.h>
+
+1637558961 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 12.2f\12.2f.c
+	<stdio.h>
+	<locale.h>
+	"QQ.h"
+
+1636909202 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd 12.2f\qq.h
+
+1637934250 source:c:\users\st095998\desktop\codeblocks\ymd 12.2f\12.2f.c
+	<stdio.h>
+	<math.h>
+	"QQ.h"
+
+1637933401 c:\users\st095998\desktop\codeblocks\ymd 12.2f\qq.h
+
+1637559332 source:c:\users\st095998\desktop\codeblocks\ymd 12.2f\ff.c
+	<stdio.h>
+

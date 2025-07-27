@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/cSosi/Lab9.4/QuadraticEquation.h
+
+C:/cSosi/Lab9.4/main.c
+stdio.h
+-
+QuadraticEquation.h
+C:/cSosi/Lab9.4/QuadraticEquation.h
+

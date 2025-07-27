@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1646567084 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\17.1()\17.1sup.c
+	<stdio.h>
+	"head.h"
+
+1646990712 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\17.1()\head.h
+
+1646990568 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\17.1()\17.1.c
+	<stdio.h>
+	"head.h"
+

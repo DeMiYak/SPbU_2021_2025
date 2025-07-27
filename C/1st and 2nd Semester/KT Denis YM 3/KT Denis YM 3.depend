@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1639070507 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\kt denis ym 3\kt denis ym 3.c
+	<stdio.h>
+	"save.h"
+
+1639070519 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\kt denis ym 3\save.h
+
+1639070792 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\kt denis ym 3\save2.c
+	<stdio.h>
+	<math.h>
+	"save.h"
+

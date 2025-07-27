@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1653994749 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd_redo_task_5\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	"queue.h"
+
+1653992049 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd_redo_task_5\stack.h
+
+1653993191 c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd_redo_task_5\queue.h
+
+1653995703 source:c:\users\Пользователь\onedrive\Рабочий стол\codeblocks\files\ymd_redo_task_5\queue.c
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<math.h>
+	"queue.h"
+

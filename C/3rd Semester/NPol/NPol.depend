@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1666883229 source:c:\users\Пользователь\downloads\main.cpp
+	<iostream>
+	"shape.hpp"
+
+1666884752 c:\users\Пользователь\downloads\shape.hpp
+	<iostream>
+	<cmath>
+

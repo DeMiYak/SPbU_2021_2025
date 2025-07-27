@@ -1,0 +1,3 @@
+C:/cSosi/Lab9.2/cmake-build-debug/CMakeFiles/Lab9_2.dir
+C:/cSosi/Lab9.2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/cSosi/Lab9.2/cmake-build-debug/CMakeFiles/rebuild_cache.dir

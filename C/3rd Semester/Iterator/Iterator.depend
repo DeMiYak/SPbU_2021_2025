@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1668850355 source:c:\codeblocks\files\iterator\main.cpp
+	<iostream>
+	<algorithm>
+	"List.h"
+	"Queue.h"
+	"Stack.h"
+
+1668849998 c:\codeblocks\files\iterator\list.h
+	<iostream>
+	<algorithm>
+
+1668850539 c:\codeblocks\files\iterator\queue.h
+	<iostream>
+	<algorithm>
+	"List.h"
+
+1668849932 c:\codeblocks\files\iterator\stack.h
+	<iostream>
+	<algorithm>
+	"List.h"
+
