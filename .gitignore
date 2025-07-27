@@ -1,0 +1,143 @@
+# Compiled Object Files
+*.o
+*.obj
+*.ko
+*.so
+*.lo
+*.la
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+*.bin
+*.elf
+*.obj
+
+# C/C++ specific
+*.c.swp
+*.h.swp
+*.pch
+*.ilk
+*.suo
+*.user
+*.ncb
+*.vcproj.filters
+*.aps
+*.bsc
+*.sbr
+*.res
+*.d
+
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+.tox/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.venv/
+
+# PHP specific
+composer.phar
+composer.lock
+/vendor/
+/node_modules/
+.env
+.env.*
+.php_cs.cache
+*.phar
+*.log
+/storage/*.key
+/public/hot
+/public/storage
+/bootstrap/cache/*.php
+/var/
+/web/assets/
+/runtime/
+
+# MySQL specific (often for client tools or local setup)
+*.sql.swp
+*.dump
+dump.sql
+db.sqlite3 # Common for Django/SQLite, but useful to include
+
+# HTML/CSS/JavaScript specific
+# Often build tools will generate files, these are common ignores
+/node_modules/
+/dist/
+/build/
+/tmp/
+.sass-cache/
+npm-debug.log
+yarn-error.log
+.cache/
+
+# LaTeX specific
+*.aux
+*.bbl
+*.blg
+*.brf
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.dvi
+*.ps
+*.pdf # Often generated, so might want to ignore
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.lof
+*.lot
+*.bcf
+*.run.xml
+*.xdv
+*.glg
+*.glo
+*.gls
+*.acn
+*.acr
+*.alg
+*.ist
+*.xdy
+
+# R specific
+.Rhistory
+.Rdata
+.Rproj.user/
+.Rprofile
+*.rds
+*.Rout
+/renv/
+/packrat/
+
+# IDE and OS specific files (common across languages)
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*~
+*.bak
+*.swo
+*.localized
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+.directory
+
+# Logs and temporary files
+*.log
+*.tmp
+temp/
