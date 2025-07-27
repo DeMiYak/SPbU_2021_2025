@@ -1,0 +1,66 @@
+body{
+    border-style:groove;
+    border-radius:30px 25px 20px 35px;
+    border-width:10px 30px 10px 30px;
+    border-color:rgb(153,153,204);
+    background-color:rgb(43,43,43);
+    color:rgb(204,204,204);
+    letter-spacing:1px;
+    word-spacing:4px;
+    text-align:center;
+    font-family:Cochin;
+    font-weight:200;
+    font-size:medium;
+    font-stretch:expanded;
+    font-variant-numeric:oldstyle-nums;
+    padding:5px;
+}
+pre{
+    color: inherit;
+    background-color: inherit;
+    letter-spacing:inherit;
+    word-spacing:inherit;
+    text-align:inherit;
+    font-size:inherit;
+    font-weight:inherit;
+    font-family:inherit;
+    font-stretch:inherit;
+    padding:inherit;
+    color:inherit;
+}
+
+hr.short{
+    border-style:ridge;
+    border-color:rgb(153,153,204);
+    border-radius:2px;
+    width:10%;
+}
+
+hr.wide{
+    border-style:ridge;
+    border-color:rgb(153,153,204);
+    border-radius:2px;
+}
+
+div{
+    text-align:justify;
+    font-size:inherit;
+    font-stretch:inherit;
+    font-variant-numeric:inherit;
+    font-weight:inherit;
+    font-family:inherit;
+    word-spacing:inherit;
+    letter-spacing:inherit;
+}
+
+p{
+    font-size:medium;
+    font-style:italic;
+    font-weight:400;
+    letter-spacing:2px;
+    font-family:sans-serif;
+    font-variant:small-caps;
+    text-align:inherit;
+    font-variant-numeric:lining-nums;
+    color:inherit;
+}

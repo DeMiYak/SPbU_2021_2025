@@ -1,0 +1,350 @@
+<!--
+    
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 11: Представление и обработка дат</title>
+    <link rel="stylesheet" href="Chapter11.css">
+</head>
+
+<body>
+    <pre>
+    Глава 11.
+    11.1, 11.2, 11.5, 11.7
+
+    </pre>
+    <p>11.1</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function clock() {
+            var d = document
+            var t = new Date()
+            var h = t.getHours()
+            var m = t.getMinutes()
+            var s = t.getSeconds()
+            var res = ""
+            if (h < 10)
+                res += "0" + h
+            else res += h
+            if (m < 10) res += ":0" + m
+            else res = res + ":" + m
+            if (s < 10) res += ":0" + s
+            else res = res + ":" + s
+            d.table1.rest.value = res
+        }
+    </script>
+    <img src="../Изображения/Ruins.jpg" width="400" height="300" alt="Руины"><br>
+    <form name="table1">
+        <input type="button" value="Время" onclick="clock()"><br>
+        <input type="text" size="10" name="rest">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>11.2</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        var d = document
+        var t = new Date()
+        function fyear(elem) {
+            var year = t.getFullYear()
+            console.log(year)
+            elem.fyea.value = year
+        }
+        function fmon(elem) {
+            var mon = t.getMonth()
+            switch (mon) {
+                case 0: s = "Январь"; break
+                case 1: s = "Февраль"; break
+                case 2: s = "Март"; break
+                case 3: s = "Апрель"; break
+                case 4: s = "Май"; break
+                case 5: s = "Июнь"; break
+                case 6: s = "Июль"; break
+                case 7: s = "Август"; break
+                case 8: s = "Сентябрь"; break
+                case 9: s = "Октябрь"; break
+                case 10: s = "Ноябрь"; break
+                case 11: s = "Декабрь"; break
+            }
+            elem.fmont.value = s
+        }
+        function fdate(elem) {
+            var d = t.getDate()
+            elem.fdat.value = d
+        }
+        function fday(elem) {
+            var day = t.getDay()
+            var s
+            switch (day) {
+                case 0: s = "Понедельник"; break
+                case 1: s = "Вторник"; break
+                case 2: s = "Среда"; break
+                case 3: s = "Четверг"; break
+                case 4: s = "Пятница"; break
+                case 5: s = "Суббота"; break
+                case 6: s = "Воскресение"; break
+            }
+            elem.day.value = s
+        }
+        function cl(elem) {
+            var h = t.getHours()
+            var m = t.getMinutes()
+            var s = t.getSeconds()
+            var res = ""
+            if (h < 10) res += "0" + h
+            else res += h
+            if (m < 10) res += ":0" + m
+            else res += ":" + m
+            if (s < 10) res += ":0" + s
+            else res += ":" + s
+            elem.fclo.value = res
+        }
+        function alldate(elem) {
+            elem.alldat.value = t
+        }
+    </script>
+    <form name="table2">
+        <div>
+            <input type="button" value="Год" onclick="fyear(table2)">
+            <input type="text" size="20" name="fyea"><br>
+            <input type="button" value="Месяц" onclick="fmon(table2)">
+            <input type="text" size="20" name="fmont"><br>
+            <input type="button" value="Число" onclick="fdate(table2)">
+            <input type="text" size="20" name="fdat"><br>
+            <input type="button" value="День" onclick="fday(table2)">
+            <input type="text" size="20" name="day"><br>
+            <input type="button" value="Время" onclick="cl(table2)">
+            <input type="text" size="20" name="fclo"><br>
+            <input type="button" value="Дата" onclick="alldate(table2)">
+            <input type="text" size="40" name="alldat"><br>
+        </div>
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>11.5</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function NDays(r) {
+            var s = ""
+            switch (r) {
+                case 0: s = "Понедельник"; break
+                case 1: s = "Вторник"; break
+                case 2: s = "Среда"; break
+                case 3: s = "Четверг"; break
+                case 4: s = "Пятница"; break
+                case 5: s = "Суббота"; break
+                case 6: s = "Воскресение"; break
+            }
+            return s
+        }
+        function NMonths(r) {
+            var s = ""
+            switch (r) {
+                case 0: s = "Январь"; break
+                case 1: s = "Февраль"; break
+                case 2: s = "Март"; break
+                case 3: s = "Апрель"; break
+                case 4: s = "Май"; break
+                case 5: s = "Июнь"; break
+                case 6: s = "Июль"; break
+                case 7: s = "Август"; break
+                case 8: s = "Сентябрь"; break
+                case 9: s = "Октябрь"; break
+                case 10: s = "Ноябрь"; break
+                case 11: s = "Декабрь"; break
+            }
+            return s
+        }
+        function DateTime() {
+            var now = new Date()
+            var str = "Вы посетили эту страницу <br><b>"
+            year = now.getFullYear() + " "
+            str += now.getDate() + " " + NMonths(now.getMonth()) + " " +
+                year + "</b>года<br>"
+            str += "в <b>" + now.getHours() + ":" + now.getMinutes() + ":" +
+                now.getSeconds() + "</b><br>"
+            str += "Сегодня - <b>" + NDays(now.getDay()) + "</b>"
+            document.write(str)
+        }
+    </script>
+    <br><img src="../Изображения/Jumping Spyro.gif" width="400" height="300"><br>
+    <script>
+        DateTime()
+    </script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>11.7</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function ident(mont) {
+            var s
+            switch (mont) {
+                case 0: s = "Январь"; break
+                case 1: s = "Февраль"; break
+                case 2: s = "Март"; break
+                case 3: s = "Апрель"; break
+                case 4: s = "Май"; break
+                case 5: s = "Июнь"; break
+                case 6: s = "Июль"; break
+                case 7: s = "Август"; break
+                case 8: s = "Сентябрь"; break
+                case 9: s = "Октябрь"; break
+                case 10: s = "Ноябрь"; break
+                case 11: s = "Декабрь"; break
+            }
+            return s
+        }
+        function sche(elem) {
+            // дата начала работы группы
+            var d = new Date(elem.begy.value, elem.begm.value, elem.begd.value)
+            // дата окончания работы группы
+            var w = new Date(elem.endy.value, elem.endm.value, elem.endd.value)
+            // дата текущего занятия
+            var t = new Date(elem.begy.value, elem.begm.value, elem.begd.value)
+            var s = ""
+            // выбранный пользователем день работы
+            var n = elem.dt.value
+            console.log(d.getDay())
+            // сформированная дата дня первого занятия
+            var k = d.getDate() + Number(n) - Number(d.getDay())
+            console.log(d.getDate())
+            if (n < d.getDay())
+                k += 7
+            t.setDate(k)
+            var s1 = "Дни занятий: " + "\n"
+            var scur
+            var s = s1
+            while (t.getFullYear() <= w.getFullYear()) {
+                scur = t.getDate() + " " + ident(1 * t.getMonth()) +
+                    " " + t.getFullYear() + "\n"
+                if (t.getFullYear() < w.getFullYear()) s += scur
+                else {
+                    if (t.getMonth() < w.getMonth()) s += scur
+                    else {
+                        if (t.getMonth() == w.getMonth()) {
+                            if (t.getDate() < w.getDate()) s += scur
+                            else {
+                                if (t.getDate() == w.getDate()) {
+                                    s += scur; break
+                                }
+                            }
+                        }
+                    }
+                }
+                k = t.getDate() + 7
+                t.setDate(k)
+            }
+            if (s == s1)
+                alert("Проверьте даты начала и конца занятий")
+            else elem.res.value = s
+        }
+    </script>
+    <form name="table4">
+        <table border="4" align="center">
+            <tr>
+                <th>Начало курсов:</th>
+                <th>Конец курсов:</th>
+                <th>Расписание:</th>
+            </tr>
+            <tr>
+                <td>
+                    <pre>
+                Число: <input type="text" name="begd" size="10">
+                Месяц: <select name="begm" size="1">
+                    <option value="0">Январь</option>
+                    <option value="1">Февраль</option>
+                    <option value="2">Март</option>
+                    <option value="3">Апрель</option>
+                    <option value="4">Май</option>
+                    <option value="5">Июнь</option>
+                    <option value="6">Июль</option>
+                    <option value="7">Август</option>
+                    <option value="8">Сентябрь</option>
+                    <option value="9">Октябрь</option>
+                    <option value="10">Ноябрь</option>
+                    <option value="11">Декабрь</option>
+                </select>
+                Год: <input type="text" name="begy" size="10" value="2022">
+                    </pre>
+                </td>
+                <td>
+                    <pre>
+                Число: <input type="text" name="endd" size="10">
+                Месяц: <select name="endm" size="1">
+                    <option value="0">Январь</option>
+                    <option value="1">Февраль</option>
+                    <option value="2">Март</option>
+                    <option value="3">Апрель</option>
+                    <option value="4">Май</option>
+                    <option value="5">Июнь</option>
+                    <option value="6">Июль</option>
+                    <option value="7">Август</option>
+                    <option value="8">Сентябрь</option>
+                    <option value="9">Октябрь</option>
+                    <option value="10">Ноябрь</option>
+                    <option value="11">Декабрь</option>
+                </select>
+                Год: <input type="text" name="endy" size="10" value="2022">
+                    </pre>
+                </td>
+                <td rowspan="2">
+                    <textarea cols="20" rows="8" name="res"></textarea><br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    Выберите день занятий: <select name="dt" size="1">
+                        <option value="0">Воскресение</option>
+                        <option value="1">Понедельник</option>
+                        <option value="2">Вторник</option>
+                        <option value="3">Среда</option>
+                        <option value="4">Четверг</option>
+                        <option value="5">Пятница</option>
+                        <option value="6">Суббота</option>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="left"><br>
+                    <input type="button" value="Сформировать" onclick="sche(table4)"><br>
+                </td>
+                <td align="right"><input type="reset" value="Отменить"></td>
+            </tr>
+        </table>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+</body>
+
+</html>

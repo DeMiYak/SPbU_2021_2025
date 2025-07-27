@@ -1,0 +1,63 @@
+.st1{
+    font-weight:bold;
+    font-family:fantasy;
+    margin-left:auto;
+    margin-right:auto;
+    border-color:red;
+    border-style:solid;
+    color:greenyellow;
+    text-align:center;
+}
+.st2{
+    text-indent:40px;
+    letter-spacing:5px;
+    word-spacing:5px;
+    color:red;
+    font-weight:lighter;
+    font-family:sans-serif;
+    font-size:larger;
+    margin-left:auto;
+    margin-right:auto;
+    font-family:Courier;
+    font-weight:bold;
+    font-style:oblique;
+    text-align:left;
+    border-style:dashed;
+    border-color:cadetblue;
+    background-color:brown;
+    
+    
+}
+.st3{
+    font-family:system-ui;
+    margin-left:auto;
+    margin-right:auto;
+    background-color: brown;
+    color:rgb(50, 200, 120);
+    text-align:center;
+
+}
+.st4{
+    font-weight:900;
+    font-style:oblique;
+    margin-left:auto;
+    margin-right:auto;
+    border-top-style:double;
+    border-right-style:double;
+    color:green;
+    background-color:yellow;
+    text-align:center;
+}
+body.fullscreen{
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+    font-weight:700;
+    color:magenta;
+    height:100%;
+    width:100%;
+    border-style:ridge;
+    border-color:aqua;
+    background-color:bisque;
+    border-width:3%;
+}

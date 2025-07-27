@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <title>JuliaSet</title>
+    </head>
+<body>
+     
+    
+    <canvas id="compField" width="1000" height="400" style="border:1px solid #d3d3d3;" usemap="#complexfield">
+        Your browser does not support the HTML5 canvas tag.</canvas>
+    <map name="complexfield">
+        <area shape="rect" coords="0,0,1000,400" alt="computation" onclick="drawJuliaSet();">
+    </map>
+    <script>
+        var c = document.all("compField");
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.moveTo(500,0);
+        ctx.lineTo(500,400);
+        ctx.moveTo(0,200);
+        ctx.lineTo(1000,200);
+        ctx.stroke();
+        ctx.font = "12px Arial";
+        ctx.fillText("Im(z)",514,14);
+        ctx.fillText("0", 513,213);
+        ctx.fillText("Re(z)", 960, 214);
+    </script> 
+    </body>
+</html>

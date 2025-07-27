@@ -1,0 +1,350 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Глава 2: Организация ветвлений в программах</title>
+    <link rel="stylesheet" href="Chapter2.css">
+</head>
+
+<body>
+    <center>
+        <p>
+            Глава 2.
+            2.2 (Math.min,Math.max, Number( );), 2.4,
+            2.7 (функция setTimeout),
+            2.8 (d.mypict.src=”m”+k+”.gij”, событие внутри <!-- IMG   -->),
+            2.9 (d.mypict.width=w-10)
+            2.13 (switch по числовой переменной), 2.15 (switch по строковой переменной),
+            2.16 (изображение), 2.17
+        </p>
+
+        <p>2.2</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            function maxmin(elem) {
+                var a = Number(elem.num1.value)
+                var b = Number(elem.num2.value)
+                var c = Number(elem.num3.value)
+                var min; var max
+                if (a > b) { max = a; min = b }
+                else { max = b; min = a }
+                if (b > max) { b = max }
+                if (c < min) { c = min }
+                elem.resmax1.value = max
+                elem.resmin1.value = min
+
+                elem.resmax2.value = Math.max(Math.max(a, b), c)
+                elem.resmin2.value = Math.min(a, Math.min(b, c))
+
+            }
+        </script>
+        <form name="table1">
+            <pre>
+        Число 1: <input type="text" size="6" name="num1">
+        Число 2: <input type="text" size="6" name="num2">
+        Число 3: <input type="text" size="6" name="num3">
+
+        <input type="button" value="Calculate" onclick="maxmin(table1)">
+        
+        Наибольшее значение 1: <input type="text" size="6" name="resmax1">
+        Наименьшее значение 1: <input type="text" size="6" name="resmin1">
+
+        Наибольшее значение 2: <input type="text" size="6" name="resmax2">
+        Наименьшее значение 2: <input type="text" size="6" name="resmin2">
+
+        <input type="reset" value="Reset"> 
+        </pre>
+        </form>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+        <p>2.4</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            function scholarship(elem) {
+                var a = Number(elem.num1.value)
+                var b = Number(elem.num2.value)
+                var c = Number(elem.num3.value)
+                var d = Number(elem.num4.value)
+                var min; var max
+                var pay = 0
+                min = Math.min(Math.min(a, b), Math.min(c, d))
+                max = Math.max(Math.max(a, b), Math.max(c, d))
+                if (min == 5) { pay = 100 }
+                else if ((max == 5) && (min == 4)) { pay = 75 }
+                else if ((max == 4) && (min == 4)) { pay = 50 }
+                if (pay == 0) { elem.sch.value = "Извините, но Вам стипендия не назначена" }
+                else { elem.sch.value = "Вам назначена стипендия в размере " + pay + " у.е." }
+            }
+        </script>
+        <form name="table2">
+            <pre>
+        Оценка 1: <input type="text" name="num1" size="1">
+        Оценка 2: <input type="text" name="num2" size="1">
+        Оценка 3: <input type="text" name="num3" size="1">
+        Оценка 4: <input type="text" name="num4" size="1">
+        
+        <input type="button" value="Определить размер стипендии" 
+        onclick="scholarship(table2)">
+        <input type="text" size="40" name="sch">
+        <input type="reset" value="Отменить">
+        </pre>
+        </form>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+        <p>2.7-2.8</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            var timeout
+            var pics_on = 0
+            var count = 1
+            var k = 1
+            function stopShow() { clearTimeout(timeout); pics_on = 0 }
+            function startShow() {
+                if (!pics_on) {
+                    pics_on = 1
+                    succpics()
+                }
+            }
+            function succpics() {
+                var d = document
+                if (count <= 4) {
+                    if (count == 1) {
+                        d.pics.src = "../Изображения/Jumping Spyro.gif"; count++
+                    }
+                    else if (count == 2) {
+                        d.pics.src = "../Изображения/Night Bridge.jpg"; count++
+                    }
+                    else if (count == 3) {
+                        d.pics.src = "../Изображения/Windows XP Wallpaper.jpg"; count++
+                    }
+                    else if (count == 4) {
+                        d.pics.src = "../Изображения/Space.jpg"; count = 1
+                    }
+                    timeout = setTimeout("succpics()", 1000)
+                }
+            }
+            function cursorpic() {
+                var d = document
+                if (k < 5) {
+                    k += 1
+                } else { k = 1 }
+                if (k == 1) { d.pics.src = "../Изображения/p1.gif" }
+                else if (k == 2) { d.pics.src = "../Изображения/p2.png" }
+                else { d.pics.src = "../Изображения/p" + k + ".jpg" }
+            }
+        </script>
+        <img src="../Изображения/Night Bridge.jpg" onmouseover="cursorpic()" name="pics" style="width:15%;height:15%;">
+        <form name="table3" onload="succpics()">
+            <input type="reset" value="Остановить" onclick="stopShow()">
+            <input type="button" value="Начать снова" onclick="count=1;startShow()">
+        </form>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+        <p>2.9</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            var timeout;
+            function succpict() {
+                var d = document
+                var w = d.pics2.width
+                if (w > 10) {
+                    d.pics2.width = w * Math.exp(-0.0001 * w)
+                    d.pics2.src = "../Изображения/Fleur-de-lis.png"
+                    timeout = setTimeout("succpict()", 500)
+                }
+            }
+        </script>
+        <input type="reset" onclick="clearTimeout(timeout);document.pics2.width='400'"><br>
+        <img src="../Изображения/Fleur-de-lis.png" name="pics2" width="400" onmouseover="succpict()">
+        <br>
+
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+        <p>2.13</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            function numday(elem) {
+                var m = elem.box1.value * 1
+                var s
+                switch (m) {
+                    case 1: s = "Понедельник"; break
+                    case 2: s = "Вторник"; break
+                    case 3: s = "Среда"; break
+                    case 4: s = "Четверг"; break
+                    case 5: s = "Пятница"; break
+                    case 6: s = "Суббота"; break
+                    case 7: s = "Воскресение"; break
+                    default: s = "Ошибка в номере дня"
+                }
+                elem.res.value = s
+            }
+        </script>
+        <form name="table4">
+            <pre>
+        Введите номер дня: <input type="text" size="1" name="box1">
+        Название дня: <input type="button" value="Определить" onclick="numday(table4)">
+        <input type="text" size="16" name="res">
+        <input type="reset" value="Отменить">
+        </pre>
+        </form>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+        <p>2.15</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            function daynum(elem) {
+                var m = elem.day1.value
+                var s
+                switch (m) {
+                    case "Понедельник": s = 1; break
+                    case "Вторник": s = 2; break
+                    case "Среда": s = 3; break
+                    case "Четверг": s = 4; break
+                    case "Пятница": s = 5; break
+                    case "Суббота": s = 6; break
+                    case "Воскресение": s = 7; break
+                    default: s = "Ошибка в названии дня"
+                }
+                elem.res.value = s
+            }
+        </script>
+        <form name="table5">
+            Укажите название дня (с заглавной буквы): <br><input type="text" size="16" name="day1"><br>
+            Номер дня: <br><input type="button" value="Определить" onclick="daynum(table5)">
+            <br>
+            <input type="text" size="20" name="res"><br>
+            <input type="reset">
+        </form>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+        <p>2.16</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            function movepoint(elem) {
+                var a = elem.num1.value * 1
+                var b = a % 5
+                var c = a - b
+                var d = c / 6
+                var e = d
+                var f = 3 * d
+                if (a > 0) {
+                    switch (b) {
+                        case 1: f += f; break;
+                        case 2: f += f; e += 3; break
+                        case 3: f -= 3; e += 2; break
+                        case 4: f *= 2; e -= 1; break
+                    }
+                } else {
+                    switch (b) {
+                        case -1: e += 1; break
+                        case -2: f -= 1; e += 2; break
+                        case -3: f -= 1; break
+                        case -4: f += 3; e -= 5; break
+                    }
+                }
+                elem.x.value = f
+                elem.y.value = e
+            }
+        </script>
+        <form name="table6">
+            <img src="../Изображения/graph.png" name="oxy" width="700" alt="Координатная сетка">
+            <!-- Should I use canvas merged into the image? -->
+            <pre>
+        Точка начинает движение из ???.
+        Положительное число шагов - ???
+        Отрицательное число шагов - ???
+
+        Число шагов: <input type="text" name="num1" size="8">
+        <input type="button" value="Вычислить" name="button" onclick="movepoint(table6)">
+        Координаты точки: x: <input type="text" name="x" size="5">; y: <input type="text" name="y" size="5">
+
+        <input type="reset" value="Отменить">
+        </pre>
+        </form>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+        <p>2.17</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            function swapmulpics() {
+                var d = document
+                var a = d.table7.num1.value
+                var b = d.table7.num2.value
+                var temp
+                if (a < 1 || a > 3 || b < 1 || b > 3) {
+                    alert("Неправильные параметры")
+                } else {
+                    if (a == 1) {
+                        temp = d.pic1.src
+                        if (b == 2) {
+                            d.pic1.src = d.pic2.src; d.pic2.src = temp
+                        } else if (b == 3) {
+                            d.pic1.src = d.pic3.src; d.pic3.src = temp
+                        }
+                    }
+                    else if (a == 2) {
+                        temp = d.pic2.src
+                        if (b == 1) {
+                            d.pic2.src = d.pic1.src; d.pic1.src = temp
+                        } else if (b == 3) {
+                            d.pic2.src = d.pic3.src; d.pic3.src = temp
+                        }
+                    }
+                    else {
+                        temp = d.pic3.src
+                        if (b == 1) {
+                            d.pic3.src = d.pic1.src; d.pic1.src = temp
+                        } else if (b == 2) {
+                            d.pic3.src = d.pic2.src; d.pic2.src = temp
+                        }
+                    }
+                }
+            }
+        </script>
+        <form name="table7">
+            <img src="../Изображения/Fleur-de-lis.png" width="400" name="pic1">
+            <img src="../Изображения/Space.jpg" width="400" name="pic2">
+            <img src="../Изображения/Night Bridge.jpg" width="400" name="pic3">
+            <pre>
+
+    <input type="text" size="6" name="num1"> и <input type="text" size="6" name="num2"> <input type="button" value="Обменять" onclick="swapmulpics()"> 
+    </pre>
+        </form>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+    </center>
+</body>
+
+</html>

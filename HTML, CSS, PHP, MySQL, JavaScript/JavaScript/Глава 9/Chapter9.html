@@ -1,0 +1,59 @@
+<!--
+    
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 9: Оператор цикла арифметического типа</title>
+    <link rel="stylesheet" href="Chapter9.css">
+</head>
+
+<body>
+    <pre>
+    Глава 9.
+    9.3, 9.4, 
+
+    </pre>
+    <p>9.3-9.4</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function fact1(elem) {
+            n = elem.num.value
+            var f = 1
+            for (var i = 2; i <= n; i++) f = f * i
+            elem.res.value = f
+        }
+        function fact2(n) {
+            var f = 1
+            for (var i = n; i > 1; i -= 1) f = f * i
+            return f
+        }
+    </script>
+    <form name="table1">
+        Введите натуральное: <input type="text" name="num" size="10"><br>
+        Вычисленное значение: <input type="text" name="res" size="10"><br>
+        <input type="button" value="Выполнить первым способом" onclick="fact1(table1)"><br>
+        <input type="button" value="Выполнить вторым способом" onclick="table1.res.value=fact2(table1.num.value)"><br>
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+</body>
+
+</html>

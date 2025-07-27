@@ -1,0 +1,22 @@
+. 
+Провайдеры Интернет в Санкт-Петербурге
+Список находится на сервере: http://www.provider.spb.ru/ 
+
+Роспак	                        164-2856	tpo3@nmc.rospac.ru
+Российская телеком. сеть 	325-2073	spbrts@minas.rosmail.com
+Совам Телепорт	                311-8412	spbsovam@sovam.com
+СПб Телеграф	                277-2965	- 
+Финтелеком	                272-0087	- 
+Futures Telecom	                296-0064	info@freelines.ru
+GLASNet	                        291-4343	- 
+Global one (Спринт)	        325-1200	- 
+Marinform	                568-3990	- 
+RUNNet (некоммерческий)	- 	- 
+RUSNet (некоммерческий) 	- 	        root@citadel.stu.neva.ru
+Sitek	                        315-7502	support@spb.sitek.net
+Solaris                         112-4016	postmaster@solaris.spb.ru
+Web-Plus	                325-6507	support@wplus.net
+Институт новых технологий в образовании (некоммерческий)	- 	holy@nit.spb.su
+СПбГУ (Петергоф) (некоммерческий)	- 	oll@niif.spb.su
+
+

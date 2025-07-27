@@ -1,0 +1,41 @@
+body.lab3{
+    background-color:#dfdfff;
+    background-image:url(fon.jpg);
+    background-size:5% 30%;
+    background-repeat: repeat-y;
+    background-position:10% ;
+}
+
+p.st5{
+    color:blue;
+    font-family:monospace;
+    letter-spacing:2pt;
+    word-spacing:5pt;
+    float:right;
+    
+}
+p.st6{
+    color:blue;
+    font-family:sans-serif;
+    letter-spacing:2pt;
+    word-spacing:5pt;
+    text-decoration:overline;
+}
+.eq1{
+    font-size:x-small;
+    text-align:center;
+    margin-top:-3px;
+    margin-bottom:-8px;
+}
+.eq2{
+    text-align:center;
+    font-size:xx-large;
+    font-weight:bolder;
+    margin-left:44px;
+}
+.eq3{
+    font-size:xx-small;
+    text-align:center;
+    margin-top:-5px;
+    margin-bottom:10px;
+}

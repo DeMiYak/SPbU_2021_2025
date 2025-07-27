@@ -1,0 +1,9 @@
+digraph "adduser" {
+	rankdir=LR;
+	node [shape=box];
+	"adduser" -> "passwd" [color=blue];
+	"adduser" -> "debconf" [color=blue,label="(>= 0.5)"];
+	"adduser" [style="setlinewidth(2)"]
+	"debconf" [shape=diamond];
+	"passwd" [shape=diamond];
+}

@@ -1,0 +1,61 @@
+body{
+    background-color:gainsboro;
+    letter-spacing:1px;
+    word-spacing:4px;
+    text-align:center;
+    font-family:Cochin;
+    font-weight:200;
+    font-size:medium;
+    font-stretch:expanded;
+    font-variant-numeric:oldstyle-nums;
+    border-width:10px 30px 10px 30px;
+    border-style:solid;
+    border-color:olivedrab;
+    border-radius:20px 30px 20px;
+    padding:5px;
+}
+hr.short{
+    border-style:groove;
+    border-color:teal;
+    border-radius:2px;
+    width:10%;
+}
+
+hr.wide{
+    border-style:groove;
+    border-color:teal;
+    border-radius:2px;
+}
+
+p{
+    font-size:medium;
+    font-style:italic;
+    font-weight:400;
+    letter-spacing:2px;
+    font-family:sans-serif;
+    font-variant:small-caps;
+    text-align:inherit;
+    font-variant-numeric:lining-nums;
+    color:navy;
+}
+pre{
+    text-align:inherit;
+    font-size:inherit;
+    font-stretch:inherit;
+    font-variant-numeric:inherit;
+    font-weight:inherit;
+    font-family:inherit;
+    word-spacing:inherit;
+    letter-spacing:inherit;
+}
+div{
+    margin-left:44%;
+    text-align:left;
+    font-size:inherit;
+    font-stretch:inherit;
+    font-variant-numeric:inherit;
+    font-weight:inherit;
+    font-family:inherit;
+    word-spacing:inherit;
+    letter-spacing:inherit;
+}

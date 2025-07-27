@@ -1,0 +1,180 @@
+<!--
+    
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 18: Метод рекурсивного спуска</title>
+    <link rel="stylesheet" href="Chapter18.css">
+</head>
+
+<body>
+    <pre>
+    Глава 18.
+    18.2, 18.3
+        
+    </pre>
+
+    <p>18.2</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        var s
+        var st
+        var i
+        var err
+        var c
+        function main(elem) {
+            s = ""
+            st = elem.fl1.value
+            i = -1
+            err = false
+            c = cursym1()
+            postform()
+            if (err) alert("Ошибка при задании формулы", "<br>")
+            else { table1.fres1.value = s }
+        }
+        function cursym1() {
+            i += 1
+            return st.charAt(i)
+        }
+        function wrsym(h) { s += h }
+        function postform() {
+            postterm()
+            while ((c == "+") || (c == "-")) {
+                var h = c
+                c = cursym1()
+                postterm()
+                wrsym(h)
+            }
+        }
+        function postterm() {
+            postmn()
+            while ((c == "*") || (c == "/")) {
+                var h = c
+                c = cursym1()
+                postmn()
+                wrsym(h)
+            }
+        }
+        function postmn() {
+            if ((c >= "a") && (c <= "z")) {
+                wrsym(c)
+                c = cursym1()
+            }
+            else {
+                if (c == "(") {
+                    c = cursym1()
+                    postform()
+                    if (c != ")") err = true
+                    else { c = cursym1() }
+                }
+                else err = true
+            }
+        }
+    </script>
+    <form name="table1">
+        <pre>
+        Введите формулу:                <input type="text" size="20" name="fl1">
+        Формула в постфиксной нотации:  <input type="text" size="20" name="fres1">
+        <input type="button" value="Выполнить" onclick="main(table1)">
+        <input type="reset" value="Очистить">
+        </pre>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>18.3</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        var st2; var i2; var err2; var c2; var r
+        function cursym2() { i2 += 1; return st.charAt(i2) }
+        function valform() {
+            var t1 = valterm()
+            var t2
+            while ((c2 == "+") || (c2 == "-")) {
+                var h = c2
+                c2 = cursym2()
+                t2 = valterm()
+                if (h == "+") t1 = t1 + t2
+                else t1 = t1 - t2
+            }
+            return 1 * t1
+        }
+        function valterm() {
+            var t1 = valmn()
+            var t2
+            while (c2 == "*") {
+                var h = c2
+                c2 = cursym2()
+                t2 = valmn()
+                t1 = t1 * t2
+            }
+            return 1 * t1
+        }
+        function valmn() {
+            if ((c2 >= "1") && (c2 <= "9")) {
+                var h = 1 * c2
+                c2 = cursym2()
+                return 1 * h
+            }
+            else {
+                if (c2 == "(") {
+                    c2 = cursym2()
+                    var t = valform()
+                    if (c2 != ")") err2 = true
+                    else { c2 = cursym2(); return 1 * t }
+                }
+                else err2 = true
+            }
+        }
+        function main2(elem) {
+            st = elem.fl2.value
+            i2 = -1
+            err2 = false
+            c2 = cursym2()
+            r = valform()
+            if (err2 || (i2 != st.length)) alert("Ошибка при задании формулы")
+            else elem.fres2.value = r
+        }
+        function testval(elem) {
+            st2 = elem.fl2.value
+            r = eval(st)
+            elem.test2.value = r
+            if (err2) alert("Ошибка при задании формулы")
+            else elem.test2.value = r
+        }
+    </script>
+    <form name="table2">
+        <pre>
+        Введите формулу:    <input type="text" size="30" name="fl2" value="(2*3*4*5*6*7*8*9)*(7+2)">
+        Значение формулы:   <input type="text" size="30" name="fres2">
+        <input type="button" value="Выполнить" onclick="main2(table2)">
+        Функция eval:       <input type="text" size="30" name="test2">
+        <input type="button" value="Проверка" onclick="testval(table2)">
+        <input type="reset" value="Очистить">
+        </pre>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+</body>
+
+</html>

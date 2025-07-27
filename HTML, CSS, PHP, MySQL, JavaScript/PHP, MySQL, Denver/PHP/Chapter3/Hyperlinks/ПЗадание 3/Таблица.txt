@@ -1,0 +1,31 @@
+. 
+Провайдеры Интернет в Санкт-Петербурге
+Список находится на сервере: http://www.provider.spb.ru/ 
+
+Адмирал Телеком	           234-5576	info@admiral.ru
+Аксон	                   329-5490	support@mail.axon.ru
+Актор	                   108-6606	info@actor.ru
+Алкор Телеком	           329-4440	- 
+Atlant Service Provider	   325-2376	postmaster@atlant.ru
+Виком	                   430-7300	sales@vicom.ru
+ВТЦ СПбГУ	           327-7377	info@spb.edu
+ВУЗТелекомцентр	           238-8769	center@run.net
+Выборг Интернет(г.Выборг  (278)2-4405	vyborg@vbg.spb.ru
+Дукс	                   164-4877 325-4877	operator@dux.ru
+Институт Здоровья Человека 235-0027	vna@www.medport.ru
+Информационно - аналитический центр мэрии	164-2379	info@iac.spb.ru
+ИнфоЦентp" (г.Сосновый Боp)(269)64-161	postmaster@sbor.spb.su
+Компания РКОМ	           218-4069	info@rcom.spb.su
+Компьютер Инфо	           528-0410	admin@mail.cinfo.ru
+Компьютерные сети	   325-9575	hotline@comset.spb.ru
+Convey	                   329-0518	info@convey.ru
+Ланк Системс	           325-8479	postmaster@lanck.net
+Линия связи	           327-5222	webmaster@line.ru
+ЛЭИВО	                   312-3689	msa@energo.ru
+Лэк Телеком	           327-8484	sales@lek.ru
+Hевалинк	           310-9951	info@arcom.spb.su
+Hевский линк	           314-9494	support@nevsky.net
+Петерлинк	           113-5722	info@peterlink.ru
+Релком	                   279-8831	ali@nesgi.spb.su
+Релтек	                   298-2409	postmaster@reltec.spb.su
+Роксон HВ (некоммерческий)	- 	admin@rokson.nw.ru

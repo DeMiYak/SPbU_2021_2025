@@ -1,0 +1,30 @@
+body{
+    border-width:10px 30px 10px 30px;
+    border-style:solid;
+    border-color:cornflowerblue;
+    border-radius:25px 20px 15px;
+    background-color: gainsboro;
+    padding:15px;
+}
+
+hr.short{
+    border-style:groove;
+    border-color:teal;
+    border-radius:2px;
+    width:10%;
+}
+
+hr.wide{
+    border-style:groove;
+    border-color:teal;
+    border-radius:2px;
+}
+
+p{
+    font-size:medium;
+    font-style:italic;
+    font-weight:400;
+    letter-spacing:2px;
+    font-family:sans-serif;
+    font-variant:small-caps;
+}

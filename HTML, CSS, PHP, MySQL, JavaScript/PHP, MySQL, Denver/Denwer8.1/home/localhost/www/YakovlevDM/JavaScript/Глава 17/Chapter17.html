@@ -1,0 +1,235 @@
+<!--
+    
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 17: Метод исчерпывающего перебора</title>
+    <link rel="stylesheet" href="Chapter17.css">
+</head>
+
+<body>
+    <pre>
+    Глава 17.
+    17.1, 17.2, 17.3
+        
+    </pre>
+
+    <p>17.1</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function formula(elem) {
+            var a = elem.data1.value
+            var b = elem.data2.value
+            var c = elem.data3.value
+            var d = elem.data4.value
+            var sres = ""; var s; var s1; var s2; var r
+            var p = false
+            for (var i = 1; i <= 4; i++) {
+                s1 = a
+                switch (i) {
+                    case 1: s1 += "+"; break
+                    case 2: s1 += "-"; break
+                    case 3: s1 += "*"; break
+                    case 4: s1 += "%"; break
+                }
+                s1 += b
+                for (var j = 1; j <= 4; j++) {
+                    s2 = ""
+                    switch (j) {
+                        case 1: s2 += "+"; break
+                        case 2: s2 += "-"; break
+                        case 3: s2 += "*"; break
+                        case 4: s2 += "%"; break
+                    }
+                    s2 += c
+                    s = s1 + s2
+                    r = eval(s)
+                    if (r == d) {
+                        sres += s + "=" + d + "\r\n"; p = true
+                    }
+                }
+            }
+            if (p) elem.result1.value = sres
+            else elem.result1.value = "Не найдена хорошая формула"
+        }
+    </script>
+    <form name="table1">
+        <pre>
+        a: <input type="text" size="20" name="data1">
+        b: <input type="text" size="20" name="data2">
+        c: <input type="text" size="20" name="data3">
+        d: <input type="text" size="20" name="data4">
+        Формулы:
+        <textarea cols="30" rows="5" name="result1"></textarea>
+        </pre>
+        <input type="button" value="Определить" onclick="formula(table1)"><br>
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>17.2</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function formula2(elem) {
+            var a = 1 * elem.data21.value
+            var b = 1 * elem.data22.value
+            var c = 1 * elem.data23.value
+            var d = 1 * elem.data24.value
+            var e = 1 * elem.data25.value
+            var f = 1 * elem.data26.value
+            var g = 1 * elem.data27.value
+            var s = new Array(a, "+", "(", b, "+", "(", c, "+", "(", d, "+", "(", e, "+", f, ")", ")", ")", ")")
+            var op = new Array("+", "-", "*", "%")
+            var str = ""
+            var sres = ""
+            var p = false
+            for (var i = 0; i <= 3; i++) {
+                s[1] = op[i];
+                for (var j = 0; j <= 3; j++) {
+                    s[4] = op[j]
+                    for (var k = 0; k <= 3; k++) {
+                        s[7] = op[k]
+                        for (var m = 0; m <= 3; m++) {
+                            s[10] = op[m]
+                            for (var n = 0; n <= 3; n++) {
+                                s[13] = op[n]
+                                str = ""
+                                for (var t = 0; t <= s.length - 1; t++) {
+                                    str += s[t]
+                                }
+                                r = eval(str)
+                                if (r == g) {
+                                    sres += str + "=" + g + "\r\n"; p = true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (p) elem.result2.value = sres
+            else elem.result2.value = "Нет хороших формул"
+        }
+    </script>
+    <form name="table2">
+        <pre>
+        a: <input type="text" size="20" name="data21">
+        b: <input type="text" size="20" name="data22">
+        c: <input type="text" size="20" name="data23">
+        d: <input type="text" size="20" name="data24">
+        e: <input type="text" size="20" name="data25">
+        f: <input type="text" size="20" name="data26">
+        g: <input type="text" size="20" name="data27">
+        Найденные формулы:
+        <textarea cols="30" rows="6" name="result2"></textarea>
+        <input type="button" value="Определить" onclick="formula2(table2)">
+        <input type="reset" value="Отменить">
+        </pre>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>17.3</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        var sres = ""
+        var v = new Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        var z = new Array("-", "-", "-", "-", "-", "-", "-", "-", "-")
+        var k
+        var b
+        var n = v.length
+        var varsh = 0
+        function vform() {
+            var s = 1 * v[0]
+            for (var i = 0; i <= n - 2; i++)
+                switch (z[i]) {
+                    case "+": s += 1 * v[i + 1]; break
+                    case "-": s -= 1 * v[i + 1]; break
+                }
+            return s
+        }
+        function writeForm() {
+            var str = v[0]
+            for (var i = 0; i <= n - 2; i++)
+                switch (z[i]) {
+                    case "+": str += "+" + v[i + 1]; break
+                    case "-": str += "-" + v[i + 1]; break
+                }
+            str += "=" + b + "\r\n"
+            return str
+        }
+        function newSign() {
+            var i = n - 2
+            while (i >= 0) {
+                if (z[i] == "+") {
+                    z[i] = "-"; i--
+                }
+                else { z[i] = "+"; break }
+            }
+        }
+        function initSign() {
+            for (var i = 0; i <= n - 2; i++) { z[i] = "-" }
+        }
+        function formula3(elem) {
+            b = elem.valform.value
+            if (!b) alert("Нет значения формулы")
+            else {
+                k = Math.pow(2, n - 1)
+                sres = ""
+                varsh = 0
+                initSign()
+                for (var t = 1; t <= k; t++) {
+                    if (vform() == (1 * b)) {
+                        sres += writeForm(); varsh++
+                    }
+                    newSign()
+                }
+                if (!varsh) sres = "Таких формул нет"
+                elem.result3.value = sres
+                elem.data31.value = varsh
+            }
+        }
+        function writeArr(elem) {
+            elem.varArray.value = v
+        }
+    </script>
+    <form name="table3">
+        <pre>
+        <input type="button" value="Массив" onclick="writeArr(table3)">
+        Значения элементов: <input type="text" size="20" name="varArray">
+        Значения формулы:    <input type="text" size="20" name="valform">
+        <input type="button" value="Определить" onclick="formula3(table3)">
+        Количество формул:  <input type="text" size="20" name="data31">
+        Найденные формулы: 
+        <textarea cols="30" rows="6" name="result3"></textarea>
+        <input type="reset" value="Отменить" onclick="sres='';varsh=0">
+        </pre>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+</body>
+
+</html>

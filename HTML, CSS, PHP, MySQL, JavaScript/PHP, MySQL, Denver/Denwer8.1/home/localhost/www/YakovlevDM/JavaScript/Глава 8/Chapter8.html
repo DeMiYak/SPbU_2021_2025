@@ -1,0 +1,94 @@
+<!--
+    
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+
+<!doctype html>
+<html>
+
+<head>
+    <title>Глава 8: Повторяющиеся вычисления</title>
+    <link rel="stylesheet" href="Chapter8.css">
+</head>
+
+<body>
+    <pre>
+        Глава 8.
+        8.4, 8.7,
+
+    </pre>
+    <p>8.4</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function isPrime(elem) {
+            var n = Math.abs(elem.num.value)
+            var p = true
+            if (n > 3) {
+                if (n % 2 == 0) {
+                    elem.result.value = "Составное"
+                }
+                else {
+                    var i = 3;
+                    var r = Math.sqrt(n)
+                    while ((i <= r) && p) {
+                        p = (n % i != 0); i += 2
+                    }
+                    if (p) elem.result.value = "Простое"
+                    else elem.result.value = "Составное"
+                }
+
+            }
+        }
+    </script>
+    <form name="table1">
+        <input type="text" name="num" size="10">
+        <input type="button" value="Определить" onclick="isPrime(table1)">
+        <br>
+        <input type="text" name="result" size="12">
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>8.7</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function iter(elem) {
+            var t = elem.app.value
+            var eps = elem.acc.value
+            var x = t
+            var y = Math.sin(x * x + 1)
+            while (Math.abs(y - x) >= eps) {
+                x = y; y = Math.sin(x * x + 1)
+            }
+            elem.result.value = y
+        }
+    </script>
+    <form name="table2">
+        Приближение: <input type="text" name="app" size="10"><br>
+        Точность: <input type="text" name="acc" size="10"><br>
+        <input type="button" value="Найти корень" onclick="iter(table2)"><br>
+        Корень уравнения: <input type="text" name="result" size="20"><br>
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+</body>
+
+</html>

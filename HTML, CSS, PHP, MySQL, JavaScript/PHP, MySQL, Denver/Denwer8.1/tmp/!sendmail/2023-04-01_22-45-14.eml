@@ -1,0 +1,12 @@
+X-Sendmail-Daemon-From: Denis-PC [127.0.0.1:60506]
+Date: Sat, 01 Apr 2023 21:45:14 +0200
+Subject: Congratulations!
+To: me@somehost.ru
+From: "PHP mail()" <mail@php.net>
+
+Hello!
+Today is 2023-04-01.
+This is the test
+mail body.
+
+If you see this, sendmail stub seems to be OK.

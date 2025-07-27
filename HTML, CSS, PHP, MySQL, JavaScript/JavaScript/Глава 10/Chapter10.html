@@ -1,0 +1,52 @@
+<!--
+    
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 10: Оператор for...in</title>
+    <link rel="stylesheet" href="Chapter10.css">
+</head>
+
+<body>
+    <pre>
+    Глава 10. (for in)
+    10.1
+    </pre>
+    <p>10.1</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function examine(elem) {
+            var result = ""
+            for (var i in elem) {
+                result += elem.data.value + "." + i + " = " + elem.data[i] + "\r\n"
+            }
+            result += "\r\n"
+            table1.data.value = result
+        }
+    </script>
+    <form name="table1">
+        <input type="button" value="Выполнить" onclick="examine(table1)"><br>
+        <textarea name="data" cols="30" rows="12" id="1">table1</textarea><br>
+        <input type="reset" value="Очистить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+</body>
+
+</html>

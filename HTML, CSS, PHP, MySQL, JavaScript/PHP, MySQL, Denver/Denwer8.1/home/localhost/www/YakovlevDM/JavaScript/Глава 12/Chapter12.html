@@ -1,0 +1,159 @@
+<!--
+    
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 12: Строки и методы работы с ними</title>
+    <link rel="stylesheet" href="Chapter12.css">
+</head>
+
+<body>
+    <pre>
+    Глава 12.
+    12.1, 12.4, 12.6, 12.7
+
+    </pre>
+    <p>12.1</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function stest(s) {
+            var sres = "Прочитанный текст:" + "\r\n" + s + "\r\n" +
+                'Текст в "столбик":' + "\r\n"
+            var cur = ""
+            for (var i = 0; i <= s.length - 1; i += 1) {
+                c = s.charAt(i); cur += c + "\r\n"
+            }
+            sres += cur
+            return sres
+        }
+    </script>
+    <form name="table1">
+        Введите строку: <input type="text" size="20" name="st1"><br>
+        <input type="button" value="Выполнить" onclick="table1.res.value=stest(table1.st1.value)">
+        <input type="reset" value="Очистить"><br>
+        <textarea cols="20" rows="8" name="res"></textarea>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>12.4</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function numsym(elem) {
+            var h = elem.data.value
+            var s = elem.textin.value
+            var res = 0
+            for (var i = 0; i < s.length; i++) {
+                ch = s.charAt(i)
+                if (ch == h) res += 1
+            }
+            elem.result.value = res
+        }
+    </script>
+    Количество заданных символов в тексте:
+    <form name="table2">
+        Введите текст: <br>
+        <textarea name="textin" cols="20" rows="4"></textarea><br>
+        Введите символ: <input type="text" name="data" size="8"><br>
+        <input type="button" value="Определить" onclick="numsym(table2)"><br>
+        Количество символов в тексте: <input type="text" name="result" size="8"><br>
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>12.6</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function numword(elem) {
+            var h = elem.data.value
+            var s = elem.textin.value
+            // console.log(s)
+            s = ' ' + s + ' '
+            h = ' ' + h + ' '
+            var m = h.length
+            // console.log(m)
+            var res = 0
+            var i = 0
+            while (i < s.length) {
+                ch = s.substr(i, m)
+                // console.log(ch)
+                if (ch == h) {
+                    res += 1; i = i + m - 1
+                } else i++
+            }
+            elem.result.value = res
+        }
+    </script>
+    <form name="table3">
+        Введите текст: <br>
+        <textarea name="textin" cols="20" rows="4"></textarea><br>
+        Введите слово: <input type="text" name="data" size="20"><br>
+        <input type="button" value="Определить" onclick="numword(table3)"><br>
+        Количество слов в тексте: <input type="text" name="result" size="8"><br>
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>12.7</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function palindrome(elem) {
+            var s = elem.data.value
+            var n = s.length - 1
+            var p1 = 0
+            var p2 = n
+            var c1 = s.charAt(0)
+            var c2 = s.charAt(n)
+            var p = true
+            var s1 = ""
+            while ((p1 < p2) && (p == true)) {
+                if (c1 == " ") { p1 += 1; c1 = s.charAt(p1) }
+                else if (c2 == " ") { p2 -= 1; c2 = s.charAt(p2) }
+                else if (c1.toLowerCase() == c2.toLowerCase()) { p1 += 1; p2 -= 1; c1 = s.charAt(p1); c2 = s.charAt(p2) }
+                else { p = false }
+            }
+            if (!p) s1 = "Не палиндром"
+            else s1 = "Палиндром"
+            elem.res.value = s1
+        }
+    </script>
+    <form name="table4">
+        <pre>
+        Введите строку: <input type="text" name="data" size="50">
+        Результат:      <input type="text" name="res" size="30">
+        <input type="button" value="Определить" onclick="palindrome(table4)">
+        <input type="reset" value="Отменить">
+        </pre>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+</body>
+
+</html>

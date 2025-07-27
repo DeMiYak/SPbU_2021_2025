@@ -1,0 +1,177 @@
+<!--
+    
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 15: Процедурный тип данных и функция eval</title>
+    <link rel="stylesheet" href="Chapter15.css">
+</head>
+
+<body>
+    <pre>
+    Глава 15. (eval)
+    Стр 327, 15.1, 15.2, 15.3, 15.4, 
+
+    </pre>
+    <p>15.1</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function valfunc(elem) {
+            var fs = elem.func.value
+            var m = 1 * elem.left.value
+            var n = 1 * elem.right.value
+            var h = 1 * elem.by.value
+            var y
+            var x
+            var s = "x    f(x)" + "\r\n"
+            for (var i = m; i <= n; i += h) {
+                x = i; y = eval(fs); s += x + "     " + y + "\r\n"
+            }
+            elem.res.value = s
+        }
+
+    </script>
+    <form name="table1">
+        <pre>
+        Введите функцию:                    <input type="text" size="20" name="func" value="x*x*x-2*x*x+x">
+        Введите левый конец интервала:      <input type="text" size="8" name="left" value="-1">
+        Введите правый конец интервала:     <input type="text" size="8" name="right" value="1">
+        Введите шаг изменения аргумента:    <input type="text" size="8" name="by" value="0.5">
+        <input type="button" value="Вычислить" onclick="valfunc(table1)">
+        Таблица значений функции:
+        <textarea cols="40" rows="10" name="res"></textarea>
+        <input type="reset" value="Отменить">
+    </pre>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>15.2</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function valfunc1(elem) {
+            var fs = elem.func1.value
+            var x = 1 * elem.x.value
+            var y = 1 * elem.y.value
+            var z = eval(fs)
+            var s = "принадлежит области"
+            if (!z) s = "Не " + s
+            elem.res1.value = s
+        }
+    </script>
+    <form name="table2">
+        <pre>
+        Формула:    <input type="text" size="20" name="func1">
+        x:          <input type="text" size="8" name="x">
+        y:          <input type="text" size="8" name="y">
+        <input type="button" value="Вычислить" onclick="valfunc1(table2)">
+        Координаты: <input type="text" size="30" name="res1">
+        <input type="reset" value="Отменить"> 
+        </pre>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>15.3</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function iter(elem) {
+            var d = document
+            var fs = elem.func2.value
+            var t = 1 * elem.tv.value
+            var eps = elem.epsv.value
+            var x = t
+            var y = eval(fs)
+            while (Math.abs(y - x) >= eps) { x = y; y = eval(fs) }
+            elem.res2.value = x
+        }
+    </script>
+    <form name="table3">
+        <pre>
+        Функция:        <input type="text" size="20" name="func2">
+        Приближение:    <input type="text" size="20" name="tv">
+        Точность:       <input type="text" size="20" name="epsv">
+        <input type="button" value="Вычислить" onclick="iter(table3)">
+        x=f(x) в точке: <input type="text" size="20" name="res2">
+        <input type="reset" value="Отменить">
+        </pre>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>15.4</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function binroot(elem) {
+            var fs = elem.func3.value
+            var a = 1 * elem.left1.value
+            var b = 1 * elem.right1.value
+            var eps = 1 * elem.epsv1.value
+            var x = a
+            var fa = eval(fs)
+            x = b
+            var fb = eval(fs)
+            var fc
+            var c
+            if (fa * fb < 0) {
+                while (Math.abs(b - a) >= 2 * eps) {
+                    c = (a + b) / 2
+                    x = c; fc = eval(fs)
+                    if (fa * fc < 0) { b = c; fb = fc }
+                    else { a = c; fa = fc }
+                }
+                elem.res3.value = (a + b) / 2
+                x = (a + b) / 2
+                var tes = eval(fs)
+                elem.test4.value = tes
+            }
+            else {
+                document.getElementById("id").style.display = "block"
+                document.getElementById("id").innerHTML = "На концах значения одного знака"
+            }
+        }
+    </script>
+    <form name="table4">
+        <pre>
+        Введите функцию:                    <input type="text" size="20" name="func3">
+        Введите левый конец отрезка:        <input type="text" size="8" name="left1">
+        Введите правый конец отрезка:       <input type="text" size="8" name="right1">
+        Введите точность:                   <input type="text" size="8" name="epsv1">
+        <input type="button" value="Вычислить" onclick="binroot(table4)">
+        Корень уравнения равен: <input type="text" size="30" name="res3">
+        Тест: <input type="text" size="30" name="test4">
+        <p id="id" style="display:none"></p>
+        <input type="reset" value="Отменить" onclick="document.all('id').style.display='none'">
+        </pre>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+</body>
+
+</html>

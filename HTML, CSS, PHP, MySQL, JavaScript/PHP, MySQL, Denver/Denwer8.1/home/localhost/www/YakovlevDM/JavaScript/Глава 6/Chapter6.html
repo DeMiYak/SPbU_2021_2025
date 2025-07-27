@@ -1,0 +1,529 @@
+<!--
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 6: Списки</title>
+    <link rel="stylesheet" href="Chapter6.css">
+</head>
+
+<body>
+    <pre>
+    Глава 6. (select)
+    6.1, 6.2, 6.5, 6.8, 6.9, 6.10
+    </pre>
+    <p>6.1</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function testsel() {
+            var d = document
+            var r = "Выбранная форма: "
+            if ((d.forms["table1"].elements[0])[0].selected)
+                r = r + (d.forms["table1"].elements[0])[0].text + " "
+            else if ((d.forms["table1"].elements[0])[1].selected)
+                r = r + (d.forms["table1"].elements[0])[1].text + " "
+            else if ((d.forms["table1"].elements[0])[2].selected)
+                r = r + (d.forms["table1"].elements[0])[2].text + " "
+            else if ((d.forms["table1"].elements[0])[3].selected)
+                r = r + (d.forms["table1"].elements[0])[3].text + " "
+            d.all("line1").style.display = "block"
+            d.all("line1").innerHTML = r
+        }
+    </script>
+    <form name="table1">
+        Форма витража: <br>
+        <select name="form" size="1">
+            <option value="0">прямоугольник</option>
+            <option value="1">квадрат</option>
+            <option value="2">круг</option>
+            <option value="3">треугольник</option>
+        </select>
+        <input type="button" value="Проверить" onclick="testsel()">
+        <input type="reset" value="Отменить" onclick="document.all('line1').style.display='none'">
+        <p id="line1" style="display:none;"></p>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <p>6.2</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function testsel1() {
+            var d = document.table2.elements[0]
+            var s = 0
+            if (d[0].selected) s += 100
+            if (d[1].selected) s += 200
+            if (d[2].selected) s += 300
+            if (d[3].selected) s += 400
+            if (d[4].selected) s += 500
+            if (d[5].selected) s += 600
+            return s
+        }
+    </script>
+    <form name="table2">
+        Используйте Ctrl или Shift для выбора нескольких элементов: <br><br>
+        <select name="form1" size="4" multiple>
+            <option value="Русский">Русский</option>
+            <option value="Английский">Английский</option>
+            <option value="Французский">Французский</option>
+            <option value="Немецкий">Немецкий</option>
+            <option value="Китайский">Китайский</option>
+            <option value="Японский">Японский</option>
+        </select>
+        <p>Вознаграждение: <input type="text" name="res" size="12"></p>
+        <input type="button" value="Определить" onclick="table2.res.value=testsel1()">
+        <input type="reset" value="Отменить">
+    </form>
+
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <p>6.5</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        var n = 0
+        function test(elem) {
+            var s1 = elem.elements[0]
+            var s2 = elem.elements[3]
+            if (n <= s2.length - 1) {
+                if (s1[0].selected) {
+                    s2[n].text = n + 1 + ". " + s1[0].text + " "; n += 1
+                }
+                if (s1[1].selected) {
+                    s2[n].text = n + 1 + ". " + s1[1].text + " "; n += 1
+                }
+                if (s1[2].selected) {
+                    s2[n].text = n + 1 + ". " + s1[2].text + " "; n += 1
+                }
+                if (s1[3].selected) {
+                    s2[n].text = n + 1 + ". " + s1[3].text + " "; n += 1
+                }
+                if (s1[4].selected) {
+                    s2[n].text = n + 1 + ". " + s1[4].text + " "; n += 1
+                }
+                if (s1[5].selected) {
+                    s2[n].text = n + 1 + ". " + s1[5].text + " "; n += 1
+                }
+            } else alert("Ваш выбор содержит ошибку")
+            /*
+            else if(n == s2.length){
+                s2.remove(s2[0])
+                s2.length+=1
+                if(s1[0].selected){
+                    s2[n-1].text=n+". "+s1[0].text+" "
+                }
+                if(s1[1].selected){
+                    s2[n-1].text=n+". "+s1[1].text+" "
+                }
+                if(s1[2].selected){
+                    s2[n-1].text=n+". "+s1[2].text+" "
+                }
+                if(s1[3].selected){
+                    s2[n-1].text=n+". "+s1[3].text+" "
+                }
+                if(s1[4].selected){
+                    s2[n-1].text=n+". "+s1[4].text+" "
+                }
+                if(s1[5].selected){
+                    s2[n-1].text=n+". "+s1[5].text+" "
+                }
+            }
+            */
+        }
+        function refresh() {
+            while (table3.formres.length)
+                table3.formres.remove(table3.formres.length - 1)
+            table3.formres.length = 6
+            n = 0
+        }
+    </script>
+    <form name="table3">
+        <p>Перечислите в порядке важности:</p>
+        <select name="form1" size="7" multiple>
+            <option value="обложка">Оформление обложки</option>
+            <option value="объём">Объём книги</option>
+            <option value="цена">Цена книги</option>
+            <option value="качество бумаги">Качество бумаги</option>
+            <option value="иллюстрации">Наличие цветных иллюстраций</option>
+            <option value="диски">Наличие CD или дискет</option>
+        </select>
+        <input type="button" value="Добавить" onclick="test(table3)">
+        <input type="reset" value="Обновить" onclick="refresh()">
+        <select name="formres" size="7" multiple>
+            <option></option>
+            <option></option>
+            <option></option>
+            <option></option>
+            <option></option>
+            <option></option>
+        </select>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <p>6.8</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        var p = "Хасянов Рамис Шавкятович"
+        var s = ""
+        function gr(elem, m) {
+            var k = elem.elements[3]
+            p = k[m].text
+        }
+        function statist(elem) {
+            var res = 0
+            var e = elem
+            if (e[0].checked) res += 1
+            if (e[1].checked) res += 2
+            if (e[2].checked) res += 3
+            if (e[3].checked) res += 4
+            if (e[4].checked) res += 5
+            return res
+        }
+        function stat(elem) {
+            s = s + p + ": " + Number(statist(elem.par1) + statist(elem.par2) +
+                statist(elem.par3) + statist(elem.par4) + statist(elem.par5)) + "\r\n"
+            elem.res.value = s
+        }
+    </script>
+    <h4>Информация о студенте:</h4>
+    <form name="table4">
+        Факультет <select name="faculty" size="1" maxlength="20">
+            <option value="mm">Мат-мех</option>
+            <option value="ph">Физфак</option>
+            <option value="ch">Химфак</option>
+        </select>
+        Курс <select name="course" size="1" maxlength="1">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+        Группа <input type="text" name="group" size="4">
+        <table border="3" align="center">
+            <tr>
+                <td vAlign="top">
+                    <h3>Список преподавателей:</h3>
+                    <select name="teacher" size="1" col="60" onclick="gr(table4, table4.teacher.value)">
+                        <option value="0">Хасянов Рамис Шавкятович</option>
+                        <option value="1">Амрани Илиас Мохаммедович</option>
+                        <option value="2">Лодкин Андрей Александрович</option>
+                        <option value="3">Лебедева Анастасия Владимировна</option>
+                        <option value="4">Басов Владимир Владимирович</option>
+                        <option value="5">Иванцова Ольга Николаевна</option>
+                        <option value="6">Ловягин Никита Юрьевич</option>
+                        <option value="7">Мирошниченко Ирина Дмитриевна</option>
+                    </select>
+                </td>
+                <td>
+                    <table border="2" align="center"
+                        style="background-image:url(../Изображения/Space.jpg);color:rgb(142, 214, 25);">
+                        <tr>
+                            <th align="center">Показатель</th>
+                            <th colspan="5" align="center">Оценка</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                Соответствие программе:
+                            </td>
+                            <td><input type="radio" name="par1" value="1">1</td>
+                            <td><input type="radio" name="par1" value="2">2</td>
+                            <td><input type="radio" name="par1" value="3">3</td>
+                            <td><input type="radio" name="par1" value="4">4</td>
+                            <td><input type="radio" name="par1" value="5">5</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Учёт специфики аудитории:
+                            </td>
+                            <td><input type="radio" name="par2" value="1">1</td>
+                            <td><input type="radio" name="par2" value="2">2</td>
+                            <td><input type="radio" name="par2" value="3">3</td>
+                            <td><input type="radio" name="par2" value="4">4</td>
+                            <td><input type="radio" name="par2" value="5">5</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Доказательность изложения:
+                            </td>
+                            <td><input type="radio" name="par3" value="1">1</td>
+                            <td><input type="radio" name="par3" value="2">2</td>
+                            <td><input type="radio" name="par3" value="3">3</td>
+                            <td><input type="radio" name="par3" value="4">4</td>
+                            <td><input type="radio" name="par3" value="5">5</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Эффективные методы обучения:
+                            </td>
+                            <td><input type="radio" name="par4" value="1">1</td>
+                            <td><input type="radio" name="par4" value="2">2</td>
+                            <td><input type="radio" name="par4" value="3">3</td>
+                            <td><input type="radio" name="par4" value="4">4</td>
+                            <td><input type="radio" name="par4" value="5">5</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Современный уровень:
+                            </td>
+                            <td><input type="radio" name="par5" value="1">1</td>
+                            <td><input type="radio" name="par5" value="2">2</td>
+                            <td><input type="radio" name="par5" value="3">3</td>
+                            <td><input type="radio" name="par5" value="4">4</td>
+                            <td><input type="radio" name="par5" value="5">5</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <p></p>
+        <input type="button" value="Статистика" onclick="stat(table4)">
+        <textarea cols="40" rows="5" name="res"></textarea>
+        <p></p>
+        <input type="reset" value="Очистить" onclick="p='';s=''">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <p>6.9</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        var sum = 0
+        var q
+        var a
+        function eq() {
+            q = test1.question.value
+            a = test1.answer.value
+            if (a == q) sum += 1
+        }
+        function resultat() {
+            document.test1.res.value = sum
+        }
+    </script>
+    <h3 align="center">
+        Города и памятники
+    </h3>
+    <form name="test1">
+        <table border="3" align="center" cellpadding="5" cellspacing="6" bgcolor="silver">
+            <tr>
+                <th>Памятник</th>
+                <th>Находится в городе</th>
+            </tr>
+            <tr>
+                <td>
+                    <select size="9" name="question" onchange="q=test1.question.value">
+                        <option value="mad">Музей Прадо</option>
+                        <option value="ber">Рейхстаг</option>
+                        <option value="mil">Оперный театр Ла Скала</option>
+                        <option value="ier">Стена Плача</option>
+                        <option value="mek">Священный камень Кааб</option>
+                        <option value="spb">Медный всадник</option>
+                        <option value="mos">Третьяковская галерея</option>
+                        <option value="par">Триумфальная арка</option>
+                        <option value="new">Статуя Свободы</option>
+                        <option value="lon">Тауэр</option>
+                    </select>
+                </td>
+                <td>
+                    <select size="9" name="answer" onchange="eq()">
+                        <option value="spb">Санкт-Петербург</option>
+                        <option value="mos">Москва</option>
+                        <option value="mek">Мекка</option>
+                        <option value="ier">Иерусалим</option>
+                        <option value="par">Париж</option>
+                        <option value="new">Нью-Йорк</option>
+                        <option value="lon">Лондон</option>
+                        <option value="mad">Мадрид</option>
+                        <option value="ber">Берлин</option>
+                        <option value="mil">Милан</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <input type="button" value="Результат" onclick="resultat()"><br>
+        Количество правильных ответов:
+        <input type="text" name="res" size="6"><br>
+        <input type="reset" value="Обновить" onclick="sum=0">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <p>6.10</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function colorset(elem) {
+            var d = document
+            d.all("itab").bgColor = "silver"
+            d.all("itab1").bgColor = "gray"
+            d.all("itab2").bgColor = "gray"
+            d.all("itab3").bgColor = "gray"
+            d.all("itab4").bgColor = "gray"
+            d.all("itab").border = 1
+            d.all("itab").cellSpacing = 10
+            d.all("itab").cellPadding = 20
+            elem.bo.value = 1
+            elem.cs.value = 10
+            elem.cp.value = 20
+        }
+        function great(elem, m) {
+            e = elem.elements[5]
+            document.all("itab").bgColor = e[m].text
+        }
+        function greatcol(elem, m) {
+            var e = elem.elements[5]
+            var d = document
+            d.all("itab1").bgColor = e[m].text
+            d.all("itab2").bgColor = e[m].text
+            d.all("itab3").bgColor = e[m].text
+            d.all("itab4").bgColor = e[m].text
+        }
+        function set(elem) {
+            var d = document
+            d.all("itab").border = 1 * elem.bo.value
+            if (elem.cs.value) {
+                d.all("itab").cellSpacing = 1 * elem.cs.value
+            }
+            if (elem.cp.value) {
+                d.all("itab").cellPadding = 1 * elem.cp.value
+            }
+        }
+    </script>
+    <table border="2" align="center"
+        style="background-image:url(../Изображения/Night\ Bridge.jpg); background-size:170%;">
+        <td align="center">Изменяемые параметры</td>
+        <td align="center">Цвет фона всей таблицы и отдельной ячейки</td>
+        </tr>
+        <tr>
+            <td vAlign="top">
+                &nbsp;Введите значения параметров:
+                <form name="test2">
+                    <pre>
+        &nbsp;<input type="text" size="10" name="bo" value="1">Толщина рамки
+        &nbsp;<input type="text" size="10" name="cs" value="10">Расстояние между ячейками
+        &nbsp;<input type="text" size="10" name="cp" value="20">Поля внутри ячейки
+
+        <input type="button" value="Просмотр" onclick="set(test2)">
+        <input type="reset" value="Обновить" onclick="colorset(test2)">
+                    </pre>
+                    <table border="1" align="center"
+                        style="background-image:url(../Изображения/Windows\ XP\ Wallpaper.jpg); width:min-content; height:min-content;">
+                        <tr>
+                            <td colspan="2" align="center" style="color:darkred;">Цвет фона</td>
+                        </tr>
+                        <tr style="color:darkred;">
+                            <td align="center">Таблицы</td>
+                            <td align="center">Ячейки</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select name="col" size="1" style="color:purple;"
+                                    onchange="great(test2, test2.col.value)">
+                                    <option value="0">purple</option>
+                                    <option value="1">red</option>
+                                    <option value="2">green</option>
+                                    <option value="3">hotpink</option>
+                                    <option value="4">crimson</option>
+                                    <option value="5">thisle</option>
+                                    <option value="6">chartreuse</option>
+                                    <option value="7">chocolate</option>
+                                    <option value="8">cyan</option>
+                                    <option value="9">blue</option>
+                                    <option value="10">aquamarine</option>
+                                    <option value="11">darksalmon</option>
+                                    <option value="12">fuchsia</option>
+                                    <option value="13">firebrick</option>
+                                    <option value="14">white</option>
+                                    <option value="15">black</option>
+                                    <option value="16" selected>silver</option>
+                                    <option value="17">gray</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="colcol" size="1" style="color:purple;"
+                                    onchange="greatcol(test2, test2.colcol.value)">
+                                    <option value="0">purple</option>
+                                    <option value="1">red</option>
+                                    <option value="2">green</option>
+                                    <option value="3">hotpink</option>
+                                    <option value="4">crimson</option>
+                                    <option value="5">thistle</option>
+                                    <option value="6">chartreuse</option>
+                                    <option value="7">chocolate</option>
+                                    <option value="8">cyan</option>
+                                    <option value="9">blue</option>
+                                    <option value="10">aquamarine</option>
+                                    <option value="11">darksalmon</option>
+                                    <option value="12">fuchsia</option>
+                                    <option value="13">firebrick</option>
+                                    <option value="14">white</option>
+                                    <option value="15">black</option>
+                                    <option value="16">silver</option>
+                                    <option value="17" selected>gray</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </td>
+            <td>
+                <table id="itab" border="1" cellspacing="10" cellpadding="20" bgcolor="silver" align="center">
+                    <tr>
+                        <td id="itab1" bgcolor="gray">
+                            <a href="../Изображения/p1.gif">
+                                <img src="../Изображения/p1.gif" border="0" width="150">
+                            </a>
+                        </td>
+                        <td id="itab2" bgcolor="gray">
+                            <a href="../Изображения/p2.png">
+                                <img src="../Изображения/p2.png" border="0" width="150">
+                            </a>
+                    <tr>
+            </td>
+            <td id="itab3" bgcolor="gray">
+                <a href="../Изображения/p3.jpg">
+                    <img src="../Изображения/p3.jpg" border="0" width="150">
+                </a>
+            </td>
+            <td id="itab4" bgcolor="gray">
+                <a href="../Изображения/p4.jpg">
+                    <img src="../Изображения/p4.jpg" border="0" width="150">
+                </a>
+            </td>
+        </tr>
+        </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+</body>
+
+</html>

@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 1: Введение</title>
+    <style>
+        body {
+            background-color: aqua;
+            padding: 2%;
+            border-style: outset;
+            border-width: thick;
+            border-color: chartreuse;
+        }
+
+        pre {
+            font-size: larger;
+            font-family: Geneva;
+            font-weight: 500;
+        }
+
+        hr {
+            border-style: dashed;
+            color: blueviolet;
+        }
+
+        .dandy {
+            border-style: groove;
+            color: crimson;
+            border-width: medium;
+        }
+    </style>
+</head>
+
+<body>
+    <pre>
+        Глава 1.
+        1.1, 1.2, 1.3, 1.4, 1.5, 1.5 с res, 1.6
+        1.7 (обратить внимание на a1=1*obj.num1.value; что равносильно a1=Number(obj.num1.value);
+        1.9 (Focus), 1.10 (Blur), 1.11 (Select), 1.12 (d.pm1.value),
+        1.14 (функция проявления надписи, событие onmouseover,  onmouseout),
+        1.15 (элемент формы textarea, объект Math)
+    </pre>
+    <p>1.1</p>
+    <hr>
+    <hr>
+    <script>
+        var h = 6; a = 12
+        document.write("Площадь треугольника с высотой, проведённой к основанию, равна: ",
+            a * h / 2, ".")
+    </script>
+    <hr>
+    <hr>
+
+    <p>1.2</p>
+
+    <hr>
+    <hr>
+    <script>
+        function carenot(a, h) { return a * h / 2 }
+        var a = 5; h = 4
+        var s = carenot(a, h)
+        document.write("При вызове функции carenot получено значение: ", s, ".")
+    </script>
+    <hr>
+    <hr>
+
+    <p>1.3</p>
+
+    <hr>
+    <hr>
+    <script>
+        function tria1(a, h) {
+            var s = (a * h) / 2
+            document.getElementById("line1").innerHTML = "Площадь треугольника с высотой, прилежащей к основанию, равна: " + s + "."
+            document.getElementById("line1").style.display = "block"
+            return s
+        }
+    </script>
+    <form name="table1">
+        Основание: <input type="text" size="5" name="box1"><br>
+        Высота: <input type="text" size="5" name="box2"><br>
+        <input type="button" value="Calculate" onclick="tria1(document.table1.box1.value, document.table1.box2.value)">
+        <p id="line1" style="display:none;"></p>
+    </form>
+    <hr>
+    <hr>
+
+    <p>1.4</p>
+
+    <hr>
+    <hr>
+    <script>
+        function tria2(a, h) {
+            var s = (a.value * h.value) / 2
+            document.getElementById("line2").innerHTML = "Площадь равна: " + s
+            document.getElementById("line2").style.display = "block"
+            return s
+        }
+    </script>
+    <form name="table2">
+        Основание: <input type="text" size="8" name="box1"><br>
+        Высота: <input type="text" size="8" name="box2"><br>
+        <input type="button" value="Calculate" onclick="tria2(table2.box1,table2.box2)">
+        <p id="line2" style="display:none;"></p>
+    </form>
+    <hr>
+    <hr>
+
+    <p>1.5</p>
+
+    <hr>
+    <hr>
+    <script>
+        function tria3(elem) {
+            var a = elem.box1.value; h = elem.box2.value
+            var s = (a * h) / 2
+            document.getElementById("line3").innerHTML = "Площадь треугольника равна: " + s
+            document.getElementById("line3").style.display = "block"
+            return s
+        }
+
+        function tria4(elem) {
+            var a = elem.box1.value; h = elem.box2.value
+            var s = (a * h) / 2
+            elem.res.value = s
+        }
+    </script>
+    <form name="table3">
+        Основание: <input type="text" size="6" name="box1"><br>
+        Высота: <input type="text" size="6" name="box2"><br>
+        <input type="button" value="Calculate" onclick="tria3(table3)">
+        <p id="line3" style="display:none;"></p>
+    </form>
+    <hr class="dandy">
+    <p style="font-family:sans-serif; letter-spacing:3px;color:darkred;font-weight:700;">
+        Задача-добавление с res:
+    </p>
+    <form name="table4">
+        Основание: <input type="text" size="7" name="box1"><br>
+        Высота: <input type="text" size="7" name="box2"><br>
+        <input type="button" value="Calculate" onclick="tria4(table4)"><br>
+        Площадь равна: <input type="text" size="7" name="res">
+    </form>
+    <hr>
+    <hr>
+
+    <p>1.6</p>
+
+    <hr>
+    <hr>
+    <form name="table5">
+        Основание: <input type="text" size="4" name="box1"><br>
+        Высота: <input type="text" size="4" name="box2"><br>
+        <input type="button" value="Calculate" onclick="table5.res.value=table5.box1.value*table5.box2.value/2">
+        Площадь равна: <input type="text" size="4" name="res">
+    </form>
+    <hr>
+    <hr>
+
+    <p>1.7</p>
+
+    <!-- 1*string number -> number -->
+    <hr>
+    <hr>
+    <script>
+        function eval(elem) {
+            var a1 = elem.num1.value * 1
+            var a2 = elem.num2.value * 1
+            var a3 = elem.num3.value * 1
+            var a4 = elem.num4.value * 1
+            var a5 = elem.num5.value * 1
+            var a6 = elem.num6.value * 1
+            var s = (a1 + a2 + a3 + a4 + a5 + a6) / 6
+            elem.res.value = s
+        }
+    </script>
+    <pre>
+<form name="table6">
+    July:            <input type="text" size="9" name="num1">
+    August:        <input type="text" size="9" name="num2">
+    September:  <input type="text" size="9" name="num3">
+    October:      <input type="text" size="9" name="num4">
+    November:  <input type="text" size="9" name="num5">
+    January:      <input type="text" size="9" name="num6">
+    The average salary for a demi-year: 
+    <input type="text" size="20" name="res">
+    <input type="button" value="Calculate"
+    onclick="eval(table6)">
+    <input type="reset" value="Clear the Table">
+</form>
+</pre>
+    <hr>
+    <hr>
+
+    <p>1.8</p>
+    <hr>
+    <hr>
+    <script>
+        function sqa1(elem) { elem.res.value = elem.num1.value * elem.num1.value }
+    </script>
+    <form name="table7">
+        Сторона квадрата: <input type="text" name="num1" onchange="sqa1(table7)"><br>
+        Площадь: <input type="text" name="res"><br>
+        <input type="reset" value="Clear the Table">
+    </form>
+    <hr>
+    <hr>
+
+    <p>1.9</p>
+    <hr>
+    <hr>
+    <script>
+        function sqa2(elem) { elem.res.value = elem.num1.value * elem.num1.value }
+    </script>
+    <form name="table8">
+        Сторона квадрата: <input type="text" size="8" name="num1" onfocus="sqa2(table8)"><br>
+        Площадь: <input type="text" size="10" name="res"><br>
+        <input type="reset" value="Clear the Table">
+    </form>
+    <hr>
+    <hr>
+
+    <p>1.10</p>
+
+    <hr>
+    <hr>
+    <script>
+        function sqa3(elem) { elem.res.value = elem.num1.value * elem.num1.value }
+    </script>
+    <form name="table9">
+        Сторона квадрата: <input type="text" size="9" name="num1" onblur="sqa3(table9)"><br>
+        Площадь: <input type="text" size="10" name="res"><br>
+        <input type="reset" value="Clear the Table">
+    </form>
+    <hr>
+    <hr>
+
+    <p>1.11</p>
+
+    <hr>
+    <hr>
+    <script>
+        function sqa4(elem) { elem.res.value = elem.num1.value * elem.num1.value }
+    </script>
+    <form name="table10">
+        Сторона квадрата: <input type="text" size="12" name="num1" onselect="sqa4(table10)"><br>
+        Площадь: <input type="text" size="12" name="res"><br>
+        <input type="reset" value="Clear the Table">
+    </form>
+    <hr>
+    <hr>
+
+    <p>1.12</p>
+
+    <hr>
+    <hr>
+    <script>
+        function swap() {
+            var d = document
+            var temp = d.pic1.src
+            d.pic1.src = d.pic2.src
+            d.pic2.src = temp
+        }
+    </script>
+    <img src="../Изображения/Space.jpg" name="pic1" style="width:5%;height:5%;">
+    <img src="../Изображения/Fleur-de-lis.png" name="pic2" style="width:5%;height:5%;"><br>
+    <form name="table11">
+        <input type="button" value="Swap" onclick="swap()">
+    </form>
+    <hr>
+    <hr>
+
+    <p>1.14</p>
+
+    <hr>
+    <hr>
+    <script>
+        var s1 = "Контрольная работа"
+        var s2 = "Изменилась аудитория 2246, 2 этаж"
+        var s3 = "Занятия в компьютерном классе"
+        var s4 = "Подготовка реферата"
+        var s5 = "Занятия переносятся на следующую неделю"
+        function schedule(s) { document.table12.m1.value = s }
+        function delet() { document.table12.m1.value = '' }
+    </script>
+    <center>
+        <table border="0" cellspacing="10" cellpadding="4">
+            <tr valign="top">
+                <td align="center">
+                    <form name="table12">
+                        <textarea name="m1" cols="35" rows="4" onchange="delet()"></textarea>
+                    </form>
+                </td>
+            </tr>
+            <tr valign="middle">
+                <td>
+                    <ul style="font-size:larger;">
+                        <li onmouseover="schedule(s1)" onmouseout="delet()">
+                            <em><i>1-ая пара:</i></em> Математический анализ
+                        </li>
+                        <li onmouseover="schedule(s2)" onmouseout="delet()">
+                            <em><i>2-ая пара:</i></em> Дифференциальные уравнения
+                        </li>
+                        <li onmouseover="schedule(s3)" onmouseout="delet()">
+                            <em><i>3-ья пара:</i></em> Численные методы
+                        </li>
+                        <li onmouseover="schedule(s4)" onmouseout="delet()">
+                            <em><i>4-ая пара:</i></em> Геометрия и топология
+                        </li>
+                        <li onmouseover="schedule(s5)" onmouseout="delet()">
+                            <em><i>5-ая пара:</i></em> Теория управления
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </center>
+    <hr>
+    <hr>
+
+    <p>1.15</p>
+
+    <hr>
+    <hr>
+    <script>
+        function triattr(elem) {
+            var a = elem.box1.value
+            var b = elem.box2.value
+            var c = elem.box3.value
+            var s
+            var p = a * 1 + b * 1 + c * 1
+            document.getElementById("line4").innerHTML = "Периметр треугольника равен: " + p
+            document.getElementById("line4").style.display = "block"
+            p = p / 2
+            s = Math.sqrt(p * (p - a) * (p - b) * (p - c))
+            document.getElementById("line5").innerHTML = "Площадь треугольника равна: " + s
+            document.getElementById("line5").style.display = "block"
+        }
+    </script>
+    <form name="table13">
+        Сторона 1: <input type="text" size="9" name="box1"><br>
+        Сторона 2: <input type="text" size="9" name="box2"><br>
+        Сторона 3: <input type="text" size="9" name="box3"><br>
+        <input type="button" value="Calculate" onclick="triattr(table13)"><br>
+        <input type="reset" value="Clear the Table" onclick="document.getElementById('line4').style.display='none';
+    document.getElementById('line5').style.display='none'">
+        <p id="line4" style="display:none;"></p>
+        <p id="line5" style="display:none;"></p>
+    </form>
+    <hr>
+    <hr>
+</body>
+
+</html>

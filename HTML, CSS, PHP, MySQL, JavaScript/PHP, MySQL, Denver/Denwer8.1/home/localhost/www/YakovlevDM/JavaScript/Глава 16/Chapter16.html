@@ -1,0 +1,163 @@
+<!--
+    
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 16: Рекурсивные методы</title>
+    <link rel="stylesheet" href="Chapter16.css">
+</head>
+
+<body>
+    <pre>
+    Глава 16. (рекурсия)
+    16.1, 16.2, 16.5, 16.6
+
+    </pre>
+    <p>16.1</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function recbin(n) {
+            var s
+            if (n == 1) s = "1"
+            else {
+                s = recbin((n - n % 2) / 2)
+                s += n % 2
+            }
+            return s
+        }
+    </script>
+    <form name="table1">
+        <pre>
+        Натуральное число:      <input type="text" size="12" name="num1">
+        Двоичное представление: <input type="text" size="12" name="res1">
+        </pre>
+        <input type="button" value="Выполнить" onclick="this.form.res1.value=recbin(1*this.form.num1.value)"><br>
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>16.2</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function fact(n) {
+            var f = 1
+            if (n == 1) f = 1
+            else f = n * fact(n - 1)
+            return f
+        }
+    </script>
+    <form name="table2">
+        <pre>
+            Натуральное число:      <input type="text" size="12" name="num2">
+            Факториал: <input type="text" size="12" name="res2">
+            </pre>
+        <input type="button" value="Выполнить" onclick="this.form.res2.value=fact(1*this.form.num2.value)"><br>
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>16.5</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function fbin(a, b, eps) {
+            var fs = table3.func3.value
+            var x = a
+            var fa = eval(fs)
+            x = b
+            var fb = eval(fs)
+            var fc
+            var c
+            var r
+            if (Math.abs(b - a) < eps) {
+                r = (a + b) / 2
+            }
+            else {
+                c = (a + b) / 2
+                x = c; fc = eval(fs)
+                if ((fa * fc) < 0) { r = fbin(a, c, eps) }
+                else { r = fbin(c, b, eps) }
+            }
+            return r
+        }
+        function ftest(elem) {
+            var fs = table3.func3.value
+            var x = elem.res3.value
+            var tes = eval(fs)
+            elem.test3.value = tes
+        }
+    </script>
+    <form name="table3">
+        <pre>
+        Введите функцию:                    <input type="text" size="20" name="func3" value="x*x*x*x+2*x*x*x-2">
+        Введите левый конец отрезка:        <input type="text" size="8" name="left3" value="1">
+        Введите правый конец отрезка:       <input type="text" size="8" name="right3" value="0">
+        Введите точность:                   <input type="text" size="8" name="epsv3" value="0.001">
+        <input type="button" value="Вычислить" 
+        onclick="table3.res3.value=fbin(1*table3.left3.value, 1*table3.right3.value, 1*table3.epsv3.value)">
+        Корень уравнения равен: <input type="text" size="30" name="res3">
+        <input type="button" value="Тест" onclick="ftest(table3)">
+        Тест: <input type="text" size="30" name="test3">
+        <input type="reset" value="Отменить">
+        </pre>
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>16.6</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function HanoeTowers(n, x, y, z) {
+            if (n > 0) {
+                HanoeTowers(n - 1, x, z, y)
+                document.all("id4").style.display = "block"
+                document.all("id4").innerHTML += "<p>" + x + " -> " + y + "</p><br>"
+                HanoeTowers(n - 1, z, y, x)
+            }
+        }
+    </script>
+    <form name="table4">
+        <pre>
+        Число колец:                <input type="text" size="6" name="st1">
+        Начальный стержень:         <input type="text" size="6" name="st2">
+        Конечный стержень:          <input type="text" size="6" name="st3">
+        Вспомогательный стержень:   <input type="text" size="6" name="st4">
+        </pre>
+        <p id="id4" style="display:none"></p><br>
+        <input type="button" value="Выполнить"
+            onclick="HanoeTowers(table4.st1.value,table4.st2.value, table4.st3.value, table4.st4.value)">
+        <br>
+        <input type="reset" value="Остановить" onclick="document.all('id4').style.display='none';">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+</body>
+
+</html>

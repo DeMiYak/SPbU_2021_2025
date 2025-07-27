@@ -1,0 +1,316 @@
+<!-- 
+    * Learnt data in form of strings, numbers
+    * and operations, and operators
+
+    * most important commands are branch-related, like if, while, for 
+    * and many other loops.
+
+    * 1. Define what is within
+    * 2. Initiialise iter
+    * 3. When ends
+    * 4. What will be done after
+
+    * Problem solving: finding the square root of an integer
+    * start = {x = positive number; ans = 0} ->
+    * while ans*ans < x: {ans=ans+1} -> print ans.
+
+    * Problem: [works only if x's square root is an integer; !(x = 17)];
+    * thus, program doesn't provide the feedback when the x is not
+    * a perfect square root (which square root is integer)
+    
+    *Solution 1: adding an "else" condition to cover the case of imperfect
+    *square roots
+    
+    * range(x, y+1) includes numbers from x to y (excluding y+1)
+
+    * a list of strings is called (tuple)
+
+
+    * scheme _hierarcical
+-->
+
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 3: Объекты клиента</title>
+    <link rel="stylesheet" href="Chapter3.css">
+</head>
+
+<body>
+    <center>
+        <pre><p>
+    Глава 3.
+    Информация об объектах: document.forms[i], document.images[i] и использование их атрибутов.
+    3.1а, 3.1б (доступ к свойствам с помощью document.forms[i]. elements[i])
+    3.2!,
+    3.5 (диаграмма), 3.6 (изменение параметров таблицы)
+    </p></pre>
+        <br>
+        <p>3.1a</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            function adjustpict(elem) {
+                var w = elem.wd.value
+                var h = elem.hd.value
+                if (w) document.pics.width = w
+                if (h) document.pics.height = h
+                document.pics.border = elem.bd.value
+                document.pics.alt = elem.ald.value
+            }
+        </script>
+        <img src="../Изображения/Space.jpg" alt="Космос" name="pics" width="400" height="300">
+        <form name="table1">
+            Для изменения размеров изображения введите:<br>
+            Ширину (width):<input type="text" size="8" name="wd"><br>
+            Высоту (height):<input type="text" size="8" name="hd"><br>
+            Толщину рамки (border):<input type="text" size="8" name="bd"><br>
+            И нажмите кнопку <b><BIG>Просмотр</BIG></b><br>
+            Альтернативный текст (alt):<br>
+            <input type="text" size="60" name="ald"><br>
+            <input type="button" value="Просмотр" onclick="adjustpict(table1)">
+            <input type="reset" value="Отменить">
+        </form>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+        <p>3.1b</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            function docadjustpict() {
+                var w = document.forms[1].elements[0].value
+                var h = document.forms[1].elements[1].value
+                if (w) document.images[1].width = w
+                if (h) document.images[1].height = h
+                document.images[1].border = document.forms[1].elements[2].value
+                document.images[1].alt = document.forms[1].elements[3].value
+            }
+        </script>
+        <img src="../Изображения/Windows XP Wallpaper.jpg" width="400" height="300">
+        <form name="table2">
+            Для изменения размеров изображения введите:<br>
+            Ширину (width):<input type="text" size="8" name="wd"><br>
+            Высоту (height):<input type="text" size="8" name="hd"><br>
+            Толщину рамки (border):<input type="text" size="8" name="bd"><br>
+            И нажмите кнопку <b><BIG>Просмотр</BIG></b><br>
+            Альтернативный текст (alt):<br>
+            <input type="text" size="60" name="ald"><br>
+            <input type="button" value="Просмотр" onclick="docadjustpict()">
+            <input type="reset" value="Отменить">
+        </form>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+        <p>3.2</p>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            function swappics(elem) {
+                var n1 = 1 * elem.a1.value
+                var n2 = 1 * elem.a2.value
+                if ((n1 < 1) || (n1 > 5) || (n2 < 1) || (n2 > 5)) {
+                    alert("Неверные параметры");
+                }
+                else {
+                    var z = document.images[n1 + 1].src
+                    document.images[n1 + 1].src = document.images[n2 + 1].src
+                    document.images[n2 + 1].src = z
+                }
+            }
+        </script>
+        <img src="../Изображения/p1.gif" name="pics2" width="300" height="180">
+        <img src="../Изображения/p2.png" name="pics3" width="300" height="180">
+        <img src="../Изображения/p3.jpg" name="pics4" width="300" height="180">
+        <img src="../Изображения/p4.jpg" name="pics5" width="300" height="180">
+        <img src="../Изображения/p5.jpg" name="pics6" width="300" height="180">
+        <pre>
+
+
+    </pre>
+        <form name="table3">
+            Рисунки с номерами: <input type="text" size="3" name="a1"> и
+            <input type="text" size="3" name="a2"><br>
+            <input type="button" value="Поменять местами" onclick="swappics(table3)">
+        </form>
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+
+        <p>3.5</p>
+        <!--  -->
+        <hr class="short">
+        <hr class="wide">
+        <hr class="short">
+        <script>
+            function graph(elem) {
+                var kl = 0
+                var d = document
+                var l = elem.lect.value
+                var p = elem.prac.value
+                var pr = elem.prof.value
+                var tableHeight = 150
+                var colloqTime = 0
+                var examTime = 0
+                var testTime = 0
+                var credTime = 0
+                if (((1 * l) >= 0) && (1 * p) >= 0 && (1 * pr) >= 0) {
+                    if (!pr) alert('Введите количество преподавателей.')
+                    if (l) {
+                        colloqTime = Math.round(l * 3 / 20 + pr * 1 / 5 - p * 1 / 16); examTime = Math.round(pr * 1 / 2)
+                    }
+                    if (p) {
+                        testTime = Math.round(pr * 1 / 2 - p * 1 / 8 + l * 1 / 10); credTime = Math.round(pr * 1 / 3 - l * 2 / 13)
+                    }
+                    var sTime = testTime + examTime + colloqTime + credTime
+                    kl = tableHeight / sTime
+                    d.images[7].height = Math.round(testTime * kl)
+                    d.images[7].title = testTime + " часов"
+                    d.images[8].height = Math.round(credTime * kl)
+                    d.images[8].title = credTime + " часов"
+                    d.images[9].height = Math.round(colloqTime * kl)
+                    d.images[9].title = colloqTime + " часов"
+                    d.images[10].height = Math.round(examTime * kl)
+                    d.images[10].title = examTime + " часов"
+                    d.images[11].height = Math.round(sTime * kl)
+                    d.images[11].title = sTime + " часов"
+                }
+                else {
+                    alert('Отрицательные значения не подходят')
+                }
+            }
+            function CheckValHours(hours) {
+                if (hours < 0)
+                    alert("Время должно быть неотрицательным.")
+            }
+            function CheckValNum(num) {
+                if (num <= 0)
+                    alert("Число должно быть положительным.")
+            }
+        </script>
+        <h2>Анкета "Нагрузка студента"</h2>
+        <small><i>После заполнения соответствующих полей для того,
+                чтобы увидеть диаграмму, нажмите кнопку <b>Вычислить</b>
+            </i></small>
+        <br><br>
+        <form name="table4">
+            <table border="4" cellspacing="1" style="background-color:crimson; width:300px" cellpadding="3">
+                <tr>
+                    <td align="left"><b>Лекции</b> <small>(часов)</small></td>
+                    <td align="left"><input type="text" name="lect" size="6" value=""
+                            onchange="CheckValHours(this.value)"></td>
+                </tr>
+                <tr>
+                    <td align="left"><b>Практика</b> <small>(часов)</small></td>
+                    <td align="left"><input type="text" name="prac" size="6" value=""
+                            onchange="CheckValHours(this.value)"></td>
+                </tr>
+                <tr>
+                    <td align="left"><b>Число преподавателей</b> <small>(человек)</small></td>
+                    <td align="left"><input type="text" name="prof" size="6" value=""
+                            onchange="CheckValNum(this.value)"></td>
+                </tr>
+                <tr align="center">
+                    <td colspan="2" style="background-color:khaki">
+                        <input type="button" value="Вычислить" onclick="graph(table4)">
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <h3>Диаграмма нагрузки по вычисленным полям</h4>
+            <table cellpadding="0" cellspacing="1" border="0" style="width:212px;height:190px">
+                <tr valign="bottom" width="100" align="center">
+                    <td height="150" style="background-color:darkgoldenrod">
+                        <img src="../Изображения/Space.jpg" width="75" border="0" height="0">
+                    </td>
+                    <td height="150" style="background-color:darkgoldenrod">
+                        <img src="../Изображения/Space.jpg" width="75" border="0" height="0">
+                    </td>
+                    <td height="150" style="background-color:darkgoldenrod">
+                        <img src="../Изображения/Space.jpg" width="75" border="0" height="0">
+                    </td>
+                    <td height="150" style="background-color:darkgoldenrod">
+                        <img src="../Изображения/Space.jpg" width="75" border="0" height="0">
+                    </td>
+                    <td height="150" style="background-color:darkgoldenrod">
+                        <img src="../Изображения/Space.jpg" width="75" border="0" height="0">
+                    </td>
+                </tr>
+                <tr valign="top" align="center" width="100">
+                    <td height="40" style="font-size:x-small">Контрольная</td>
+                    <td height="40" style="font-size:x-small">Зачёт</td>
+                    <td height="40" style="font-size:x-small">Коллоквиум</td>
+                    <td height="40" style="font-size:x-small">Экзамен</td>
+                    <td height="40" style="font-size:x-small">Всего</td>
+                </tr>
+            </table>
+            <hr class="short">
+            <hr class="wide">
+            <hr class="short">
+
+            <p>3.6</p>
+            <hr class="short">
+            <hr class="wide">
+            <hr class="short">
+            <script>
+                function rset(elem) {
+                    var d = document
+                    d.all("itab").border = 1
+                    d.all("itab").cellSpacing = 15
+                    d.all("itab").cellPadding = 10
+                    d.all
+                    elem.bo.value = 1
+                    elem.cs.value = 15
+                    elem.cp.value = 10
+                }
+                function set(elem) {
+                    var d = document
+                    d.all("itab").border = 1 * elem.bo.value
+                    if (elem.cs.value) {
+                        d.all("itab").cellSpacing = 1 * elem.cs.value
+                    }
+                    if (elem.cp.value) {
+                        d.all("itab").cellPadding = 1 * elem.cp.value
+                    }
+                }
+            </script>
+            <h3 align="center">Таблицы, границы, ширина отступов</h3>
+            <table id="itab" border="1" cellspacing="15" cellpadding="10"
+                style="background-color:silver;background-image:url(../Изображения/Space.jpg);">
+                <tr>
+                    <td style="background-color:silver;"><a href="../Изображения/Ruins.jpg">
+                            <img src="../Изображения/Ruins.jpg" border="0" width="150"></a></td>
+                    <td style="background-color:silver;"><a href="../Изображения/sphinx.jpg">
+                            <img src="../Изображения/sphinx.jpg" border="0" width="150"></a></td>
+                </tr>
+                <tr>
+                    <td style="background-color:silver;"><a href="../Изображения/Windows XP Wallpaper.jpg">
+                            <img src="../Изображения/Windows XP Wallpaper.jpg" border="0" width="150"></a></td>
+                    <td style="background-color:silver;"><a href="../Изображения/Night Bridge.jpg">
+                            <img src="../Изображения/Night Bridge.jpg" border="0" width="150"></a></td>
+                </tr>
+            </table>
+            <p>Выберите значения параметров, которые требуется изменить, и нажмите кнопку <b>Выполнить</b></p>
+            <form name="table5">
+                <pre>
+        BORDER:         <input type="text" size="8" name="bo" value="1"> <i>Толщина рамки</i>
+        CELLSPACING:    <input type="text" size="8" name="cs" value="15"> <i>Ширина промежутка</i>
+        CELLPADDING:    <input type="text" size="8" name="cp" value="10"> <i>Поля внутри ячейки</i>
+        </pre><br>
+                <input type="button" value="Выполнить" onclick="set(table5)">
+                <input type="reset" value="Обновить" onclick="rset(table5)">
+                <!-- <input type="button" onclick="console.log(document.all('itab').cellSpacing);"> -->
+            </form>
+            <hr class="short">
+            <hr class="wide">
+            <hr class="short">
+    </center>
+</body>
+
+</html>

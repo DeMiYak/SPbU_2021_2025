@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <title>Глава 5: Флажки</title>
+    <link rel="stylesheet" href="Chapter5.css">
+</head>
+
+<body>
+    <pre>
+    Глава 5. (checkbox)
+    5.1, 5.4 (параметр id)
+    
+    </pre>
+    <p>5.1</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function set1() {
+            var s = "Вас привлекает: \r\n"
+            var d = document
+            if (d.table1.elements[0].checked) s = s + d.table1.elements[0].value + "\r\n"
+            if (d.table1.elements[1].checked) s = s + d.table1.elements[1].value + "\r\n"
+            if (d.table1.elements[2].checked) s = s + d.table1.elements[2].value + "\r\n"
+            if (d.table1.elements[3].checked) s = s + d.table1.elements[3].value + "\r\n"
+            if (d.table1.elements[4].checked) s = s + d.table1.elements[4].value + "\r\n"
+            if (d.table1.elements[5].checked) s = s + d.table1.elements[5].value + "\r\n"
+            d.table1.area.value = s
+        }
+        var st = "Свойства выбранного флажка: \r\n"
+        function attr(val) {
+            st += "Value: " + val.value + "\n" +
+                "Name: " + val.name + "\n" +
+                "Type: " + val.type + "\n"
+            document.table1.area1.value = st
+        }
+    </script>
+    <form name="table">
+        Название любимого журнала или газеты: <br>
+        <input type="text" size="50"><br>
+    </form>
+    <form name="table1">
+        Что вас привлекает в издании?: <br>
+        <table border="3" align="center">
+            <tr>
+                <td>
+                    <img src="../Изображения/purpsm.png" style="width:160px;height:8%;" align="center">
+                </td>
+                <td align="left">
+                    <input type="checkbox" name="m1" value="Стиль подачи материала"
+                        onclick="set1();attr(table1.elements[0])">
+                    Стиль подачи материала<br>
+
+                    <input type="checkbox" name="m2" value="Достоверность информации"
+                        onclick="set1();attr(table1.elements[1])">
+                    Достоверность информации<br>
+
+                    <input type="checkbox" name="m3" value="Дизайн и оформление"
+                        onclick="set1();attr(table1.elements[2])">
+                    Дизайн и оформление<br>
+
+                    <input type="checkbox" name="m4" value="Качество информации"
+                        onclick="set1();attr(table1.elements[3])">
+                    Качество информации<br>
+
+                    <input type="checkbox" name="m5" value="Репутация издания"
+                        onclick="set1();attr(table1.elements[4])">
+                    Репутация издания<br>
+
+                    <input type="checkbox" name="m6" value="Регулярность издания"
+                        onclick="set1();attr(table1.elements[5])">
+                    Регулярность издания<br>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <textarea name="area" cols="40" rows="8"></textarea><textarea name="area1" cols="35" rows="7"></textarea><br>
+        <input type="reset" value="Отмена" onclick="s='Свойство выбранного флажка: \r\n'">
+        <br>
+    </form>
+
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>5.4</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        function grant() {
+            var d = document
+            var k = 0
+            if (d.all("d1").checked) k += 1 * d.all("d1").value
+            if (d.all("d2").checked) k += 1 * d.all("d2").value
+            if (d.all("d3").checked) k += 1 * d.all("d3").value
+            if (d.all("d4").checked) k += 1 * d.all("d4").value
+            if (d.all("d5").checked) k += 1 * d.all("d5").value
+            if (d.all("d6").checked) k += 1 * d.all("d6").value
+            if (d.all("d7").checked) k += 1 * d.all("d7").value
+            table2.res.value = "Вам полагается вознаграждение " + k + " у.е."
+        }
+    </script>
+    <h3>Анкета для переводчиков</h3>
+    Укажите те языки, которыми владеете в совершенстве
+    <form name="table2">
+        <div>
+            <input type="checkbox" value="100" id="d1">Русский<br>
+            <input type="checkbox" value="200" id="d2">Английский<br>
+            <input type="checkbox" value="300" id="d3">Французский<br>
+            <input type="checkbox" value="400" id="d4">Немецкий<br>
+            <input type="checkbox" value="500" id="d5">Японский<br>
+            <input type="checkbox" value="600" id="d6">Китайский (Мандарин)<br>
+            <input type="checkbox" value="700" id="d7">C++<br>
+        </div>
+        <input type="button" value="Вознаграждение" onclick="grant()">
+        <input type="text" size="60" name="res"><br>
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+</body>
+
+</html>

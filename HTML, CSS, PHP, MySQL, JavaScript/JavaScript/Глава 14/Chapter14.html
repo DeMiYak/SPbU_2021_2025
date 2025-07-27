@@ -1,0 +1,208 @@
+<!--
+    
+    Task Template:
+
+    <p></p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script></script>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+-->
+
+<!doctype html>
+<html>
+
+<head>
+    <title>Глава 14: Массивы и методы работы с ними</title>
+    <link rel="stylesheet" href="Chapter14.css">
+</head>
+
+<body>
+    <pre>
+        Глава 14. (массивы)
+        14.2, 14.7, 14.9a, 14.9b (методы sort() и concat()), 14.12
+    </pre>
+    <p>14.2</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        NMonths = new Array("января", "февраля", "марта",
+            "апреля", "мая", "июня", "июля", "августа", "сентября",
+            "октября", "ноября", "декабря")
+        NDays = new Array("воскресенье", "понедельник", "вторник","среда",
+            "четверг", "пятница", "суббота")
+        function DateTime() {
+            var now = new Date()
+            var h = now.getHours()
+            var m = now.getMinutes()
+            var s = now.getSeconds()
+            var hou = ((h < 10) ? "0" : "") + h
+            var min = ((m < 10) ? ":0" : ":") + m
+            var sec = ((s < 10) ? ":0" : ":") + s
+            var str = "Вы посетили эту страницу<br>" +
+                now.getDate() + " " + NMonths[now.getMonth()] + " " + now.getFullYear() + " года<br>" +
+                "в " + hou + min + sec + "<br>" +
+                "Сегодня - " + NDays[now.getDay()]
+            document.getElementById("id").style.display = "block"
+            document.getElementById("id").innerHTML = str
+        }
+    </script>
+    <p id="id" style="display:none;"></p>
+    <input type="button" value="Показать" onclick="DateTime()">
+    <input type="reset" value="Убрать" onclick="document.getElementById('id').style.display='none'">
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>14.7</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        var v = new Array(2, 3, 5, 6, 6, 7, 10, 11, 22, 30, 50, 60, 88, 89, 89, 100)
+        function testtab(elem, v, t) {
+            var res = "i  j   k   v[k]    t<=v[k]" + "\r\n"
+            var i = 0
+            var j = v.length - 1
+            var k
+            while (i < j) {
+                k = Math.round((i + j) / 2 + 0.5) - 1
+                res += i + "    " + j + "   " + k + "   " + v[k] + "   " + t + "<=" + v[k] + "\r\n"
+                if (t <= v[k]) j = k
+                else i = k + 1
+            }
+            res += "v[" + i + "]=" + v[i] + "\r\n"
+            elem.result1.value = res
+            if (v[i] == t) return t
+            return -1
+        }
+        function test(elem) { elem.data1.value = v }
+    </script>
+    <form name="table2">
+        <pre>
+        Массив:             <input type="text" size="40" name="data1">
+        Элемент:            <input type="text" size="20" name="data2">
+        Результат поиска:   <input type="text" size="20" name="result">
+        </pre>
+        Таблица промежуточных значений:<br>
+        <textarea cols="50" rows="8" name="result1"></textarea><br>
+        <input type="button" value="Определить" onclick="test(table2);
+        table2.result.value=testtab(table2,v, table2.data2.value)">
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>14.9a,b</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        var a=new Array("Алексеев", "Богатырёв", "Иванов", "Котов", "Кузьменко")
+        var b=new Array("Костин", "Павлов", "Соловьёв", "Ярин")
+        function combine1(a, b) {
+            var m = a.length - 1; var n = b.length - 1
+            var p = m + n; var c = new Array(p)
+            var i = 0; var j = 0; var k = 0
+            while ((i <= m) && (j <= n)) {
+                if (a[i] <= b[j]) { c[k] = a[i]; i++ }
+                else { c[k] = b[j]; j++ }
+                k++
+            }
+            if (i > m) { while (j <= n) { c[k] = b[j]; j++; k++ } }
+            else { while (i <= m) { c[k] = a[i]; i++; k++ } }
+            return c
+        }
+        function combine2(a, b) {
+            var m = a.length
+            var n = b.length
+            a[m] = "Ярин2"
+            b[n] = "Ярин2"
+            var p = m + n; var c = new Array(p)
+            var i = 0; var j = 0; var k = 0
+            for (k = 0; k < p; k++) {
+                if (a[i] <= b[j]) { c[k] = a[i]; i++ }
+                else { c[k] = b[j]; j++ }
+                console.log(c[k])
+            }
+            a.length-=1
+            b.length-=1
+            console.log(c)
+            return c
+        }
+    </script>
+    <form name="table3">
+        Первый массив: <input type="text" size="40"><br>
+        Второй массив: <input type="text" size="40"><br>
+        Результат слияния: <input type="text" size="80"><br>
+        Первый способ: <input type="button" value="Определить"
+            onclick="table3.elements[0].value=a;table3.elements[1].value=b;table3.elements[2].value=combine1(a,b)">
+        <br>
+        Второй способ: <input type="button" value="Определить"
+            onclick="table3.elements[0].value=a;table3.elements[1].value=b;table3.elements[2].value=combine2(a,b)">
+        <br>
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+
+    <p>14.12</p>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+    <script>
+        var vec = new Array(4, 5, 15, 17, 31, 52, 72, 79, 81, 83, 89, 91, 93, 94, 98)
+        function test1(elem) {
+            elem.data3.value = vec
+        }
+        function binsearch(v, t) {
+            var i = 0
+            var j = v.length - 1
+            var k
+            while (i < j) {
+                k = Math.round((i + j) / 2 + 0.5) - 1
+                if (t <= v[k]) j = k
+                else i = k + 1
+            }
+            if (v[i] == t) return i
+            return -1
+        }
+        function delar(v, t) {
+            var n = v.length
+            var k = binsearch(v, t)
+            // console.log(v)
+            if (k != -1) {
+                for (var i = k; i <= n - 1; i++)
+                    v[i] = v[i + 1]
+                v.length = n - 1
+            }
+            table4.data3.value=v
+            return v
+        }
+    </script>
+    <form name="table4">
+        <pre>
+            Массив:             <input type="text" size="40" name="data3">
+            Элемент:            <input type="text" size="20" name="data4">
+            </pre>
+        Таблица промежуточных значений:<br>
+        <textarea cols="50" rows="8" name="resultat1"></textarea><br>
+        <input type="button" value="Определить" onclick="test1(table4); 
+            table4.resultat1.value=delar(vec, 1*table4.data4.value)">
+        <input type="reset" value="Отменить">
+    </form>
+    <hr class="short">
+    <hr class="wide">
+    <hr class="short">
+</body>
+
+</html>
+
+<!-- 14.12, 14.9a,b ??? -->

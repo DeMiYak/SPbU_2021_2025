@@ -1,0 +1,44 @@
+{
+    "name": "restgames/battleship-client",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carlos Buenosvinos",
+            "email": "carlos.buenosvinos@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../battleship-php",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.1",
+        "symfony/console": "^3.0",
+        "restgames/battleship-php": "dev-master",
+        "carlosbuenosvinos/ddd": "^1.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Battleship\\": "src/Battleship"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.1"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Battleship\\": "tests/Battleship"
+        }
+    },
+    "scripts": {
+        "tests": "vendor/bin/phpunit",
+        "bdd": "vendor/bin/phpunit --testdox"
+    }
+}
